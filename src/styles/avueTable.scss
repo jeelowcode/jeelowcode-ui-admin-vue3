@@ -1,0 +1,159 @@
+// 优化一些默认的表格样式 通用
+.avue-crud__search {
+  .avue-form__menu--left {
+    padding-left: 20px !important;
+    box-sizing: border-box;
+  }
+  .el-form-item > .el-form-item__content > div > div > div {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.low-select-radio {
+  padding: 0 5px;
+  .el-radio__label {
+    display: none;
+  }
+}
+
+//优化暗色模式下表格样式
+.dark {
+  .avue-crud {
+    .avue-crud__header {
+      background-color: transparent;
+    }
+    .el-table__header-wrapper {
+      .el-table__cell {
+        background-color: var(--el-table-header-bg-color);
+        color: var(--el-table-header-text-color);
+      }
+    }
+    .avue-crud__tip {
+      background-color: var(--el-fill-color-lighter);
+      border-color: var(--el-border-color);
+      box-sizing: border-box;
+    }
+    .avue-crud__pagination {
+      background-color: transparent;
+    }
+  }
+  .avue-dialog {
+    .el-dialog__title,
+    .el-drawer__title {
+      color: var(--el-text-color-primary);
+    }
+    .el-dialog__header,
+    .el-drawer__header {
+      border-color: var(--el-border-color-dark);
+      .el-dialog__close,
+      .el-drawer__close {
+        color: var(--el-text-color-regular);
+      }
+    }
+    .avue-dialog__footer,
+    .avue-drawer__footer {
+      background-color: var(--el-bg-color);
+      border-color: var(--el-border-color-dark);
+    }
+  }
+}
+
+//修改默认的卡片模式样式
+.avue-crud__grid {
+  .title .avue-crud__grid__value {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
+  }
+  .title .avue-crud__grid__label {
+    display: initial;
+  }
+  .avue-crud__grid__label {
+    font-size: 14px;
+  }
+  .avue-crud__grid__value {
+    font-size: 14px;
+  }
+  .avue-crud__grid__content {
+    padding: 16px 16px 0 16px;
+    background: var(--el-card-bg-color) !important;
+    border: 1px solid var(--el-card-border-color);
+    border-radius: 4px;
+    .avue-crud__grid__item {
+      line-height: 24px;
+      &.title {
+        width: 50%;
+        margin-bottom: 3px;
+
+        &.row {
+          width: 100%;
+        }
+      }
+      &.menu {
+        // border-top: 1px solid var(--el-card-border-color);
+        margin: 16px 0 0 0;
+        padding: 4px 0px;
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 40px;
+      width: 100%;
+      height: 1px;
+      background: var(--el-card-border-color);
+    }
+  }
+  .menu .el-button {
+    font-size: 14px;
+  }
+}
+.low-table-grid {
+  @for $i from 1 through 12 {
+    &__#{$i} {
+      .el-checkbox-group > .el-row > .el-col {
+        &:nth-child(#{$i}n) {
+          padding-right: 0;
+        }
+        &:nth-child(-n + #{$i}) {
+          padding-top: 0;
+        }
+      }
+    }
+  }
+
+  &.no-menu {
+    .avue-crud__grid__content {
+      padding-bottom: 10px;
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  //表格 单选
+  .lowSelectRadio {
+    width: inherit;
+    position: absolute;
+    right: -5px;
+    top: -4px;
+    .avue-crud__grid__label {
+      display: none;
+    }
+  }
+}
+
+//处理弹窗表单部分样式
+.low-table__dialog {
+  .avue-form.avue--detail {
+    .el-form-item__content {
+      div[labelclassname='low-header__text_input'],
+      div[labelclassname='low-header__text_password'] {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}

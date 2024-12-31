@@ -1,0 +1,237 @@
+.low-form {
+  padding: 20px;
+
+  ::v-deep(.avue-number-position-left) {
+    .el-input__inner {
+      text-align: left;
+    }
+  }
+
+  ::v-deep(.avue-number-position-center) {
+    .el-input__inner {
+      text-align: center;
+    }
+  }
+
+  ::v-deep(.avue-form) {
+    .control-layoutTabs {
+      padding-right: 0 !important;
+      padding-left: 0 !important;
+
+      &>.el-form-item{
+        border-bottom: none !important;
+      }
+
+      .avue-group:not(.avue-group--header) {
+        padding: 0 10px;
+
+        .el-collapse-item__header {
+          display: flex;
+        }
+      }
+
+      .form-tabs .el-tab-pane > .avue-form > .el-form > .el-row {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+        border-top: 0;
+        
+        .avue-group.avue-group--header .el-collapse{
+          border-bottom: none;
+          .el-collapse-item__wrap{
+            border-bottom: none;
+          }
+        }
+
+        .avue-group
+          > .el-collapse
+          > .el-collapse-item
+          > .el-collapse-item__wrap
+          > .el-collapse-item__content
+          > .avue-form__group
+          > .el-col
+          > .el-form-item {
+          margin-bottom: 18px;
+
+          &.el-form-item--large {
+            margin-bottom: 22px;
+          }
+        }
+      }
+
+      & > .el-form-item {
+        border-bottom: 1px solid var(--el-border-color-lighter);
+      }
+    }
+
+    &.avue--detail {
+      .el-form-item__label {
+        padding-right: 12px;
+      }
+
+      .control-layoutTable {
+        & > .el-form-item > .el-form-item__content {
+          padding: 0;
+          border: 0;
+
+          .avue-crud {
+            margin: 0;
+
+            .avue-crud__header {
+              margin: 5px 0 0 5px;
+            }
+
+            .el-table--default {
+              &::before {
+                display: none;
+              }
+
+              &::after {
+                display: none;
+              }
+
+              .el-table__border-left-patch {
+                display: none;
+              }
+
+              .el-table__inner-wrapper {
+                &::before {
+                  display: none;
+                }
+              }
+
+              .el-table__body-wrapper {
+                .el-table__row:nth-last-child(1) {
+                  td {
+                    border-bottom: none;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .control-layoutTabs {
+        border-right: 0;
+
+        .avue-group:not(.avue-group--header) {
+          padding: 0;
+        }
+
+        .el-form-item .el-form-item {
+          margin-bottom: 0 !important;
+        }
+
+        & > .el-form-item {
+          border: 0;
+
+          & > .el-form-item__content {
+            padding: 0;
+            border: 0;
+          }
+        }
+
+        .el-tabs {
+          .el-tabs__header {
+            margin: 0;
+            border-right: 1px solid var(--el-border-color-lighter);
+          }
+
+          .el-tabs__nav-wrap::after {
+            height: 0;
+          }
+
+          .el-tabs__content {
+            .el-tab-pane > .avue-form > .el-form > .el-row {
+              border-left: 0;
+              border-top: 1px solid var(--el-border-color-lighter);
+            }
+          }
+        }
+
+        .avue-form > .el-form > .el-row {
+          & > .avue-group--header > .el-collapse {
+            border: 0;
+
+            .el-collapse-item > .el-collapse-item__wrap {
+              border-bottom: 0;
+            }
+          }
+
+          & > .avue-group > .el-collapse {
+            border-bottom: 0;
+
+            & > .el-collapse-item > .el-collapse-item__wrap {
+              border-bottom: 0;
+            }
+          }
+        }
+      }
+
+      .control-buttonList {
+        .el-form-item__content {
+          border-left: 0;
+          padding: 5px 20px;
+        }
+      }
+
+      .control-color {
+        .el-input-group__append {
+          display: none;
+        }
+      }
+
+      .control-input {
+        .el-input--default {
+          margin-top: -3px;
+        }
+      }
+
+      .avue-form__menu--center {
+        display: none;
+      }
+
+      .avue-group:not(.avue-group--header) .el-collapse-item__header {
+        border-right: 1px solid var(--el-border-color-lighter);
+
+        .avue-group__header {
+          border-bottom: 0;
+        }
+      }
+
+      // .control-title{
+      //   .el-form-item__content{
+      //     border-left: 0;
+      //   }
+      // }
+      
+    }
+
+    &.avue--detail {
+      .el-form-item[label-position='left'],
+      .el-form-item[label-position='right'] {
+        .el-form-item__label {
+          padding-left: 8px;
+          padding-right: 8px;
+        }
+      }
+      .el-form-item[label-position='top'] {
+        .el-form-item__label {
+          margin-bottom: 0;
+          // padding: 5px 8px;
+          padding-left: 8px;
+          border-bottom: 1px solid #ebeef5;
+        }
+        .el-form-item__content {
+          border-left: 0;
+        }
+        .el-table__header{
+          .el-table__cell:nth-last-of-type(1){
+            border-right: 0;
+          }
+        }
+      }
+    }
+  }
+}
+

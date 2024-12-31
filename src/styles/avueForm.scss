@@ -1,0 +1,351 @@
+.el-form-item .el-form-item {
+  margin-bottom: 18px;
+}
+
+.el-input-number .el-input__inner {
+  text-align: left !important;
+}
+
+.avue-dialog .avue-dialog__footer {
+  z-index: 99;
+}
+
+.avue-group .el-collapse-item__header {
+  border-bottom: 1px solid #eee !important;
+}
+
+.avue-form {
+  & > .el-row > .icon-select-box {
+    padding-top: 0.75px;
+    padding-bottom: 0.75px;
+  }
+
+  .el-form-item.is-error {
+    .user-input,
+    .dept-input,
+    .table-input {
+      border-color: var(--el-color-danger);
+    }
+  }
+}
+
+.avue-form.avue--detail {
+  .avue-select {
+    .el-select-tags-wrapper {
+      margin-left: 0 !important;
+    }
+    .el-select__wrapper {
+      box-shadow: none;
+    }
+  }
+
+  .el-select-v2 {
+    .el-select-v2__wrapper.is-disabled {
+      background-color: #fff;
+      border-color: #fff;
+
+      .el-select-v2__suffix {
+        display: none;
+      }
+
+      .el-select-v2__placeholder.is-transparent {
+        display: none;
+      }
+    }
+  }
+
+  .icon-select-box {
+    .el-input__wrapper {
+      padding-top: 1px;
+      padding-bottom: 1px;
+    }
+    .el-input-group__append {
+      box-shadow: none;
+    }
+  }
+
+  .avue-input {
+    .el-input__wrapper {
+      box-shadow: none;
+    }
+  }
+
+  .avue-ueditor {
+    border: none;
+    .avue-ueditor__toolbar {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40px;
+      z-index: 2;
+    }
+    .w-e-text-container .w-e-scroll > div {
+      padding: 0;
+    }
+    .w-e-toolbar > div {
+      position: initial;
+      padding: 0;
+      & > button {
+        display: none;
+      }
+      &.w-e-bar-divider {
+        display: none;
+      }
+    }
+    .w-e-bar-item > button[data-menu-key='fullScreen'] {
+      height: 30px;
+      line-height: 30px;
+      display: flex;
+    }
+  }
+
+  .avue-input,
+  .avue-input-number,
+  .avue-select,
+  .avue-cascader,
+  .avue-input-tree,
+  .avue-time,
+  .avue-date,
+  .avue-input-map,
+  .avue-array__input {
+    .el-input__wrapper,
+    .el-select__wrapper {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+.avue-ueditor.w-e-full-screen-container {
+  z-index: 100;
+}
+
+.el-select-dropdown {
+  .avue-select__desc {
+    margin-left: 20px;
+  }
+}
+
+.avue-upload.avue-upload--picture-card {
+  text-align: left;
+}
+
+//处理详情模式高度超出1.5px
+.avue-form.avue--detail {
+  .control-password,
+  .control-array,
+  .control-select,
+  .control-tree,
+  .control-cascader,
+  .control-switch,
+  .control-regionSelect,
+  .control-dicTableSelect,
+  .control-map,
+  .control-color,
+  .control-date,
+  .control-daterange,
+  .control-dateTime,
+  .control-datetimerange,
+  .control-time,
+  .control-timerange,
+  .control-week,
+  .control-month,
+  .control-monthrange,
+  .control-year,
+  .control-dates,
+  .control-monacoEditor {
+    .el-form-item__content > div > div > div {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .control-radio .avue-radio {
+    display: flex;
+  }
+  .control-rate {
+    .el-form-item__content > div > div > div {
+      display: flex;
+    }
+  }
+  .control-number {
+    .el-form-item__content > div > div {
+      display: flex;
+    }
+  }
+  .control-slider {
+    .el-form-item__content {
+      padding-left: 30px;
+    }
+  }
+  .control-customControl {
+    .el-form-item__content > div > div > div {
+      display: inline;
+    }
+  }
+  .control-file {
+    .el-form-item__content .avue-upload {
+      .el-upload-list__item-info {
+        margin-left: 0;
+      }
+      .el-upload-list__item-name {
+        padding-left: 0;
+      }
+    }
+  }
+}
+
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+  color: var(--el-color-primary);
+}
+
+//优化分组样式
+.avue-form {
+  .avue-group {
+    .avue-group__title {
+      padding-left: 10px;
+    }
+    &.avue-group--header {
+      .el-collapse {
+        border: none;
+        .el-collapse-item__wrap {
+          border: none;
+        }
+      }
+    }
+    &:not(.avue-group--header) {
+      .el-collapse {
+        border: none !important;
+      }
+      .el-collapse-item__wrap {
+        border: none !important;
+      }
+    }
+  }
+}
+
+//处理暗色模式表单颜色
+.dark {
+  --w-e-toolbar-bg-color: var(--el-bg-color);
+  --w-e-toolbar-color: var(--el-text-color-regular);
+  --w-e-toolbar-border-color: var(--el-border-color-dark);
+
+  --w-e-toolbar-active-bg-color: var(--el-fill-color-light);
+  --w-e-toolbar-active-color: var(--el-text-color-regular);
+
+  --w-e-textarea-bg-color: var(--el-bg-color);
+  --w-e-textarea-color: var(--el-border-color-regular);
+  --w-e-textarea-border-color: var(--el-border-color-dark);
+
+  .avue-ueditor {
+    border-color: var(--el-border-color-dark) !important;
+    .button-container {
+      button {
+        background-color: var(--el-fill-color-light);
+        border-color: var(--el-border-color-dark);
+        color: var(--el-border-color-regular);
+      }
+    }
+  }
+
+  .v-md-editor {
+    background-color: var(--el-bg-color);
+    .v-md-editor__toolbar {
+      background-color: var(--el-bg-color);
+      border-color: var(--el-border-color-dark);
+    }
+    .v-md-editor__main {
+      background-color: var(--el-bg-color);
+    }
+    .v-md-editor__editor-wrapper {
+      border-color: var(--el-border-color-dark);
+      .CodeMirror {
+        background-color: var(--el-bg-color);
+      }
+      .CodeMirror-gutters {
+        background-color: var(--el-bg-color);
+        border-color: var(--el-border-color-dark);
+      }
+      .CodeMirror-line {
+        background-color: var(--el-fill-color-light);
+        color: var(--el-text-color-regular);
+      }
+    }
+    .v-md-editor__toolbar-item {
+      color: var(--el-text-color-regular);
+      background-color: var(--el-bg-color);
+      &:hover {
+        background-color: var(--el-fill-color-light);
+      }
+    }
+    .v-md-editor__toolbar-divider::before {
+      border-color: var(--el-border-color-dark);
+    }
+    .v-md-editor__menu {
+      background-color: var(--el-bg-color);
+      border: 1px solid var(--el-border-color-dark);
+      .v-md-editor__menu-item {
+        color: var(--el-border-color-regular);
+        &:hover {
+          background-color: var(--el-fill-color-light);
+        }
+      }
+    }
+    .github-markdown-body img {
+      background-color: var(--el-bg-color);
+    }
+    .github-markdown-body div[class*='v-md-pre-wrapper-'] {
+      background-color: var(--el-fill-color-light);
+    }
+    .codemirror-wrapper.codemirror-reset .cm-comment,
+    .codemirror-wrapper.codemirror-reset .cm-link,
+    .codemirror-wrapper.codemirror-reset .cm-quote,
+    .codemirror-wrapper.codemirror-reset .cm-variable-2:not(.cm-url) {
+      color: var(--el-text-color-regular);
+    }
+  }
+
+  .avue-form {
+    .el-collapse {
+      border-color: var(--el-border-color);
+    }
+    .el-collapse-item__wrap {
+      border-color: var(--el-border-color);
+    }
+    .el-collapse-item__header {
+      border-color: var(--el-border-color) !important;
+      .avue-group__title {
+        color: var(--el-text-color-regular);
+      }
+    }
+  }
+  .avue-form.avue--detail {
+    .el-row {
+      border-color: var(--el-border-color);
+      .el-col {
+        border-color: var(--el-border-color);
+      }
+      .el-form-item__content {
+        border-color: var(--el-border-color);
+      }
+    }
+    .el-form-item__content {
+      background-color: var(--el-bg-color);
+      .el-input__wrapper {
+        background-color: var(--el-bg-color);
+        .el-input__inner {
+          background-color: var(--el-bg-color);
+        }
+      }
+      .el-textarea__inner {
+        background-color: var(--el-bg-color);
+      }
+    }
+    .el-form-item,
+    .el-form-item__label {
+      background-color: var(--el-fill-color-light);
+    }
+    .control-layoutTabs {
+    }
+  }
+}
