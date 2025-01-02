@@ -208,8 +208,8 @@ const tableOption = reactive({
       label: '岗位',
       type: 'select',
       hide: true,
-      dicData: [],
-      value: ''
+      multiple: true,
+      dicData: []
     },
     status: {
       label: '状态',
