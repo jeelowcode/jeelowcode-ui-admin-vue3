@@ -62,7 +62,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import * as FileConfigApi from '@/api/infra/fileConfig'
 
 defineOptions({ name: 'InfraFileConfig' })
@@ -287,8 +287,7 @@ const getTableData = async () => {
   }
 
   if (searchObj.createTime?.length) {
-    searchObj.createTime[0] = `${searchObj.createTime[0]} 00:00:00`
-    searchObj.createTime[1] = `${searchObj.createTime[1]} 23:59:59`
+    searchObj.createTime = getSearchDate(searchObj.createTime)
   } else delete searchObj.createTime
 
   for (let key in searchObj) if (searchObj[key] === '') delete searchObj[key]
@@ -433,7 +432,7 @@ const handleTest = async (id) => {
   try {
     const response = await FileConfigApi.testFileConfig(id)
     message.alert(
-    `<div>测试通过，上传文件成功！访问地址：</div>
+      `<div>测试通过，上传文件成功！访问地址：</div>
     <div style="word-break: break-word;">${response}</div>
     `,
       '',

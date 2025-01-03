@@ -136,7 +136,7 @@ import { checkPermi } from '@/utils/permission'
 import * as PostApi from '@/api/system/post'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import { CommonStatusEnum } from '@/utils/constants'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as UserApi from '@/api/system/user'
 import UserImportForm from './UserImportForm.vue'
@@ -278,8 +278,7 @@ const getTableData = async () => {
   }
 
   if (searchObj.createTime?.length) {
-    searchObj.createTime[0] = `${searchObj.createTime[0]} 00:00:00`
-    searchObj.createTime[1] = `${searchObj.createTime[1]} 23:59:59`
+    searchObj.createTime = getSearchDate(searchObj.createTime)
   } else delete searchObj.createTime
 
   for (let key in searchObj) if (searchObj[key] === '') delete searchObj[key]

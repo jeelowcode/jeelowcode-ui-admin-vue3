@@ -56,7 +56,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as OperateLogApi from '@/api/system/operatelog'
 
@@ -209,10 +209,7 @@ const getTableData = async () => {
   }
 
   if (searchObj.searchStartTime?.length) {
-    searchObj.startTime = [
-      `${searchObj.searchStartTime[0]} 00:00:00`,
-      `${searchObj.searchStartTime[1]} 23:59:59`
-    ]
+    searchObj.startTime = getSearchDate(searchObj.searchStartTime)
   }
   delete searchObj.searchStartTime
 

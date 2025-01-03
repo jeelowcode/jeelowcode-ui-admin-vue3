@@ -33,7 +33,7 @@
   </ContentWrap>
 </template>
 <script lang="ts" setup>
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import * as TaskApi from '@/api/bpm/task'
 import TaskCCDialogForm from '../../processInstance/detail/TaskCCDialogForm.vue'
 
@@ -124,8 +124,7 @@ const getTableData = async () => {
   }
 
   if (searchObj.createTime?.length) {
-    searchObj.createTime[0] = `${searchObj.createTime[0]} 00:00:00`
-    searchObj.createTime[1] = `${searchObj.createTime[1]} 23:59:59`
+    searchObj.createTime = getSearchDate(searchObj.createTime)
   } else delete searchObj.createTime
 
   for (let key in searchObj) if (searchObj[key] === '') delete searchObj[key]

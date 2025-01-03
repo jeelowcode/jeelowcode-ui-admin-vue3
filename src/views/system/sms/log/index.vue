@@ -271,17 +271,11 @@ const getTableData = async () => {
   }
 
   if (searchObj.searchCreateTime?.length) {
-    searchObj.createTime = [
-      `${searchObj.searchCreateTime[0]} 00:00:00`,
-      `${searchObj.searchCreateTime[1]} 23:59:59`
-    ]
+    searchObj.createTime = getSearchDate(searchObj.searchCreateTime)
   }
   delete searchObj.searchCreateTime
   if (searchObj.searchSendTime?.length) {
-    searchObj.sendTime = [
-      `${searchObj.searchSendTime[0]} 00:00:00`,
-      `${searchObj.searchSendTime[1]} 23:59:59`
-    ]
+    searchObj.sendTime = getSearchDate(searchObj.searchSendTime)
   }
   delete searchObj.searchSendTime
 

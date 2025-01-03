@@ -61,7 +61,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import { defaultProps, handleTree } from '@/utils/tree'
 import * as TenantPackageApi from '@/api/system/tenantPackage'
 import { CommonStatusEnum } from '@/utils/constants'
@@ -171,8 +171,7 @@ const getTableData = async () => {
   }
 
   if (searchObj.createTime?.length) {
-    searchObj.createTime[0] = `${searchObj.createTime[0]} 00:00:00`
-    searchObj.createTime[1] = `${searchObj.createTime[1]} 23:59:59`
+    searchObj.createTime = getSearchDate(searchObj.createTime)
   } else delete searchObj.createTime
 
   for (let key in searchObj) if (searchObj[key] === '') delete searchObj[key]

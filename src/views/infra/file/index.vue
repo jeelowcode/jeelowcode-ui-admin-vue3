@@ -53,7 +53,7 @@
 </template>
 <script lang="ts" setup>
 import { fileSizeFormatter } from '@/utils'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import * as FileApi from '@/api/infra/file'
 import FileForm from './FileForm.vue'
 
@@ -74,7 +74,7 @@ const tableOption = reactive({
   labelSuffix: ' ',
   span: 24,
   dialogWidth: '50%',
-  menuWidth:120,
+  menuWidth: 120,
   column: {
     name: {
       label: '文件名',
@@ -147,8 +147,7 @@ const getTableData = async () => {
   }
 
   if (searchObj.createTime?.length) {
-    searchObj.createTime[0] = `${searchObj.createTime[0]} 00:00:00`
-    searchObj.createTime[1] = `${searchObj.createTime[1]} 23:59:59`
+    searchObj.createTime = getSearchDate(searchObj.createTime)
   } else delete searchObj.createTime
 
   for (let key in searchObj) if (searchObj[key] === '') delete searchObj[key]

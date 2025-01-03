@@ -28,7 +28,7 @@
   </ContentWrap>
 </template>
 <script lang="ts" setup>
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as TaskApi from '@/api/bpm/task'
 
@@ -120,10 +120,7 @@ const getTableData = async () => {
   }
 
   if (searchObj.searchCreateTime?.length) {
-    searchObj.createTime = [
-      `${searchObj.searchCreateTime[0]} 00:00:00`,
-      `${searchObj.searchCreateTime[1]} 23:59:59`
-    ]
+    searchObj.createTime = getSearchDate(searchObj.searchCreateTime)
   } else delete searchObj.createTime
   delete searchObj.searchCreateTime
 

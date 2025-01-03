@@ -321,3 +321,15 @@ export function getDateRange(
     dayjs(endDate).endOf('d').format('YYYY-MM-DD HH:mm:ss')
   ]
 }
+
+
+/**
+ * 时间查询格式化
+ * @param dateArr 时间段
+ */
+export function getSearchDate(dateArr: string[]): [string, string] {
+  return [
+    `${dateArr[0].split(' ')[0]} 00:00:00`,
+    `${dateArr[1].split(' ')[0]} 23:59:59`
+  ]
+}

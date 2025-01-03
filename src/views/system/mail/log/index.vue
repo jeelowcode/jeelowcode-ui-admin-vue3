@@ -59,7 +59,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import * as MailLogApi from '@/api/system/mail/log'
 defineOptions({ name: 'SystemMailLog' })
 const { getCurrPermi } = useCrudPermi()
@@ -216,10 +216,7 @@ const getTableData = async () => {
   }
 
   if (searchObj.searchSendTime?.length) {
-    searchObj.sendTime = [
-      `${searchObj.searchSendTime[0]} 00:00:00`,
-      `${searchObj.searchSendTime[1]} 23:59:59`
-    ]
+    searchObj.sendTime = getSearchDate(searchObj.searchSendTime)
   }
   delete searchObj.searchSendTime
 

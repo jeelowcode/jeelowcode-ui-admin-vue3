@@ -15,7 +15,7 @@
       @size-change="sizeChange"
       @current-change="currentChange"
     >
-      <template #category="{row}">
+      <template #category="{ row }">
         <dict-tag :type="DICT_TYPE.BPM_MODEL_CATEGORY" :value="row.category || ''" />
       </template>
       <template #status="scope">
@@ -67,7 +67,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import * as ProcessInstanceApi from '@/api/bpm/processInstance'
 
 defineOptions({ name: 'BpmCCProcessInstance' })
@@ -180,8 +180,7 @@ const getTableData = async () => {
   }
 
   if (searchObj.createTime?.length) {
-    searchObj.createTime[0] = `${searchObj.createTime[0]} 00:00:00`
-    searchObj.createTime[1] = `${searchObj.createTime[1]} 23:59:59`
+    searchObj.createTime = getSearchDate(searchObj.createTime)
   } else delete searchObj.createTime
 
   for (let key in searchObj) if (searchObj[key] === '') delete searchObj[key]

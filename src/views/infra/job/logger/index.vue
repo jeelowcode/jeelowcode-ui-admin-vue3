@@ -45,7 +45,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { formatDate } from '@/utils/formatTime'
+import { formatDate, getSearchDate } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as JobLogApi from '@/api/infra/jobLog'
 
@@ -161,10 +161,11 @@ const getTableData = async () => {
     pageNo: tablePage.value.currentPage,
     pageSize: tablePage.value.pageSize
   }
-  if (searchObj.beginTime) {
-    searchObj.endTime = `${searchObj.beginTime[1]} 23:59:59`
-    searchObj.beginTime = `${searchObj.beginTime[0]} 00:00:00`
-  }
+  if (searchObj.beginTime?.length) {
+    const dateArr = getSearchDate(searchObj.beginTime)
+    searchObj.beginTime = dateArr[0]
+    searchObj.endTime = dateArr[1]
+  } else delete searchObj.beginTime
   if (props.jobId !== 0) searchObj['jobId'] = props.jobId
   for (let key in searchObj) if (searchObj[key] === '') delete searchObj[key]
   try {

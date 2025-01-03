@@ -46,7 +46,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as LoginLogApi from '@/api/system/loginLog'
 
@@ -150,10 +150,7 @@ const getTableData = async () => {
     pageSize: tablePage.value.pageSize
   }
   if (searchObj.searchCreateTime?.length) {
-    searchObj.createTime = [
-      `${searchObj.searchCreateTime[0]} 00:00:00`,
-      `${searchObj.searchCreateTime[1]} 23:59:59`
-    ]
+    searchObj.createTime = getSearchDate(searchObj.searchCreateTime)
   }
   delete searchObj.searchCreateTime
 
@@ -199,10 +196,7 @@ const handleExport = async () => {
     exportLoading.value = true
     let searchObj = { ...tableSearch.value }
     if (searchObj.searchCreateTime?.length) {
-      searchObj.createTime = [
-        `${searchObj.searchCreateTime[0]} 00:00:00`,
-        `${searchObj.searchCreateTime[1]} 23:59:59`
-      ]
+      searchObj.createTime = getSearchDate(searchObj.searchCreateTime)
     }
     delete searchObj.searchCreateTime
     for (let key in searchObj) if (searchObj[key] === '') delete searchObj[key]

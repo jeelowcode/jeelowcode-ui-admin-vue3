@@ -60,7 +60,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions, getBoolDictOptions } from '@/utils/dict'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import * as NotifyMessageApi from '@/api/system/notify/message'
 defineOptions({ name: 'SystemNotifyMessage' })
 
@@ -193,10 +193,7 @@ const getTableData = async () => {
   }
 
   if (searchObj.searchCreateTime?.length) {
-    searchObj.createTime = [
-      `${searchObj.searchCreateTime[0]} 00:00:00`,
-      `${searchObj.searchCreateTime[1]} 23:59:59`
-    ]
+    searchObj.createTime = getSearchDate(searchObj.searchCreateTime)
   }
   delete searchObj.searchCreateTime
   for (let key in searchObj) if (searchObj[key] === '') delete searchObj[key]

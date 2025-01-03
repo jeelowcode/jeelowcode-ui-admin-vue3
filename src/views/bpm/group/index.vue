@@ -30,7 +30,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import * as UserGroupApi from '@/api/bpm/userGroup'
 import * as UserApi from '@/api/system/user'
 import { CommonStatusEnum } from '@/utils/constants'
@@ -92,8 +92,8 @@ const tableOption = reactive({
       searchRange: true,
       search: true,
       display: false,
-      type: "date",
-      searchType:'daterange',
+      type: 'date',
+      searchType: 'daterange',
       valueFormat: 'YYYY-MM-DD',
       width: 180,
       startPlaceholder: '开始时间',
@@ -121,18 +121,16 @@ useCrudHeight(crudRef)
 const getTableData = async () => {
   loading.value = true
 
-  
   let searchObj = {
     ...tableSearch.value,
     pageNo: tablePage.value.currentPage,
-    pageSize: tablePage.value.pageSize,
+    pageSize: tablePage.value.pageSize
   }
 
   if (searchObj.createTime?.length) {
-    searchObj.createTime[0] = `${searchObj.createTime[0]} 00:00:00`
-    searchObj.createTime[1] = `${searchObj.createTime[1]} 23:59:59`
+    searchObj.createTime = getSearchDate(searchObj.createTime)
   } else delete searchObj.createTime
-  
+
   for (let key in searchObj) if (searchObj[key] === '') delete searchObj[key]
   try {
     const data = await UserGroupApi.getUserGroupPage(searchObj)

@@ -52,7 +52,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { dateFormatter } from '@/utils/formatTime'
+import { dateFormatter, getSearchDate } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as TenantApi from '@/api/system/tenant'
 import { CommonStatusEnum } from '@/utils/constants'
@@ -83,8 +83,8 @@ const tableOption = reactive({
     packageId: {
       label: '租户套餐',
       type: 'select',
-      dicUrl:'/system/tenant-package/simple-list',
-      dicFlag:true,
+      dicUrl: '/system/tenant-package/simple-list',
+      dicFlag: true,
       props: {
         label: 'name',
         value: 'id'
@@ -130,7 +130,7 @@ const tableOption = reactive({
       rules: [{ required: true, message: '过期时间不能为空', trigger: 'blur' }],
       type: 'date',
       width: 160,
-      valueFormat: "x",
+      valueFormat: 'x',
       formatter: (row, val, value, column) => {
         return dateFormatter(row, column, val)
       }
@@ -193,9 +193,9 @@ const getTableData = async () => {
     pageNo: tablePage.value.currentPage,
     pageSize: tablePage.value.pageSize
   }
+  console.log(searchObj.createTime)
   if (searchObj.createTime?.length) {
-    searchObj.createTime[0] = `${searchObj.createTime[0]} 00:00:00`
-    searchObj.createTime[1] = `${searchObj.createTime[1]} 23:59:59`
+    searchObj.createTime = getSearchDate(searchObj.createTime)
   } else delete searchObj.createTime
 
   for (let key in searchObj) if (searchObj[key] === '') delete searchObj[key]
