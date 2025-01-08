@@ -70,7 +70,7 @@ const timeList = ref([
 const formatObj = {
   year: 'YYYY',
   month: 'YYYY-MM',
-  week: 'YYYY 第 WW 周',
+  week: 'YYYY 第 ww 周',
   date: 'YYYY-MM-DD',
   time: 'HH:mm:ss',
   datetime: 'YYYY-MM-DD HH:mm:ss'

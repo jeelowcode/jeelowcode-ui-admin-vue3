@@ -80,7 +80,7 @@ const defaultDataConfig = {
   date: { format: "YYYY-MM-DD", valueFormat: "YYYY-MM-DD" },
   month: { format: "YYYY-MM", valueFormat: "YYYY-MM-DD" },
   year: { format: "YYYY", valueFormat: "YYYY-MM-DD" },
-  week: { format: "YYYY第WW周", valueFormat: "YYYY-MM-DD" },
+  week: { format: "YYYY 第 ww 周", valueFormat: "YYYY-MM-DD" },
   time: { format: "HH:mm:ss", valueFormat: "HH:mm:ss" },
 }
 
