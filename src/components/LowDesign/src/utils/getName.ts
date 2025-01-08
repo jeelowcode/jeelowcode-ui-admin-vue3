@@ -37,6 +37,6 @@ export const setUserAndDeptName = (params) => {
           resolve(true)
         }
       ).catch(() => resolve(false))
-    }
+    } else resolve(true)
   })
 }
