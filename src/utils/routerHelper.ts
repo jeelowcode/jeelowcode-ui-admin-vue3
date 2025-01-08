@@ -71,7 +71,7 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
       noCache: !route.keepAlive,
       alwaysShow:
         route.children &&
-        route.children.length === 1 &&
+        route.children.length > 0 &&
         (route.alwaysShow !== undefined ? route.alwaysShow : true)
     }
     // 路由地址转首字母大写驼峰，作为路由名称，适配keepAlive
