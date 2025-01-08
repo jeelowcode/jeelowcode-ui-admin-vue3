@@ -37,8 +37,7 @@ import * as TaskAssignRuleApi from '@/api/bpm/taskAssignRule'
 import * as RoleApi from '@/api/system/role'
 import * as PostApi from '@/api/system/post'
 import * as UserGroupApi from '@/api/bpm/userGroup'
-import * as DicApi from '@/api/design/dic'
-import { encryptAES } from '@/components/LowDesign/src/utils/aes'
+import { setUserAndDeptName } from '@/components/LowDesign/src/utils/getName'
 import { useLowStoreWithOut } from '@/store/modules/low'
 
 const message = useMessage() // 消息弹窗
@@ -248,7 +247,6 @@ const getDicData = () => {
 }
 const formattingTableData = (data): Promise<any[]> => {
   return new Promise(async (resolve) => {
-    const dicList: any[] = []
     const deptIdList: any[] = []
     const userIdList: any[] = []
     data = data.map((item) => {
@@ -264,29 +262,7 @@ const formattingTableData = (data): Promise<any[]> => {
       }
       return item
     })
-    if (deptIdList.length) dicList.push({ deptIdList: [...new Set(deptIdList)] })
-    if (userIdList.length) dicList.push({ userIdList: [...new Set(userIdList)] })
-    if (dicList.length) {
-      await DicApi.getDicTableText({
-        jeeLowCode_dictLabel: encryptAES(JSON.stringify(dicList))
-      }).then((dicData) => {
-        const dictData = {
-          userList: { dicKey: 'userSelect', label: 'nickname' },
-          deptList: { dicKey: 'deptSelect', label: 'name' }
-        }
-        for (const key in dicData) {
-          const dicObj = {}
-          let label = 'label'
-          let dicKey = 'value'
-          if (dictData[key]) {
-            dicKey = dictData[key].dicKey
-            label = dictData[key].text
-          }
-          dicData[key].forEach((item) => (dicObj[item.id] = item[label]))
-          lowStore.setDicObj(dicKey, dicObj)
-        }
-      })
-    }
+    await setUserAndDeptName({ userIdList, deptIdList })
     resolve(data)
   })
 }
