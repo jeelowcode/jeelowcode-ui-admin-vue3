@@ -902,7 +902,7 @@ const wholeSqlStr = computed(() => {
       const { type, tableName, value } = item
       if (type == 'table') {
         filedNum = 0
-        let text = `${tableName} AS ${aliasObj.value[tableName]}`
+        let text = `${tableName} ${aliasObj.value[tableName]}`
         if (index != 0) text = `${item.connectType} ${text} ON`
         return text
       }

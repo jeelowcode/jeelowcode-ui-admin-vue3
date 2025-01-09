@@ -99,7 +99,8 @@ const initColumn = (data, componentData, columnParams) => {
   const tableDic = {}
   data.forEach(item => {
     const { dictEntity, webEntity, queryEntity, exportEntity, summaryEntity, fieldCode, fieldName, fieldType, fieldLen, fieldPointLen, fieldDefaultVal } = item
-    const { cellWidthType, cellWidth, controlType, controlsConfig, verifyConfig, isShowForm, isShowList, isDbSelect, isShowColumn, isShowSort, isRequired } = webEntity
+    const { cellWidthType, cellWidth, controlsConfig, verifyConfig, isShowForm, isShowList, isDbSelect, isShowColumn, isShowSort, isRequired } = webEntity
+    const controlType = webEntity.controlType || 'input'
     const { queryIsWeb, queryMode, queryConfig, queryDefaultVal } = queryEntity
     const { dictType, dictCode, dictTable, dictText, dictTableColumn } = dictEntity
     const { isExport } = exportEntity
