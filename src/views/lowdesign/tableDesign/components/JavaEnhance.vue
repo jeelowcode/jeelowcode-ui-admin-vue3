@@ -65,7 +65,7 @@
 <script lang="ts" setup>
 import * as JavaApi from '@/api/design/table/javaEnhance'
 import useMEDialog from '@/hooks/design/useMEDialog'
-import { JavaDataExample, JavaOperationExample } from '@/components/LowDesign/src/utils/example'
+import { JavaDataExample } from '@/components/LowDesign/src/utils/example'
 import useCopyText from '@/hooks/design/useCopyText'
 
 const message = useMessage() // 消息弹窗
@@ -180,18 +180,10 @@ const tableOption = reactive({
         headerBtn: [
           {
             params: { type: 'primary', size: 'small' },
-            name: '列表（列表、分页、详情、导出）类模板',
+            name: '在线脚本模板',
             icon: 'mingcute:copy-line',
             clickFun: () => {
               copyText(JavaDataExample)
-            }
-          },
-          {
-            params: { type: 'primary', size: 'small' },
-            name: '表单（新增、修改、删除、导入）类模板',
-            icon: 'mingcute:copy-line',
-            clickFun: () => {
-              copyText(JavaOperationExample)
             }
           }
         ]

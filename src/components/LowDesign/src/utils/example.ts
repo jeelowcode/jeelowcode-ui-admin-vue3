@@ -21,7 +21,6 @@ export interface exampleType {
 
   //java增强
   JavaDataExample: string
-  JavaOperationExample: string
 
   //控件使用示例
   controlInitExample: Function
@@ -290,46 +289,35 @@ export const customButtonExample = `return {
 }`
 
 
-//java在线脚本 列表（列表、分页、详情、导出）类模板
+//java在线脚本模板
 export const JavaDataExample = `import cn.hutool.json.JSONUtil;
-import cn.mj.jeelowcode.framework.utils.model.ResultDataModel;
-import java.util.HashMap;
+import com.jeelowcode.core.framework.config.aspect.enhance.model.EnhanceContext;
+import com.jeelowcode.core.framework.config.aspect.enhance.model.EnhanceResult;
+import com.jeelowcode.core.framework.utils.Func;
+
 import java.util.List;
 import java.util.Map;
 
 
 public class TestListEnhance {
 
-    public ResultDataModel execute(Long dbFormId, Map<String, Object> params, List<Map<String, Object>> list){
-        //todo 编写自己的代码
-        Map<String,Object> map = new HashMap<>();
-        map.put("dbFormId",dbFormId);
-        map.put("params",params);
-        map.put("list",list);
-        System.out.println("map===="+JSONUtil.toJsonStr(map));
-        return ResultDataModel.fomatList(list);
+    public void beforeExecute(EnhanceContext context){
+        //todo 编写自己的前置代码
+        System.out.println("map===="+ JSONUtil.toJsonStr(context));
+    }
+
+    public void afterExecute(EnhanceContext context){
+        //todo 编写自己的后置置代码
+        System.out.println("map===="+JSONUtil.toJsonStr(context));
+        EnhanceResult result = context.getResult();
+        List<Map<String, Object>> records = result.getRecords();
+        for(Map<String,Object> dataMap:records){
+            String name = Func.getMap2Str(dataMap, "name");
+            dataMap.put("name","测试："+name);
+        }
     }
 }`
-//java在线脚本 表单（新增、修改、删除、导入）类模板
-export const JavaOperationExample = `import cn.hutool.json.JSONUtil;
-import cn.mj.jeelowcode.framework.exception.JeeLowCodeException;
-import cn.mj.jeelowcode.framework.utils.model.ExecuteEnhanceModel;
-import java.util.HashMap;
-import java.util.Map;
 
-
-public class TestFormEnhance {
-
-    public ExecuteEnhanceModel execute(Long dbFormId, Map<String, Object> params)
-            throws JeeLowCodeException {
-        //todo 编写自己的代码
-        Map<String,Object> map = new HashMap<>();
-        map.put("dbFormId",dbFormId);
-        map.put("params",params);
-        System.out.println("map===="+JSONUtil.toJsonStr(map));
-        return null;
-    }
-}`
 
 //scss增强默认值模板
 export const scssEnhanceExample = (key) => `// 表格样式
