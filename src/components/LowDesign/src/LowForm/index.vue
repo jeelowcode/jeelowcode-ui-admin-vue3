@@ -133,6 +133,7 @@ interface Props {
   tableId?: string //表单开发id
   defaultIsOpen?: boolean //默认存储是否使用open接口
   beforeClose?: Function //关闭前回调处理
+  isPreview?: boolean //是否为设计器预览
 }
 
 const props = defineProps<Props>()
@@ -307,7 +308,7 @@ const handleSubmit = (isVerify?: Boolean, done?: Function) => {
     try {
       const tableId = props.tableId || formOption.value.tableDesignId
       if (jsEnhanceObj.value.beforeSubmit) form = await jsEnhanceObj.value.beforeSubmit(form)
-      if (formOption.value.isSubmitTable && tableId) {
+      if (!props.isPreview && formOption.value.isSubmitTable && tableId) {
         form.id = await handleDefault(props.formType, tableId, form)
         if (!props.beforeClose) message.success('提交成功')
       }

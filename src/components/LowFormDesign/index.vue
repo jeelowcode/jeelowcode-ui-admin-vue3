@@ -118,7 +118,19 @@
         :formOption="previewData.option"
         :formType="previewData.formType"
         :formId="formDesignData?.id"
+        :isPreview="true"
+        :beforeClose="previewBeforeClose"
       ></LowForm>
+    </template>
+  </DesignPopup>
+  <DesignPopup
+    v-model="previewData.dataDialog"
+    title="提交数据预览"
+    width="60%"
+    :is-body-full="true"
+  >
+    <template #default>
+      <MonacoEditor v-model="previewData.formData"></MonacoEditor>
     </template>
   </DesignPopup>
   <DesignPopup v-model="sampleDialog" title="控件使用示例" :width="280">
@@ -190,6 +202,8 @@ const currSelect = ref({})
 const parentData = ref({ type: '', prop: '' })
 const previewData = ref({
   dialog: false,
+  dataDialog: false,
+  formData: '',
   option: {},
   formType: 'edit' as 'add' | 'view' | 'edit',
   handleType: 'returnData'
@@ -265,6 +279,19 @@ const handleToolbar = (type) => {
       formOption.value.column = []
     })
   } else if (type == 'save') saveFormOption()
+}
+
+const previewBeforeClose = (type, form, loading) => {
+  if (type == 'submit') {
+    try {
+      previewData.value.formData = `return ${JSON.stringify(form, null, 2)}`
+    } catch (error) {
+      previewData.value.formData=`表单数据预览失败，请在控制台查看表单数据`,
+      console.warn('=== 表单数据 ===',form)
+    }
+    previewData.value.dataDialog = true
+  }
+  loading()
 }
 
 const openEnhance = (type) => {
