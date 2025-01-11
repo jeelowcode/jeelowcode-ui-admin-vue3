@@ -25,7 +25,7 @@
   <el-form-item label="操作配置">
     <el-checkbox v-model="option.params.fullscreen"> 编辑器弹窗全屏显示 </el-checkbox>
   </el-form-item>
-  <div class="el-form-item el-form-item--small el-form--label-top">
+  <div class="el-form-item el-form-item--small el-form--label-top flex flex-col">
     <div class="flex pb-10px text-14px">
       <span>编辑器弹窗自定义按钮：</span>
       <div class="mt--1px">

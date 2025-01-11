@@ -2,8 +2,8 @@
   <el-form-item label="占位内容">
     <el-input v-model="option.placeholder" clearable placeholder="占位内容"></el-input>
   </el-form-item>
-  <div class="el-form-item el-form-item--small el-form--label-top">
-    <label class="el-form-item__label p-0!">字典配置：</label>
+  <div class="el-form-item el-form-item--small el-form--label-top flex flex-col">
+    <label class="el-form-item__label p-0! block! text-14px!">字典配置：</label>
     <div class="select-dic el-form-item__content w-100%">
       <el-tabs v-model="option.dicType" stretch>
         <el-tab-pane label="静态数据" name="static">
@@ -142,8 +142,10 @@
     <el-checkbox v-model="option.parent" v-if="option.type == 'tree'"> 可选父级 </el-checkbox>
     <el-checkbox v-model="option.checkStrictly"> 父子不互相关联 </el-checkbox>
     <el-checkbox v-model="option.collapseTags"> 折叠选中值 </el-checkbox>
-    <el-checkbox v-model="option.collapseTagsTooltip"> 鼠标悬停显示所有折叠选中标签 </el-checkbox>
-    <el-col :md="12" :xs="24">
+    <el-checkbox v-show="option.collapseTags" v-model="option.collapseTagsTooltip">
+      鼠标悬停显示所有折叠选中标签
+    </el-checkbox>
+    <el-col :md="12" :xs="24" v-show="option.collapseTags">
       <div class="text-12px">选中超过多少开始折叠</div>
       <el-input-number v-model="option.maxCollapseTags"></el-input-number>
     </el-col>
