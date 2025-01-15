@@ -6,6 +6,7 @@
       clearable
       filterable
       placeholder="请选择字典Table"
+      @change="tableChange"
     >
       <template v-for="item in tableDic" :key="item.value">
         <el-option
@@ -103,6 +104,12 @@ const textDic = computed(() => {
   } else return nullDic
 })
 
+const tableChange = () => {
+  option.value.dictCode = 'id'
+  option.value.dictText = ''
+  option.value.dictTableColumn = []
+}
+
 watch(
   () => props.modelValue,
   (val: object) => {
@@ -113,18 +120,6 @@ watch(
   () => option.value,
   (val: object) => {
     emit('update:modelValue', val)
-  }
-)
-
-watch(
-  () => option.value.dictTable,
-  (val, oldVal) => {
-    if (val != oldVal) {
-      option.value.dictCode = ''
-      option.value.dictText = ''
-      option.value.dictTableColumn = []
-    }
-    if (val) option.value.dictCode = 'id'
   }
 )
 </script>
