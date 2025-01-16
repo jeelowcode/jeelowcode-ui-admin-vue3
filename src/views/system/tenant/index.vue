@@ -105,11 +105,12 @@ const tableOption = reactive({
       search: true
     },
     username: {
-      label: '用户名称',
-      rules: [{ required: true, message: '用户名称不能为空', trigger: 'blur' }],
+      label: '用户账号',
+      rules: [{ required: true, message: '用户账号不能为空', trigger: 'blur' }],
       hide: true,
       showColumn: false,
-      editDisplay: false
+      editDisplay: false,
+      value: 'admin'
     },
     password: {
       label: '用户密码',
