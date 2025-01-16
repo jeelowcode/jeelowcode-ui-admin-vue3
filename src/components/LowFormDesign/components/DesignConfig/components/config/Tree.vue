@@ -126,23 +126,40 @@
     <div v-else class="h-32px"></div>
   </el-form-item>
   <el-form-item v-if="option.type == 'tree'" label="操作配置">
-    <el-checkbox v-model="option.multiple"> 多选 </el-checkbox>
-    <el-checkbox v-model="option.filterable"> 可搜索 </el-checkbox>
-    <el-checkbox v-model="option.defaultExpandAll"> 展开所有节点 </el-checkbox>
-    <el-checkbox v-model="option.accordion"> 手风琴模式 </el-checkbox>
-    <el-checkbox v-model="option.virtualize"> 虚拟Dom模式 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.multiple" @change="setDefVal">
+      多选
+    </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.filterable"> 可搜索 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.defaultExpandAll"> 展开所有节点 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.accordion"> 手风琴模式 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.virtualize"> 虚拟Dom模式 </el-checkbox>
   </el-form-item>
   <el-form-item v-if="option.type == 'cascader'" label="操作配置">
-    <el-checkbox v-model="option.multiple"> 多选 </el-checkbox>
-    <el-checkbox v-model="option.filterable"> 可搜索 </el-checkbox>
-    <el-checkbox v-model="option.showAllLevels"> 显示完整路径 </el-checkbox>
-    <el-checkbox v-model="option.emitPath"> 存储完整路径 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.multiple" @change="setDefVal">
+      多选
+    </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.filterable"> 可搜索 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.showAllLevels"> 显示完整路径 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.emitPath"> 存储完整路径 </el-checkbox>
   </el-form-item>
   <el-form-item v-if="option.multiple" label="多选配置" label-width="110px">
-    <el-checkbox v-model="option.parent" v-if="option.type == 'tree'"> 可选父级 </el-checkbox>
-    <el-checkbox v-model="option.checkStrictly"> 父子不互相关联 </el-checkbox>
-    <el-checkbox v-model="option.collapseTags"> 折叠选中值 </el-checkbox>
-    <el-checkbox v-show="option.collapseTags" v-model="option.collapseTagsTooltip">
+    <el-checkbox
+      v-if="option.type == 'tree'"
+      :key="option.prop"
+      v-model="option.parent"
+      @change="setDefVal"
+    >
+      可选父级
+    </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.checkStrictly" @change="setDefVal">
+      父子不互相关联
+    </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.collapseTags"> 折叠选中值 </el-checkbox>
+    <el-checkbox
+      :key="option.prop"
+      v-show="option.collapseTags"
+      v-model="option.collapseTagsTooltip"
+    >
       鼠标悬停显示所有折叠选中标签
     </el-checkbox>
     <el-col :md="12" :xs="24" v-show="option.collapseTags">
@@ -187,12 +204,14 @@ const defaultDic = computed(() => {
   return dic
 })
 
-const initDefault = (isSetVal = true) => {
+const initDefault = () => {
   showDefault.value = false
   setTimeout(() => {
     showDefault.value = true
   }, 0)
-  if (isSetVal) option.value.value = option.value.multiple ? [] : ''
+}
+const setDefVal = () => {
+  option.value.value = option.value.multiple ? [] : ''
 }
 
 watch(
@@ -208,16 +227,14 @@ watch(
   }
 )
 watch(
-  [() => option.value.multiple, () => option.value.parent, () => option.value.checkStrictly],
+  [
+    () => option.value.multiple,
+    () => option.value.parent,
+    () => option.value.checkStrictly,
+    () => option.value.showAllLevels
+  ],
   () => {
     initDefault()
-  }
-)
-
-watch(
-  () => option.value.showAllLevels,
-  () => {
-    initDefault(false)
   }
 )
 

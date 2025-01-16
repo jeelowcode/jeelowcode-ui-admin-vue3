@@ -1,7 +1,7 @@
 <template>
   <TableDicOption v-model="option" type="dicTableSelect"></TableDicOption>
   <el-form-item label="操作配置">
-    <el-checkbox v-model="option.multiple"> 多选 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.multiple"> 多选 </el-checkbox>
   </el-form-item>
   <div class="flex items-center gap-x-20px">
     <el-form-item label="最大选择数" class="flex-1">

@@ -1,11 +1,19 @@
 <template>
   <div>
     <el-form-item :label="option.controlType == 'date' ? '日期类型' : '时间类型'">
-      <avue-select
+      <el-select
+        class="w-100%"
         v-model="option.type"
-        placeholder="请选择内容"
-        :dic="option.controlType == 'date' ? dateList : timeList"
-      ></avue-select>
+        :placeholder="`请选择${option.controlType == 'date' ? '日期类型' : '时间类型'}`"
+        @change="typeChange"
+      >
+        <template
+          v-for="item in option.controlType == 'date' ? dateList : timeList"
+          :key="item.value"
+        >
+          <el-option :label="item.label" :value="item.value"></el-option>
+        </template>
+      </el-select>
     </el-form-item>
     <el-form-item label="占位内容">
       <div class="flex" v-if="option.type.indexOf('range') != -1">
@@ -33,7 +41,7 @@
       v-if="option.type.indexOf('range') != -1 && option.type != 'timerange'"
     >
       <div class="mt-10px flex flex-wrap">
-        <el-checkbox v-model="option.unlinkPanels"> 取消范围联动 </el-checkbox>
+        <el-checkbox :key="option.prop" v-model="option.unlinkPanels"> 取消范围联动 </el-checkbox>
       </div>
     </el-form-item>
   </div>
@@ -76,6 +84,17 @@ const formatObj = {
   datetime: 'YYYY-MM-DD HH:mm:ss'
 }
 
+const typeChange = (value) => {
+  if (value) {
+    const isRange = value.indexOf('range')
+    let key = isRange ? value.replace('range', '') : value
+    if (key[key.length - 1] === 's') key = key.substring(0, key.length - 1)
+    option.value.format = formatObj[key]
+    option.value.valueFormat = formatObj[key]
+    option.value.value = isRange ? [] : ''
+  }
+}
+
 watch(
   () => props.modelValue,
   (val: object) => {
@@ -86,17 +105,6 @@ watch(
   () => option.value,
   (val: object) => {
     emit('update:modelValue', val)
-  }
-)
-watch(
-  () => option.value.type,
-  (val: string) => {
-    const isRange = val.indexOf('range')
-    let key = isRange ? val.replace('range', '') : val
-    if (key[key.length - 1] === 's') key = key.substring(0, key.length - 1)
-    option.value.format = formatObj[key]
-    option.value.valueFormat = formatObj[key]
-    option.value.value = isRange ? [] : ''
   }
 )
 </script>

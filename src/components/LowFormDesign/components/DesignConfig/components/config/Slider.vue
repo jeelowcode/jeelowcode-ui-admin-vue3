@@ -16,8 +16,8 @@
       <el-input-number v-model="option.step" placeholder="步长"></el-input-number>
     </el-form-item>
     <el-form-item label="操作配置">
-      <el-checkbox v-model="option.range"> 范围选择 </el-checkbox>
-      <el-checkbox v-model="option.showStops"> 间断点 </el-checkbox>
+      <el-checkbox :key="option.prop" v-model="option.range"> 范围选择 </el-checkbox>
+      <el-checkbox :key="option.prop" v-model="option.showStops"> 间断点 </el-checkbox>
     </el-form-item>
   </div>
 </template>

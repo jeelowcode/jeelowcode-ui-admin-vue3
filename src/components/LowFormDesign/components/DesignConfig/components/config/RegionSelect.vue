@@ -4,9 +4,11 @@
       <avue-select v-model="option.regionType" :dic="controlOption.dicObj.regionType"></avue-select>
     </el-form-item>
     <el-form-item label="操作配置">
-      <el-checkbox v-model="option.multiple"> 多选 </el-checkbox>
-      <el-checkbox v-model="option.collapseTags"> 多选值折叠 </el-checkbox>
-      <el-checkbox v-model="option.collapseTagsTooltip"> 鼠标悬停展示全部折叠值 </el-checkbox>
+      <el-checkbox :key="option.prop" v-model="option.multiple"> 多选 </el-checkbox>
+      <el-checkbox :key="option.prop" v-model="option.collapseTags"> 多选值折叠 </el-checkbox>
+      <el-checkbox :key="option.prop" v-model="option.collapseTagsTooltip">
+        鼠标悬停展示全部折叠值
+      </el-checkbox>
     </el-form-item>
     <el-form-item label="从第几个值开始折叠">
       <avue-input-number v-model="option.maxCollapseTags"></avue-input-number>

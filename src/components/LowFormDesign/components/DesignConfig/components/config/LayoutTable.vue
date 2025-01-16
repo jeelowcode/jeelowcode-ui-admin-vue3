@@ -16,10 +16,10 @@
       <avue-radio v-model="option.tableType" :dic="typeList"></avue-radio>
     </el-form-item>
     <el-form-item label="操作配置">
-      <el-checkbox v-model="option.params.index"> 显示序号 </el-checkbox>
+      <el-checkbox :key="option.prop" v-model="option.params.index"> 显示序号 </el-checkbox>
       <el-checkbox v-model="option.params.selection"> 可选择 </el-checkbox>
       <el-checkbox v-model="option.params.border"> 纵向边框 </el-checkbox>
-      <el-checkbox v-model="option.params.stripe"> 斑马纹样式 </el-checkbox>
+      <el-checkbox :key="option.prop" v-model="option.params.stripe"> 斑马纹样式 </el-checkbox>
     </el-form-item>
     <el-form-item label="操作列宽度">
       <el-input-number v-model="option.params.menuWidth" placeholder="操作列宽度"></el-input-number>

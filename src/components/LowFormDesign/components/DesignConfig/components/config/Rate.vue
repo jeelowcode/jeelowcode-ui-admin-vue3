@@ -4,13 +4,13 @@
       <el-input-number v-model="option.max" :min="1" placeholder="最大星星数"></el-input-number>
     </el-form-item>
     <el-form-item label="操作配置">
-      <el-checkbox v-model="option.showText" :disabled="option.showScore">
+      <el-checkbox :key="option.prop" v-model="option.showText" :disabled="option.showScore">
         显示辅助文字
       </el-checkbox>
-      <el-checkbox v-model="option.showScore" :disabled="option.showText">
+      <el-checkbox :key="option.prop" v-model="option.showScore" :disabled="option.showText">
         显示当前分数
       </el-checkbox>
-      <el-checkbox v-model="option.allowHalf"> 半选 </el-checkbox>
+      <el-checkbox :key="option.prop" v-model="option.allowHalf"> 半选 </el-checkbox>
     </el-form-item>
     <el-form-item label="辅助文字" v-if="option.showText">
       <div class="flex pl-10px">

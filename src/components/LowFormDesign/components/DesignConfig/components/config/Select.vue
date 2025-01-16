@@ -12,10 +12,13 @@
               v-model="option.isDesc"
               size="small"
               v-if="!['radio', 'checkbox'].includes(option.type)"
+              :key="option.prop"
             >
               是否显示描述</el-checkbox
             >
-            <el-checkbox v-model="option.isDisabled" size="small"> 是否显示禁用 </el-checkbox>
+            <el-checkbox :key="option.prop" v-model="option.isDisabled" size="small">
+              是否显示禁用
+            </el-checkbox>
           </div>
           <draggable
             tag="div"
@@ -132,17 +135,25 @@
     <div v-else class="h-32px"></div>
   </el-form-item>
   <el-form-item label="操作配置" v-if="!['radio', 'checkbox'].includes(option.type)">
-    <el-checkbox v-model="option.multiple"> 多选 </el-checkbox>
-    <el-checkbox v-model="option.filterable"> 可搜索 </el-checkbox>
-    <el-checkbox v-model="option.allowCreate"> 可输入 </el-checkbox>
-    <el-checkbox v-model="option.virtualize"> 虚拟Dom模式 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.multiple" @change="multipleChange">
+      多选
+    </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.filterable"> 可搜索 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.allowCreate" @change="allowChange">
+      可输入
+    </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.virtualize"> 虚拟Dom模式 </el-checkbox>
   </el-form-item>
   <el-form-item
     label="多选配置"
     v-if="!['radio', 'checkbox'].includes(option.type) && option.multiple"
   >
-    <el-checkbox v-model="option.collapseTags"> 折叠选中值 </el-checkbox>
-    <el-checkbox v-show="option.collapseTags" v-model="option.collapseTagsTooltip">
+    <el-checkbox :key="option.prop" v-model="option.collapseTags"> 折叠选中值 </el-checkbox>
+    <el-checkbox
+      :key="option.prop"
+      v-show="option.collapseTags"
+      v-model="option.collapseTagsTooltip"
+    >
       鼠标悬停显示所有折叠选中标签
     </el-checkbox>
     <el-row :gutter="10" v-show="option.collapseTags">
@@ -157,12 +168,12 @@
     </el-row>
   </el-form-item>
   <el-form-item label="样式配置" v-if="option.type == 'radio'">
-    <el-checkbox v-model="option.border"> 显示边框 </el-checkbox>
-    <el-checkbox v-model="option.button"> 按钮组样式 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.border"> 显示边框 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.button"> 按钮组样式 </el-checkbox>
   </el-form-item>
   <el-form-item label="操作配置" v-if="option.type == 'checkbox'">
-    <el-checkbox v-model="option.all"> 显示全选 </el-checkbox>
-    <el-checkbox v-model="option.border"> 显示边框 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.all"> 显示全选 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.border"> 显示边框 </el-checkbox>
   </el-form-item>
 </template>
 
@@ -195,6 +206,17 @@ const defaultDic = computed(() => {
   return dic
 })
 
+const allowChange = (val) => {
+  if (val) option.value.filterable = true
+}
+const multipleChange = (val) => {
+  showDefault.value = false
+  setTimeout(() => {
+    showDefault.value = true
+  }, 0)
+  option.value.value = val ? [] : ''
+}
+
 watch(
   () => props.modelValue,
   (val: object) => {
@@ -207,22 +229,7 @@ watch(
     emit('update:modelValue', val)
   }
 )
-watch(
-  () => option.value.allowCreate,
-  (val: boolean) => {
-    if (val) option.value.filterable = true
-  }
-)
-watch(
-  () => option.value.multiple,
-  (val: boolean) => {
-    showDefault.value = false
-    setTimeout(() => {
-      showDefault.value = true
-    }, 0)
-    option.value.value = val ? [] : ''
-  }
-)
+
 watch(
   () => option.value.delDicValue,
   (val) => {

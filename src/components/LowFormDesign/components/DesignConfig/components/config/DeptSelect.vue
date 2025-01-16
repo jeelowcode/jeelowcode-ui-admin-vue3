@@ -3,9 +3,9 @@
     <avue-select v-model="option.findType" :dic="controlOption.dicObj.deptFindType"></avue-select>
   </el-form-item>
   <el-form-item label="操作配置">
-    <el-checkbox v-model="option.multiple"> 多选 </el-checkbox>
-    <el-checkbox v-model="option.checkStrictly"> 父子不互相关联 </el-checkbox>
-    <el-checkbox v-model="option.accordion"> 每次只展开一个同级树节点 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.multiple"> 多选 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.checkStrictly"> 父子不互相关联 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.accordion"> 每次只展开一个同级树节点 </el-checkbox>
   </el-form-item>
   <div class="flex items-center gap-x-20px">
     <el-form-item label="分隔符" class="flex-1">

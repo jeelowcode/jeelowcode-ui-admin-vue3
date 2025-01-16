@@ -28,13 +28,20 @@
     <avue-input-number v-model="option.showNum" placeholder="默认 1"></avue-input-number>
   </el-form-item>
   <el-form-item label="操作配置">
-    <el-checkbox v-model="option.multiple"> 多选 </el-checkbox>
-    <el-checkbox v-model="option.showFileList" v-if="option.type == 'file'">
+    <el-checkbox :key="option.prop" v-model="option.multiple"> 多选 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.showFileList" v-if="option.type == 'file'">
       显示文件列表
     </el-checkbox>
-    <el-checkbox v-model="option.dragFile" v-if="isFile"> 拖拽上传 </el-checkbox>
-    <el-checkbox v-model="option.drag"> 拖拽排序 </el-checkbox>
-    <el-checkbox v-model="option.showCanvas" v-if="!isFile"> 图片水印 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.dragFile" v-if="isFile"> 拖拽上传 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.drag"> 拖拽排序 </el-checkbox>
+    <el-checkbox
+      :key="option.prop"
+      v-model="option.showCanvas"
+      v-if="!isFile"
+      @change="canvasChange"
+    >
+      图片水印
+    </el-checkbox>
   </el-form-item>
   <div v-if="option.canvasOption" class="el-form-item el-form-item--small el-form--label-top">
     <label class="el-form-item__label" style="padding: 0">水印设置：</label>
@@ -168,6 +175,11 @@ const isFile = computed(() => {
   return option.value.type == 'file'
 })
 
+const canvasChange = (val) => {
+  if (val) option.value.canvasOption = {}
+  else delete option.value.canvasOption
+}
+
 watch(
   () => props.modelValue,
   (val: object) => {
@@ -178,13 +190,6 @@ watch(
   () => option.value,
   (val: object) => {
     emit('update:modelValue', val)
-  }
-)
-watch(
-  () => option.value.showCanvas,
-  (val: boolean) => {
-    if (val) option.value.canvasOption = {}
-    else delete option.value.canvasOption
   }
 )
 

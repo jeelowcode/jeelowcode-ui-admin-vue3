@@ -3,12 +3,16 @@
     <el-row :gutter="10">
       <el-col :md="12" :xs="24">
         <el-form-item label="数组框类型">
-          <avue-select
+          <el-select
+            class="w-100%"
             v-model="option.type"
             placeholder="请选择 数组框类型"
-            type="tree"
-            :dic="arrayType"
-          ></avue-select>
+            @change="typeChange"
+          >
+            <template v-for="item in arrayType" :key="item.value">
+              <el-option :label="item.label" :value="item.value"></el-option>
+            </template>
+          </el-select>
         </el-form-item>
       </el-col>
       <el-col :md="12" :xs="24">
@@ -23,7 +27,7 @@
       </el-col>
     </el-row>
     <el-form-item label="操作配置">
-      <el-checkbox v-model="option.alone"> 单个模式 </el-checkbox>
+      <el-checkbox :key="option.prop" v-model="option.alone"> 单个模式 </el-checkbox>
     </el-form-item>
   </div>
 </template>
@@ -43,6 +47,12 @@ const arrayType = ref([
   { label: '超链接', value: 'url' }
 ])
 
+const typeChange = (value) => {
+  let length = option.value.value ? option.value.value.length : 0
+  if (value && length > 1)
+    option.value.value = option.value.value.filter((_item, index) => index < 1)
+}
+
 watch(
   () => props.modelValue,
   (val: object) => {
@@ -55,14 +65,7 @@ watch(
     emit('update:modelValue', val)
   }
 )
-watch(
-  () => option.value.alone,
-  (alone: string[]) => {
-    let length = option.value.value ? option.value.value.length : 0
-    if (alone && length > 1)
-      option.value.value = option.value.value.filter((_item, index) => index < 1)
-  }
-)
+
 </script>
 
 <style lang="scss" scoped></style>

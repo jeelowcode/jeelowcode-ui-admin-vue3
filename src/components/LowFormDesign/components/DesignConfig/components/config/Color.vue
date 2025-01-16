@@ -1,11 +1,16 @@
 <template>
   <div>
     <el-form-item label="颜色格式">
-      <avue-select
+      <el-select
+        class="w-100%"
         v-model="option.colorFormat"
         placeholder="请选择颜色格式"
-        :dic="option.showAlpha ? formatTsList : formatList"
-      ></avue-select>
+        @change="setDefVal"
+      >
+        <template v-for="item in option.showAlpha ? formatTsList : formatList" :key="item.value">
+          <el-option :label="item.label" :value="item.value"></el-option>
+        </template>
+      </el-select>
     </el-form-item>
     <el-form-item label="默认值">
       <avue-input-color
@@ -21,7 +26,7 @@
       <avue-array v-model="option.predefine" placeholder="请输入预定义颜色"></avue-array>
     </el-form-item>
     <el-form-item label="操作配置">
-      <el-checkbox v-model="option.showAlpha">透明度选择</el-checkbox>
+      <el-checkbox v-model="option.showAlpha" @change="setDefVal">透明度选择</el-checkbox>
     </el-form-item>
   </div>
 </template>
@@ -50,6 +55,10 @@ const formatTsList = ref([
 ])
 const showDefault = ref(true)
 
+const setDefVal = () => {
+  option.value.value = ''
+}
+
 watch(
   () => props.modelValue,
   (val: object) => {
@@ -67,18 +76,7 @@ watch([() => option.value.colorFormat, () => option.value.showAlpha], () => {
   setTimeout(() => {
     showDefault.value = true
   }, 0)
-  option.value.value = ''
 })
-// watch(
-//   () => option.value.showAlpha,
-//   () => {
-//     showDefault.value = false
-//     setTimeout(() => {
-//       showDefault.value = true
-//     }, 0)
-//     option.value.value = ''
-//   }
-// )
 </script>
 
 <style lang="scss" scoped></style>

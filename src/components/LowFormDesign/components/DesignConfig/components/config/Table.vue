@@ -18,7 +18,7 @@
     ></el-input>
   </el-form-item>
   <el-form-item label="操作配置">
-    <el-checkbox v-model="option.multiple"> 多选 </el-checkbox>
+    <el-checkbox :key="option.prop" v-model="option.multiple"> 多选 </el-checkbox>
   </el-form-item>
 </template>
 
