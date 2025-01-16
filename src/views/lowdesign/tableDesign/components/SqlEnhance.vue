@@ -111,7 +111,6 @@ const tableOption = reactive({
         { label: '编辑', value: 'edit' },
         { label: '详情', value: 'detail' },
         { label: '删除', value: 'delete' },
-        { label: '分页', value: 'page' },
         { label: '列表', value: 'list' },
         { label: '导入', value: 'import' },
         { label: '导出', value: 'export' }
