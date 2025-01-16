@@ -40,6 +40,7 @@
               :calcHeight="calcHeight"
               :dic-max-limit="column.limit"
               :dic-select-type="column.multiple ? 'multiple' : 'radio'"
+              :dic-row-key="dicCode"
             />
           </el-main>
           <el-aside width="200px">
@@ -178,6 +179,9 @@ const times = ref<any>(null)
 
 const tableRef = ref()
 
+const dicCode = computed(() => {
+  return props.column?.dictCode || 'id'
+})
 const selectId = computed(() => {
   if (!model.value) return []
   if (typeof model.value != 'string') {
@@ -221,8 +225,8 @@ const dicConfigStr = computed(() => {
 const getCurrTableSelect = () => {
   const dicObj = {}
   const ids = tableRef.value.tableSelect.map((item) => {
-    if (item[props.column.dictText]) dicObj[item.id] = item[props.column.dictText]
-    return item.id
+    if (item[props.column.dictText]) dicObj[item[dicCode.value]] = item[props.column.dictText]
+    return item[dicCode.value]
   })
   lowStore.setDicObj(dicKey.value, dicObj)
   return ids
@@ -230,7 +234,8 @@ const getCurrTableSelect = () => {
 
 const openTableSelect = () => {
   if (props.column['onClick']) props.column['onClick']({ value: model.value, column: props.column })
-  else if (props.column['click']) props.column['click']({ value: model.value, column: props.column })
+  else if (props.column['click'])
+    props.column['click']({ value: model.value, column: props.column })
   if (props.disabled || props.column.readonly) {
     if (selectId.value && selectId.value.length) detailDialog.value = true
     return
@@ -240,7 +245,7 @@ const openTableSelect = () => {
 
 const setTableSelect = (ids) => {
   const defaultSelect = ids.map((id) => {
-    return { id, initSelect: true }
+    return { [dicCode.value]: id, initSelect: true }
   })
   tableRef.value.tableSelect = defaultSelect
   tableRef.value.initSelectChange()
@@ -252,7 +257,7 @@ const tagValueClose = (id) => {
   model.value = list.join(',')
 }
 const tagTableClose = (id) => {
-  const currRow = tableRef.value.tableSelect.filter((item) => item.id == id)
+  const currRow = tableRef.value.tableSelect.filter((item) => item[dicCode.value] == id)
   tableRef.value.crudRef.toggleSelection(currRow, false)
 }
 

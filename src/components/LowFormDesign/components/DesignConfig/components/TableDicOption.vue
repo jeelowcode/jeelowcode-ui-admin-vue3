@@ -93,9 +93,14 @@ const tableDic = computed(() => {
 })
 const codeDic = computed(() => {
   if (option.value.dictTable) {
-    return tableDbOptions['value'][option.value.dictTable].field.filter(
-      (item) => item.value == 'id'
-    )
+    return [
+      {
+        label: '请确保绑定的字段在表内值是唯一的,否会导致数据异常（一般绑定id）',
+        value: 'jeelowcode-tiop',
+        disabled: true
+      },
+      ...(tableDbOptions['value'][option.value.dictTable].field || [])
+    ]
   } else return nullDic
 })
 const textDic = computed(() => {

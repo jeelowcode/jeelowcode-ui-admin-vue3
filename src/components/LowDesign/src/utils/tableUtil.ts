@@ -738,13 +738,16 @@ export const tableFormatting = (data, column, otherData: any = {}) => {
     }
     return item
   })
+
   //查询回显文本
   const dicApiData: any = { jeeLowCode_dictLabel: [] }
   if (dicTableData.keyList.length) {
     const dicTableApiData: Array<string> = []
     dicTableData.keyList.forEach(key => {
       dicTableData[key].dataList = [...new Set(dicTableData[key].dataList)].filter((id: string) => {
-        if (/^(\d+)$/.test(id + '') && !lowStore.dicObj[key]?.[id]) return true
+        if ((dicTableData[key].code == 'id' && /^(\d+)$/.test(id + '')) || dicTableData[key].code != 'id') {
+          if (!lowStore.dicObj[key]?.[id]) return true
+        }
         return false
       })
       dicTableData[key].dataList = [...new Set(dicTableData[key].dataList)].filter((id: string) => !lowStore.dicObj[key] ? true : !lowStore.dicObj[key][id])
@@ -762,22 +765,25 @@ export const tableFormatting = (data, column, otherData: any = {}) => {
   if (dicApiData.jeeLowCode_dictLabel.length) {
     dicApiData.jeeLowCode_dictLabel = encryptAES(JSON.stringify(dicApiData.jeeLowCode_dictLabel))
     const dictData = {
-      userList: { dicKey: 'userSelect', label: 'nickname' },
-      deptList: { dicKey: 'deptSelect', label: 'name' }
+      userList: { dicKey: 'userSelect', label: 'nickname', value: 'id' },
+      deptList: { dicKey: 'deptSelect', label: 'name', value: 'id' }
     }
     DicApi.getDicTableText(dicApiData).then(dicData => {
       for (const key in dicData) {
         const dicObj = {}
-        let label = 'label'
+        let labelKey = 'label'
+        let valueKey = 'id'
         let dicKey = ''
         if (key.indexOf('&') != -1) {
           dicKey = key
-          label = key.split('&')[1]
+          labelKey = dicTableData[key].label || key.split('&')[1]
+          valueKey = dicTableData[key].code || 'id'
         } else if (dictData[key]) {
           dicKey = dictData[key].dicKey
-          label = dictData[key].label
+          labelKey = dictData[key].label
+          valueKey = dictData[key].value
         }
-        dicData[key].forEach(item => dicObj[item.id] = item[label])
+        dicData[key].forEach(item => dicObj[item[valueKey]] = item[labelKey])
         lowStore.setDicObj(dicKey, dicObj)
       }
     })

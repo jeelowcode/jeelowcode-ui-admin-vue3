@@ -612,8 +612,8 @@ onMounted(() => {
           tableDicObj[tableId][fieldCode] = `${fieldCode}（${fieldName}）`
           keyFieldDicObj[tableName][fieldCode] = `${fieldCode}（${fieldName}）`
           const currItem = { label: tableDicObj[tableId][fieldCode], value: fieldCode }
+          codeDicData[tableId].push(currItem)
           if (fieldCode == 'id') {
-            codeDicData[tableId].push(currItem)
             keyFieldDicData[tableName].push(currItem)
           }
           return currItem
@@ -625,6 +625,16 @@ onMounted(() => {
           keyTableDicObj[tableName] = `${tableName}（${tableDescribe}）`
         }
         if (tableType == 2) keyTreeTableDicData.push(returnData)
+        if (codeDicData[tableId].length) {
+          codeDicData[tableId] = [
+            {
+              label: '请确保绑定的字段在表内值是唯一的,否会导致数据异常（一般绑定id）',
+              value: 'jeelowcode-tiop',
+              disabled: true
+            },
+            ...codeDicData[tableId]
+          ]
+        }
         return returnData
       }
     )

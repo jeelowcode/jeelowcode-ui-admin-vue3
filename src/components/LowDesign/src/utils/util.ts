@@ -84,7 +84,8 @@ export const setDeepObject = (obj, valObj) => {
 export const isValidJson = (jsonStr) => {
   if (typeof jsonStr != 'string') return false
   try {
-    JSON.parse(jsonStr)
+    const value = JSON.parse(jsonStr)
+    if (typeof value == 'number' || typeof value == 'string' || !value) return false
     return true
   } catch (error) {
     return false
@@ -94,7 +95,6 @@ export const isValidJson = (jsonStr) => {
 //字符串转数组
 export const stringToArr = (value, isLast?: boolean) => {
   let arr: string[] = []
-  console.log(isValidJson(value))
   if (value === '[]') return arr
   if (value instanceof Array) arr = isLast ? [value[value.length - 1]] : [...value]
   else if (isValidJson(value)) {

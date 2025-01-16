@@ -131,7 +131,7 @@
             <el-radio
               class="low-select-radio"
               v-model="radioValue"
-              :label="row.id"
+              :label="row[tableOption.rowKey || 'id']"
               :disabled="!tableOption.selectable(row, index)"
               @click="radioClick(row, index)"
             />
@@ -358,6 +358,7 @@ interface Props {
   dicConfigStr?: string //dicTable模式 特定值
   dicSelectType?: 'multiple' | 'radio' //dicTable模式 选择类型
   dicMaxLimit?: number //dicTable模式 最大选择个数
+  dicRowKey?: string //dicTable模式 行数据的 Key
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -539,6 +540,7 @@ const initTable = async () => {
     isPermi: props.isPermi,
     useFun
   })
+  if (isDicTable.value && props.dicRowKey) optionData.tableOption.rowKey = props.dicRowKey
   if (
     ['treeTable', 'treeAround'].includes(optionData.tableInfo.tableType) &&
     optionData.tableOption.column.pid
@@ -917,7 +919,7 @@ const menuHandle = ({ type, row, index }) => {
 const radioClick = (row, index) => {
   const bool = tableOption.value.selectable(row, index)
   if (!bool) return
-  if (row.id == radioValue.value) {
+  if (row[tableOption.value.rowKey || 'id'] == radioValue.value) {
     setTimeout(() => {
       radioValue.value = ''
       tableSelect.value = []
@@ -957,9 +959,10 @@ const selectAll = () => {
 const initSelectChange = () => {
   const dataObj = {}
   const rows: Array<{ id: string }> = []
-  tableData.value.forEach((item: any) => (dataObj[item.id] = item))
+  const rowKey = tableOption.value.rowKey || 'id'
+  tableData.value.forEach((item: any) => (dataObj[item[rowKey]] = item))
   tableSelect.value.forEach((item) => {
-    if (item.initSelect && dataObj[item.id]) rows.push(dataObj[item.id])
+    if (item.initSelect && dataObj[item[rowKey]]) rows.push(dataObj[item[rowKey]])
     else rows.push(item)
   })
   if (!tableOption.value.column['lowSelectRadio']) {
@@ -967,7 +970,7 @@ const initSelectChange = () => {
     crudRef.value.toggleSelection(rows, true)
   } else {
     tableSelect.value = rows
-    radioValue.value = rows[0]?.id || ''
+    radioValue.value = rows[0]?.[rowKey] || ''
   }
 }
 const clearSelection = () => {

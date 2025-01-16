@@ -507,13 +507,14 @@ export const formDataFormatting = (formOption, formData) => {
   const dicApiData: any[] = []
   for (const key in echoObj) {
     echoObj[key] = echoObj[key].filter((str) => {
+      if (key.indexOf('&') !== -1 && key.split('&')[1] != 'id') return true
       return /^(\d+)$/.test(str + '');
     })
     if (['userSelect', 'deptSelect'].includes(key)) {
       if (echoObj[key].length) {
         dicApiData.push({ [key == 'userSelect' ? 'userIdList' : 'deptIdList']: [...new Set(echoObj[key])] })
       }
-    } else {
+    } else if (echoObj[key]?.length) {
       const [dbformId, code, label] = key.split('&')
       dicApiData.push({ dbformId, code, label, dataList: [...new Set(echoObj[key])] })
     }
