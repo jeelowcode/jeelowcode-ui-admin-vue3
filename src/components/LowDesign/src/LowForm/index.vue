@@ -295,29 +295,38 @@ const verifyForm = () => {
 const handleSubmit = (isVerify?: Boolean, done?: Function) => {
   return new Promise(async (resolve) => {
     let verify = true
-    submitLoading.value = true
-    const loading = () => {
+    let form: any = {}
+    const tableId = props.tableId || formOption.value.tableDesignId
+    const isDefault = !props.isPreview && formOption.value.isSubmitTable && tableId
+    const loading = async (bool = true) => {
+      if (bool) {
+        if (!props.isPreview && (isDefault || props.beforeClose)) {
+          try {
+            if (jsEnhanceObj.value.afterSubmit) await jsEnhanceObj.value.afterSubmit(form)
+          } catch (error) {
+            enhanceErrorTip('js增强【afterSubmit】方法执行异常，请检查', error)
+          }
+        }
+      }
+      if (isDefault && !props.beforeClose) message.success('提交成功')
       if (done) done()
       submitLoading.value = false
       viewLoading.value = false
     }
+    submitLoading.value = true
     if (isVerify) verify = (await verifyForm()) as boolean
-    if (!verify) return loading()
+    if (!verify) return loading(false)
     viewLoading.value = true
-    let form = cloneDeep(formData.value) as any
+    form = cloneDeep(formData.value) as any
     try {
-      const tableId = props.tableId || formOption.value.tableDesignId
       if (jsEnhanceObj.value.beforeSubmit) form = await jsEnhanceObj.value.beforeSubmit(form)
-      if (!props.isPreview && formOption.value.isSubmitTable && tableId) {
-        form.id = await handleDefault(props.formType, tableId, form)
-        if (!props.beforeClose) message.success('提交成功')
-      }
+      if (isDefault) form.id = await handleDefault(props.formType, tableId, form)
       if (props.beforeClose) props.beforeClose('submit', form, loading)
       else loading()
       return resolve(form)
     } catch (error) {
       if (error !== undefined) enhanceErrorTip('js增强【beforeSubmit】方法执行异常，请检查', error)
-      loading()
+      loading(false)
       resolve(false)
     }
   })

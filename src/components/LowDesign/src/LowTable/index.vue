@@ -1368,6 +1368,20 @@ const executeBeforeRequest = (type, apiData) => {
     }
   })
 }
+const executeAfterRequest = (type, formData) => {
+  let data = cloneDeep(formData)
+  return new Promise(async (resolve) => {
+    try {
+      if (jsEnhanceObj.value.afterRequest) {
+        await jsEnhanceObj.value.afterRequest(type, data).catch(() => false)
+      }
+      resolve(true)
+    } catch (error) {
+      resolve(true)
+      enhanceErrorTip('js增强【afterRequest】方法执行异常，请检查', error)
+    }
+  })
+}
 const rowSave = async (form, done, loading) => {
   const formData = saveFormatting(form)
   const { mainProp } = tableInfo.value
@@ -1381,6 +1395,7 @@ const rowSave = async (form, done, loading) => {
     () => false
   )
   if (bool) {
+    await executeAfterRequest('add', { ...apiData, id: bool })
     if (isLazyTree.value && !isSearchData.value) {
       await partUpdateLazyData(formData, 'add')
     } else await resetChange()
@@ -1395,6 +1410,7 @@ const rowUpdate = async (form, index, done, loading) => {
   if (!apiData) return loading()
   const bool = await TableApi.updateTableData(props.tableId, apiData).catch(() => false)
   if (bool) {
+    await executeAfterRequest('edit', apiData)
     if (isLazyTree.value) {
       if (isSearchData.value) await resetChange()
       else await partUpdateLazyData(formData, 'edit')
@@ -1414,11 +1430,13 @@ const rowDel = async (data) => {
   try {
     await message.delConfirm()
     loading.value = true
-    const ids = data instanceof Array ? data : [data.id]
+    const isArr = data instanceof Array
+    const ids = isArr ? data : [data.id]
     const apiData = await executeBeforeRequest('del', ids)
     if (!apiData) return (loading.value = false)
     const bool = await TableApi.deleteTableData(props.tableId, apiData).catch(() => false)
     if (bool) {
+      await executeAfterRequest('del', isArr ? tableSelect.value : [data])
       if (isLazyTree.value) {
         if (isSearchData.value) await resetChange()
         else {

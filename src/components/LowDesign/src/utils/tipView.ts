@@ -7,6 +7,7 @@ const TableJsEnhance = {
     { label: '搜索前执行', value: 'beforeSearch' },
     { label: '表单打开前执行', value: 'beforeFormData' },
     { label: '新增、修改、删除请求接口前执行', value: 'beforeRequest' },
+    { label: '新增、修改、删除请求接口后执行', value: 'afterRequest' },
     { label: '控制行是否可勾选', value: 'selectable' },
     { label: '表格底部统计格式化', value: 'summaryBottomFormatting' },
     { label: '表格头部统计格式化', value: 'summaryTopFormatting' },
@@ -27,6 +28,7 @@ const FormJsEnhance = {
     { label: '表单显示前执行', value: 'initOption' },
     { label: '表单赋值前执行', value: 'initData' },
     { label: '表单提交前执行', value: 'beforeSubmit' },
+    { label: '提交数据后触发', value: 'afterSubmit' },
     { label: '表单校验失败后执行', value: 'verifyError' },
     { label: '清空数据后执行', value: 'afterReset' },
   ]

@@ -14,6 +14,7 @@ export interface JsEnhanceObj {
   initOption?: () => void
   initData?: (formData: object) => Promise<any>
   beforeSubmit?: (submitData: object) => Promise<any>
+  afterSubmit?: (submitData: object) => Promise<any>
   verifyError?: (msg) => Promise<any>
   afterReset?: () => void
 }

@@ -109,6 +109,23 @@ const tableJsEnhance = {
 },`
     },
     {
+      label: 'afterRequest', detail: '新增、修改、删除请求接口后执行', kind: functionKind,
+      insertText: `afterRequest(type, data) { //新增、修改、删除请求接口后执行
+  return new Promise((resolve) => {
+    if (type == 'add') {
+      //新增 data 包含提交的表单数据以及提交的数据返回id
+    }
+    if (type == 'edit') {
+      //修改 data 修改的表单数据
+    }
+    if (type == 'del') {
+      //删除 data 数组格式 删除的行数据（批量删除也会触发）
+    }
+    resolve(true)
+  })
+},`
+    },
+    {
       label: 'selectable', detail: '控制行是否可勾选', kind: functionKind,
       insertText: `selectable(row, index) { //控制行是否可勾选
       return true
@@ -257,6 +274,16 @@ const formJsEnhance = {
   })
 },`,
     },
+    {
+      label: 'afterSubmit', detail: '提交数据后触发', kind: functionKind,
+      insertText: `afterSubmit(data) { //提交数据后触发
+  return new Promise((resolve) => {
+    resolve(true)
+  })
+},`,
+    },
+
+
     {
       label: 'verifyError', detail: '校验失败回调', kind: functionKind,
       insertText: `verifyError(msg) {
