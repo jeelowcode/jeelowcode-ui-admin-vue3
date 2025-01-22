@@ -424,7 +424,7 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
       })
     }
     if (['edit', 'view'].includes(formType)) {
-      if (['title', 'layoutTable'].includes(columnItem.type)) delete columnItem.value //默认值只能对新增生效
+      if (!['title', 'layoutTable'].includes(columnItem.type)) delete columnItem.value //默认值只能对新增生效
       if (formType == 'view' && isCell) columnItem.cell = false
     }
 
