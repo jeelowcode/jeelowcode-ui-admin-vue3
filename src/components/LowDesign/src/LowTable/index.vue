@@ -283,7 +283,7 @@
         :show="importDialog"
         :isFull="isFull"
         @close-popup="importDialog = false"
-        @reset-change="() => crudRef.searchReset()"
+        @reset-change="resetData"
       ></ImportData>
     </template>
   </DesignPopup>
@@ -1217,6 +1217,14 @@ const treeAroundLoad = async (node, resolve) => {
   resolve(data)
 }
 
+const resetData = () => {
+  try {
+    crudRef.value?.searchReset()
+  } catch (error) {
+    resetChange()
+  }
+}
+
 const searchChange = (params, done) => {
   if (tablePage.value) tablePage.value['currentPage'] = 1
   if (tableInfo.value.tableType == 'treeAround') {
@@ -1241,7 +1249,7 @@ const resetChange = () => {
 }
 const sizeChange = (pageSize) => {
   if (tablePage.value) tablePage.value['pageSize'] = pageSize
-  crudRef.value?.searchReset()
+  resetData()
 }
 const currentChange = (currentPage) => {
   if (tablePage.value) tablePage.value['currentPage'] = currentPage
@@ -1419,7 +1427,7 @@ const rowSave = async (form, done, loading) => {
     await executeAfterRequest('add', { ...apiData, id: bool })
     if (isLazyTree.value && !isSearchData.value) {
       await partUpdateLazyData(formData, 'add')
-    } else crudRef.value?.searchReset()
+    } else resetData()
     message.success(t('common.createSuccess'))
     done()
   } else loading()
@@ -1433,7 +1441,7 @@ const rowUpdate = async (form, index, done, loading) => {
   if (bool) {
     await executeAfterRequest('edit', apiData)
     if (isLazyTree.value) {
-      if (isSearchData.value) crudRef.value?.searchReset()
+      if (isSearchData.value) resetData()
       else await partUpdateLazyData(formData, 'edit')
     } else await getTableData(true, { isGetSummary: true })
     message.success(t('common.updateSuccess'))
@@ -1459,7 +1467,7 @@ const rowDel = async (data) => {
     if (bool) {
       await executeAfterRequest('del', isArr ? tableSelect.value : [data])
       if (isLazyTree.value) {
-        if (isSearchData.value) crudRef.value?.searchReset()
+        if (isSearchData.value) resetData()
         else {
           if (data instanceof Array) {
             const selectObj = {}
@@ -1591,7 +1599,7 @@ const initEnhanceUseFun = () => {
       tableForm.value = tableFormatting(tableForm.value, tableOption.value.column)
     },
     refreshChange, //刷新当前页表格数据
-    resetChange: () => crudRef.value?.searchReset(), //清空搜索重新获取数据
+    resetChange: resetData, //清空搜索重新获取数据
     getSearchData: () => getSearchData('search'), //获取搜索参数
     clearSelection, //清空表格选择
     getVue: () => Vue,
@@ -1785,7 +1793,7 @@ defineExpose({
   useFun,
   initTableLayout,
   clearSelection,
-  resetChange: () => crudRef.value?.searchReset(),
+  resetChange: resetData,
   initSelectChange
 })
 </script>
