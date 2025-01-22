@@ -194,7 +194,6 @@ const getTableData = async () => {
     pageNo: tablePage.value.currentPage,
     pageSize: tablePage.value.pageSize
   }
-  console.log(searchObj.createTime)
   if (searchObj.createTime?.length) {
     searchObj.createTime = getSearchDate(searchObj.createTime)
   } else delete searchObj.createTime

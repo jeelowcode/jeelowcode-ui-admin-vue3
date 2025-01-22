@@ -172,7 +172,6 @@ const tableOption = reactive({
             return { label: item, value: item }
           })
         }
-        console.log(dicData)
         return {
           autoApproveScopes: { dicData }
         }

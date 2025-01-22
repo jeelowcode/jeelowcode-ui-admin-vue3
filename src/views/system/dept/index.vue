@@ -122,7 +122,6 @@ const tableOption = reactive({
       dicFormatter: (data) => {
         const dicObj = {}
         data.forEach((item) => (dicObj[item.id] = item.nickname))
-        console.log(dicObj)
         lowStore.setDicObj('userSelect', dicObj)
         return data
       },
