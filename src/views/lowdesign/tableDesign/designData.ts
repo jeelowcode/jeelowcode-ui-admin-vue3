@@ -146,10 +146,20 @@ export const dicObj = {
     { label: '系统字典', value: 'dict' },
     { label: '表格数据', value: 'table' },
   ],
+  dictTextFormatter: [
+    { label: '字典Code-字典Text', value: '{dicCode}-{dicText}' },
+    { label: '字典Text-字典Code', value: '{dicText}-{dicCode}' },
+    { label: '字典Text(字典Code)', value: '{dicText}({dicCode})' },
+    { label: '字典Text[字典Code]', value: '{dicText}[{dicCode}]' },
+    { label: '其他格式请自行输入', value: 'custom-tip-1', disabled: true },
+    { label: '例如：code：{dicCode}，text：{dicText}', value: 'custom-tip-2', disabled: true },
+    { label: '效果：code：1001，text：小明', value: 'custom-tip-3', disabled: true },
+
+  ],
   queryMode: [
     { label: '精确查询', value: 'EQ' },
     { label: '模糊查询', value: 'LIKE' },
-    { label: '范围查询（仅适用于控件类型为：日期、时间）', value: 'RANGE' },
+    { label: '范围查询（仅适用于控件类型为：日期、时间、数字）', value: 'RANGE' },
   ],
   indexType: [
     { label: 'normal', value: 'normal' },
@@ -332,7 +342,7 @@ const infoColumn = {
     isRequired: { title: '是否必填', width: 54, align: "center", editRender: { name: 'LowCheckbox', verifyEdit: true, } },
     cellWidthType: { title: '列宽类型', width: 100, align: "center", editRender: { name: 'LowSelect', dicData: dicObj.cellWidthType, dicObj: getDicObj('cellWidthType') } },
     cellWidth: { title: '列宽', width: 80, align: "center", editRender: { name: 'LowInput', placeholder: '120' } },
-    controlType: { title: '控件类型', width: 140, editRender: { name: 'LowSelect', verifyEdit: true, dicData: dicObj.controlType, dicObj: getDicObj('controlType'), events: {} } },
+    controlType: { title: '控件类型', width: 140, editRender: { name: 'LowSelect', verifyEdit: true, filterable: true, dicData: dicObj.controlType, dicObj: getDicObj('controlType'), events: {} } },
     controlsConfig: { title: '控件配置', minWidth: 100, editRender: { name: 'LowClickInput', events: {} } },
     verifyConfig: { title: '校验配置', minWidth: 100, editRender: { name: 'LowClickInput', events: {} } },
     isShowSort: { title: '是否排序', width: 54, align: "center", editRender: { name: 'LowCheckbox' } },
@@ -355,6 +365,7 @@ const infoColumn = {
     dictCode: { title: '字典Code', width: 180, editRender: { name: 'LowSelect', verifyEdit: true, filterable: true, typeKey: 'dictType', dicData: [] } },
     dictTable: { title: '字典Table', width: 230, editRender: { name: 'LowSelect', verifyEdit: true, filterable: true, typeKey: 'dictType', dicData: [] } },
     dictText: { title: '字典Text', width: 180, editRender: { name: 'LowSelect', verifyEdit: true, filterable: true, typeKey: 'dictType', dicData: [] } },
+    dictTextFormatter: { title: '字典Text格式化', width: 180, editRender: { name: 'LowSelect', verifyEdit: true, filterable: true, allowCreate: true, dicData: dicObj.dictTextFormatter, dicObj: getDicObj('dictTextFormatter') } },
     dictTableColumn: { title: '字典显示列', editRender: { name: 'LowSelect', verifyEdit: true, multiple: true, filterable: true, typeKey: 'dictType', dicData: [] } },
   },
   expColumn: {
@@ -416,7 +427,7 @@ const infoDefaultData = {
     fieldCode: '', fieldName: '', fieldLen: 128, fieldPointLen: 0, fieldDefaultVal: '', fieldType: 'String', fieldRemark: '', isPrimaryKey: 'N', isNull: 'Y', isDb: 'Y',
     isShowList: 'Y', isDbSelect: 'Y', isShowForm: 'Y', isRequired: 'N', cellWidthType: 'min', controlType: 'input', isShowSort: 'N', isShowColumn: 'Y',
     queryIsDb: 'N', queryIsWeb: 'N', queryMode: 'EQ', queryConfig: '',
-    dictType: '', dictCode: '', dictTable: '', dictText: '', dictTableColumn: [],
+    dictType: '', dictCode: '', dictTable: '', dictText: '', dictTextFormatter: '', dictTableColumn: [],
     isExport: 'Y', importExampleTxt: '',
     mainTable: '', mainField: '',
     summaryShow: 'N', summaryLabel: '', summarySql: '', summaryJson: { sqlType: '', sqlValue: '' },

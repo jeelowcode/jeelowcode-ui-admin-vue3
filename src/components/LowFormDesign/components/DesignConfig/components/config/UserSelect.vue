@@ -9,13 +9,22 @@
       :dic="controlOption.dicObj.userColumn"
     ></avue-select>
   </el-form-item>
+  <el-form-item label="回显名称格式化">
+    <avue-select
+      v-model="option.textFormatter"
+      :dic="dictTextFormatter"
+      filterable
+      allowCreate
+      placeholder="请选择回显名称格式化"
+    ></avue-select>
+  </el-form-item>
   <el-form-item label="操作配置">
     <el-checkbox :key="option.prop" v-model="option.multiple"> 多选 </el-checkbox>
     <el-checkbox :key="option.prop" v-model="option.avatar"> 头像 </el-checkbox>
   </el-form-item>
   <div class="flex items-center gap-x-20px">
     <el-form-item label="最大选择数" class="flex-1">
-      <avue-input-number v-model="option.limit"> </avue-input-number>
+      <avue-input-number :min="1" v-model="option.limit"> </avue-input-number>
     </el-form-item>
     <el-form-item label="分隔符" class="flex-1">
       <avue-input v-model="option.separator"> </avue-input>
@@ -26,6 +35,7 @@
 <script setup lang="ts">
 import { lowFormDesignKey, lowFormDesignType } from '@/utils/symbols'
 import controlOption from '@/components/LowDesign/src/utils/controlOption'
+import { dictTextFormatter } from '@/components/LowFormDesign/utils/util'
 
 defineOptions({ name: 'DicTableSelect' })
 

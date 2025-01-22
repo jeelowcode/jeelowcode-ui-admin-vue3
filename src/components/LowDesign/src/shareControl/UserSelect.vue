@@ -10,7 +10,7 @@
           :size="size"
           @close="tagValueClose(id)"
         >
-          {{ lowStore.dicObj[dicKey]?.[id] || id }}
+          {{ getCurrText(id) }}
         </el-tag>
       </div>
       <div class="empty-text" v-else>{{ placeholderText }}</div>
@@ -142,9 +142,10 @@
                   :closable="true"
                   type="info"
                   :size="size"
+                  class="h-auto! py-4px! ws-break-spaces! break-anywhere! line-height-none"
                   @close="tagTableClose(id)"
                 >
-                  {{ lowStore.dicObj[dicKey]?.[id] || id }}
+                  {{ getCurrText(id) }}
                 </el-tag>
               </div>
             </div>
@@ -170,8 +171,14 @@
               alignContent: 'start'
             }"
           >
-            <el-tag v-for="id in selectId" :key="id" type="info" :size="size">
-              {{ lowStore.dicObj[dicKey]?.[id] || id }}
+            <el-tag
+              v-for="id in selectId"
+              :key="id"
+              type="info"
+              :size="size"
+              class="h-auto! py-4px! ws-break-spaces! break-anywhere! line-height-none"
+            >
+              {{ getCurrText(id) }}
             </el-tag>
           </div>
         </div>
@@ -199,7 +206,7 @@ interface Column {
   defaultSearchRole?: string //默认角色id
   hideTabsKey?: string[] //需要隐藏的tab：dept role
   requiredKey?: string[] //必填：dept role
-
+  textFormatter?: string //回显名称格式化
   avatar?: boolean //是否显示头像
   multiple?: boolean //多选
   limit?: number //最大选择数
@@ -389,6 +396,15 @@ const placeholderText = computed(() => {
   }
   return text
 })
+
+const getCurrText = (id) => {
+  const text = lowStore.dicObj[dicKey]?.[id] || ''
+  const formatter = props.column.textFormatter
+  if (formatter) {
+    return formatter.replace(/{dicCode}/g, id).replace(/{dicText}/g, text)
+  }
+  return text || id
+}
 
 const getTableData = () => {
   return new Promise(async (resolve) => {

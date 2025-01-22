@@ -25,6 +25,7 @@ const defaultJsTriggerUseFun = [
 })
 `, detail: '动态导入本地模块', kind: functionKind
   },
+  { label: 'initDicText', insertText: `initDicText()`, detail: '格式化当前表单数据并查询回显文本', kind: functionKind },
 ]
 const defaultMessage = [
   { label: 'info', insertText: `info('内容')`, detail: '消息提示', kind: functionKind },

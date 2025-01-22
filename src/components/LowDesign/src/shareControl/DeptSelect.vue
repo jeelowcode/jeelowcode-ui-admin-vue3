@@ -10,7 +10,7 @@
           :size="size"
           @close="tagValueClose(id)"
         >
-          {{ lowStore.dicObj[dicKey]?.[id] || id }}
+          {{ getCurrText(id) }}
         </el-tag>
       </div>
       <div class="empty-text" v-else>{{ placeholderText }}</div>
@@ -86,9 +86,10 @@
                   :closable="true"
                   type="info"
                   :size="size"
+                  class="h-auto! py-4px! ws-break-spaces! break-anywhere! line-height-none"
                   @close="tagTableClose(id)"
                 >
-                  {{ lowStore.dicObj[dicKey]?.[id] || id }}
+                  {{ getCurrText(id) }}
                 </el-tag>
               </div>
             </div>
@@ -114,7 +115,13 @@
               alignContent: 'start'
             }"
           >
-            <el-tag v-for="id in selectId" :key="id" type="info" :size="size">
+            <el-tag
+              v-for="id in selectId"
+              :key="id"
+              type="info"
+              :size="size"
+              class="h-auto! py-4px! ws-break-spaces! break-anywhere! line-height-none"
+            >
               {{ lowStore.dicObj[dicKey]?.[id] || id }}
             </el-tag>
           </div>
@@ -141,6 +148,7 @@ interface Column {
   separator?: string //分隔符
   readonly?: boolean
   placeholder?: string
+  textFormatter?: string //回显名称格式化
 }
 interface Props {
   column: Column
@@ -220,6 +228,15 @@ const placeholderText = computed(() => {
   }
   return text
 })
+
+const getCurrText = (id) => {
+  const text = lowStore.dicObj[dicKey]?.[id] || ''
+  const formatter = props.column.textFormatter
+  if (formatter) {
+    return formatter.replace(/{dicCode}/g, id).replace(/{dicText}/g, text)
+  }
+  return text || id
+}
 
 const deepClear = () => {
   if (props.column.multiple) deptRef.value.setCheckedKeys([])

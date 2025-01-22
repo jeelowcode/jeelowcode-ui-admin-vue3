@@ -19,3 +19,13 @@ export const calcCount = (column) => {
   })
   return propCount
 }
+
+export const dictTextFormatter = [
+  { label: '字典Code-字典Text', value: '{dicCode}-{dicText}' },
+  { label: '字典Text-字典Code', value: '{dicText}-{dicCode}' },
+  { label: '字典Text(字典Code)', value: '{dicText}({dicCode})' },
+  { label: '字典Text[字典Code]', value: '{dicText}[{dicCode}]' },
+  { label: '其他格式请自行输入', value: 'custom-tip-1', disabled: true },
+  { label: '例如：code：{dicCode}，text：{dicText}', value: 'custom-tip-2', disabled: true },
+  { label: '效果：code：1001，text：小明', value: 'custom-tip-3', disabled: true }
+]

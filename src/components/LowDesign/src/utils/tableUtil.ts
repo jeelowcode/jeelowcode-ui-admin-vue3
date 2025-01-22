@@ -86,12 +86,17 @@ const defaultDataConfig = {
 }
 
 
-
+const dicFormatterFun = (item, { dictTextFormatter, dictCode, dictText }) => {
+  item.originalDicText = item[dictText]
+  item[dictText] = dictTextFormatter.replace(/{dicCode}/g, item[dictCode]).replace(/{dicText}/g, item[dictText])
+  return item
+}
 
 //配置格式化
 const initColumn = (data, componentData, columnParams) => {
   const { span, defaultTip, tableType, isOpen, tableId, treeLabel,
     isSub, subType, useFun, roleFieldObj, isCardTable, searchStyle,
+    dicShowList,
   } = columnParams
   const column = {}
   const control = {}
@@ -103,18 +108,20 @@ const initColumn = (data, componentData, columnParams) => {
     const { cellWidthType, cellWidth, controlsConfig, verifyConfig, isShowForm, isShowList, isDbSelect, isShowColumn, isShowSort, isRequired } = webEntity
     const controlType = webEntity.controlType || 'input'
     const { queryIsWeb, queryMode, queryConfig, queryDefaultVal } = queryEntity
-    const { dictType, dictCode, dictTable, dictText, dictTableColumn } = dictEntity
+    const { dictType, dictCode, dictTable, dictText, dictTextFormatter, dictTableColumn } = dictEntity
     const { isExport } = exportEntity
     const { summaryShow, summarySql } = summaryEntity || {}
     const verifyControl = { isControl: true, isForm: false, isList: false, isSearch: false, searchOption: {}, }
     //默认配置
+    let hide = isShowList == 'N'
+    if (dicShowList?.length && dicShowList.includes(fieldCode)) hide = false
     column[fieldCode] = {
       label: fieldName,
       prop: fieldCode,
       type: controlType,
       span,
       display: isShowForm == 'Y',
-      hide: isShowList == 'N',
+      hide,
       showColumn: isShowColumn == 'Y',
       [searchStyle == 'inline' ? 'inlineSearch' : 'search']: queryIsWeb == 'Y',
       sortable: isShowSort == 'Y' ? 'custom' : false,
@@ -143,7 +150,11 @@ const initColumn = (data, componentData, columnParams) => {
     if (queryDefaultVal !== '' && fieldDefaultVal !== null) column[fieldCode].searchValue = queryDefaultVal
     //字典处理
     if (dictTable) tableDic[fieldCode] = true
-    else if (dictCode) column[fieldCode].dicData = dictStore.dictMap[dictCode] || []
+    else if (dictCode) {
+      let dicData = cloneDeep(dictStore.dictMap[dictCode] || [])
+      if (dictTextFormatter) dicData = dicData.map(item => dicFormatterFun(item, { dictTextFormatter, dictText: 'label', dictCode: 'value' }))
+      column[fieldCode].dicData = dicData
+    }
     //日期、时间字段类型 默认控件类型处理
     if (fieldType == 'Date') column[fieldCode].type = 'date'
     if (fieldType == 'Time') column[fieldCode].type = 'time'
@@ -186,6 +197,7 @@ const initColumn = (data, componentData, columnParams) => {
           props: { label: dictText || dictCode, value: dictCode },
           dicQuery: { jeeLowCode_dictTableField: text },
           dicFormatter: (res) => {
+            if (dictTextFormatter) res.records = res.records.map(item => dicFormatterFun(item, { dictTextFormatter, dictText, dictCode }))
             if (['tree', 'cascader'].includes(controlType)) {
               return listToTree(res.records)
             }
@@ -210,11 +222,19 @@ const initColumn = (data, componentData, columnParams) => {
           ...column[fieldCode],
           dictCode, dictTable, dictText: dictText || dictCode,
           dictTableColumn: dictTableColumn ? dictTableColumn.split(',') : [],
+          dictTextFormatter,
           props: { lable: dictText || dictCode, value: dictCode },
           formatter: (row, value, valueText, column) => {
             if (!value) return ''
             const key = `${column.dictTable}&${column.dictText}`
-            row[`$${column.prop}`] = value.split(',').map(id => lowStore.dicObj[key]?.[id] || id).join(column.separator || ' | ')
+            row[`$${column.prop}`] = value.split(',').map(id => {
+              const text = lowStore.dicObj[key]?.[id] || ''
+              if (dictTextFormatter) {
+                const dicItem = dicFormatterFun({ [dictCode]: id, [dictText]: text }, { dictTextFormatter, dictText, dictCode })
+                return dicItem[dictText]
+              }
+              return text || id
+            }).join(column.separator || ' | ')
             return row[`$${column.prop}`]
           }
         }
@@ -232,7 +252,14 @@ const initColumn = (data, componentData, columnParams) => {
         formatter: (row, value, valueText, column) => {
           if (!value) return ''
           if (typeof value == 'number') value = value + ''
-          row[`$${column.prop}`] = value.split(',').map(id => lowStore.dicObj[controlType]?.[id] || id).join(column.separator || ' | ')
+          row[`$${column.prop}`] = value.split(',').map(id => {
+            const text = lowStore.dicObj[controlType]?.[id] || ''
+            if (column.textFormatter) {
+              const dicItem = dicFormatterFun({ id: id, name: text }, { dictTextFormatter: column.textFormatter, dictText: 'name', dictCode: 'id' })
+              return dicItem.name
+            }
+            return text || id
+          }).join(column.separator || ' | ')
           return row[`$${column.prop}`]
         }
       }
@@ -375,6 +402,8 @@ const initColumn = (data, componentData, columnParams) => {
         if (fieldType == 'DateTime' && currType != 'datetime') column[fieldCode].valueFormat = `${column[fieldCode].valueFormat} HH:mm:ss`
       }
     }
+    //数字输入框范围查询配置
+    if (column[fieldCode].type == 'number' && column[fieldCode].searchRange) verifyControl.isSearch = true
     //验证配置
     const trigger = ['select', 'date', 'time', 'upload', 'rate', 'slider'].includes(controlType) ? 'change' : 'blur'
     if (!column[fieldCode].rules) column[fieldCode].rules = []
@@ -505,7 +534,7 @@ const initButton = (data, context) => {
 export const initTableOption = (data, context) => {
   if (!data.buttonList) data.buttonList = []
   const { buttonList, dbForm, jsList, subDbFormIdList, summaryTopOpenFlag, webConfigRoleFieldVoList, webConfigRoleButtonVoList } = data
-  const { tableId, calcHeight, model, dicSelectType, isPermi, isSub, useFun } = context
+  const { tableId, calcHeight, model, dicSelectType, dicShowList, isPermi, isSub, useFun } = context
   const roleFieldObj = {}
   const deleteField: string[] = []
 
@@ -585,6 +614,7 @@ export const initTableOption = (data, context) => {
     span: dbForm.formStyle ? 24 / dbForm.formStyle : 12, defaultTip, tableType, isOpen, tableId,
     treeLabel: dbForm.treeLabelField, isSub, subType: dbForm.subTableMapping, useFun, roleFieldObj,
     isCardTable: tableOption.grid, searchStyle: singleStyle == 'card' ? 'defalut' : searchStyle,
+    dicShowList,
   }
   const { column, control, ruleObj, summaryBottom } = initColumn(fieldList, componentData, columnParams)
   tableOption.column = column

@@ -36,7 +36,16 @@ const dicObj = {
   userFindType: [{ label: '全部用户', value: 'all' }, { label: '本级用户', value: 'now' }, { label: '本级及下级用户', value: 'sub' }],
   deptFindType: [{ label: '全部部门', value: 'all' }, { label: '本级部门', value: 'now' }, { label: '本级及下级部门', value: 'sub' }],
   customControlType: [{ label: '未全局注册', value: false }, { label: '已全局注册', value: true }],
-  regionType: [{ label: '全球-国家', value: 'gj' }, { label: '中国-省市区', value: 'ssq' }, { label: '中国-省市', value: 'ss' }, { label: '中国-省', value: 's' }]
+  regionType: [{ label: '全球-国家', value: 'gj' }, { label: '中国-省市区', value: 'ssq' }, { label: '中国-省市', value: 'ss' }, { label: '中国-省', value: 's' }],
+  dictTextFormatter: [
+    { label: '字典Code-字典Text', value: '{dicCode}-{dicText}' },
+    { label: '字典Text-字典Code', value: '{dicText}-{dicCode}' },
+    { label: '字典Text(字典Code)', value: '{dicText}({dicCode})' },
+    { label: '字典Text[字典Code]', value: '{dicText}[{dicCode}]' },
+    { label: '其他格式请自行输入', value: 'custom-tip-1', disabled: true },
+    { label: '例如：code：{dicCode}，text：{dicText}', value: 'custom-tip-2', disabled: true },
+    { label: '效果：code：1001，text：小明', value: 'custom-tip-3', disabled: true }
+  ]
 }
 const tableOption = [
   {
@@ -72,7 +81,7 @@ const queryConfig = [
       { label: '排序（越大越靠前）', value: 'searchOrder', type: 'number' },
       { label: '辅助文字', value: 'searchPlaceholder' },
       { label: '控件类型', value: 'searchType', type: 'select', dic: dicObj.controlType },
-      { label: '范围搜索（仅日期、时间可用）', value: 'searchRange', type: 'switch', dic: dicObj.boolean },
+      { label: '范围搜索（仅日期、时间、数字可用）', value: 'searchRange', type: 'switch', dic: dicObj.boolean },
       { label: '多选', value: 'searchMultiple', type: 'switch', dic: dicObj.boolean },
       { label: '标题位置', value: 'searchLabelPosition', val: 'left', type: 'radio', dic: dicObj.positionType }
     ]
@@ -342,12 +351,12 @@ const dicTableSelectConfig = [
     ]
   }
 ]
-
 const userSelectConfig = [
   {
     title: '控件配置',
     list: [
       { label: '多选', value: 'multiple', val: false, type: 'switch', dic: dicObj.boolean },
+      { label: '回显名称格式化', value: 'textFormatter', val: '', type: 'select', dic: dicObj.dictTextFormatter, params: { filterable: true, allowCreate: true } },
       { label: '最大选择数量', value: 'limit', type: 'number', params: { min: 1 } },
       { label: '查询类型', value: 'findType', val: 'all', type: 'select', dic: dicObj.userFindType },
       { label: '列显示字段', value: 'columnKey', val: ['mobile', 'sex', 'deptName'], type: 'select', dic: dicObj.userColumn, params: { multiple: true } },
@@ -362,6 +371,7 @@ const deptSelectConfig = [
     title: '控件配置',
     list: [
       { label: '多选', value: 'multiple', val: false, type: 'switch', dic: dicObj.boolean },
+      { label: '回显名称格式化', value: 'textFormatter', val: '', type: 'select', dic: dicObj.dictTextFormatter, params: { filterable: true, allowCreate: true } },
       { label: '父子不互相关联', value: 'checkStrictly', val: false, type: 'switch', dic: dicObj.boolean },
       { label: '查询类型', value: 'findType', val: 'all', type: 'select', dic: dicObj.deptFindType },
       { label: '每次只展开一个同级树节点', value: 'accordion', val: false, type: 'switch', dic: dicObj.boolean },

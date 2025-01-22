@@ -107,6 +107,14 @@
       :control="control"
     ></ComboBox>
   </template>
+  <template v-else-if="slotType == 'search' && control.controlType == 'number'">
+    <input-number-range
+      v-model="model"
+      :column="currColumn"
+      :disabled="scope.disabled"
+      :size="scope.size"
+    ></input-number-range>
+  </template>
 
   <template v-else> <div></div> </template>
 </template>
@@ -150,7 +158,7 @@ const currColumn = computed(() => {
   return props.scope.column
 })
 
-defineExpose({slotRef})
+defineExpose({ slotRef })
 </script>
 
 <style lang="scss" scoped></style>

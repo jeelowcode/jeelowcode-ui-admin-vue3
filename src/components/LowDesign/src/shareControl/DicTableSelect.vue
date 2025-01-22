@@ -10,7 +10,7 @@
           :size="size"
           @close="tagValueClose(id)"
         >
-          {{ lowStore.dicObj[dicKey]?.[id] || id }}
+          {{ getCurrText(id) }}
         </el-tag>
       </div>
       <div class="empty-text" v-else>{{ placeholderText }}</div>
@@ -37,6 +37,7 @@
               model="dicTable"
               :isPermi="false"
               :dicConfigStr="dicConfigStr"
+              :dicShowList="column.dictTableColumn"
               :calcHeight="calcHeight"
               :dic-max-limit="column.limit"
               :dic-select-type="column.multiple ? 'multiple' : 'radio'"
@@ -75,9 +76,10 @@
                   :closable="true"
                   type="info"
                   :size="size"
+                  class="h-auto! py-4px! ws-break-spaces! break-anywhere! line-height-none"
                   @close="tagTableClose(id)"
                 >
-                  {{ lowStore.dicObj[dicKey]?.[id] || id }}
+                  {{ getCurrText(id) }}
                 </el-tag>
               </div>
             </div>
@@ -103,8 +105,14 @@
               alignContent: 'start'
             }"
           >
-            <el-tag v-for="id in selectId" :key="id" type="info" :size="size">
-              {{ lowStore.dicObj[dicKey]?.[id] || id }}
+            <el-tag
+              v-for="id in selectId"
+              :key="id"
+              type="info"
+              :size="size"
+              class="h-auto! py-4px! ws-break-spaces! break-anywhere! line-height-none"
+            >
+              {{ getCurrText(id) }}
             </el-tag>
           </div>
         </div>
@@ -125,6 +133,7 @@ interface Column {
   dictText: string
   dictCode: string
   dictTableColumn: Array<string>
+  dictTextFormatter?: string
   placeholder?: string
   multiple?: boolean //多选
   limit?: number //最大选择数
@@ -222,6 +231,15 @@ const dicConfigStr = computed(() => {
   return text
 })
 
+const getCurrText = (id) => {
+  const text = lowStore.dicObj[dicKey.value]?.[id] || ''
+  const formatter = props.column.dictTextFormatter
+  if (formatter) {
+    return formatter.replace(/{dicCode}/g, id).replace(/{dicText}/g, text)
+  }
+  return text || id
+}
+
 const getCurrTableSelect = () => {
   const dicObj = {}
   const ids = tableRef.value.tableSelect.map((item) => {
@@ -258,7 +276,11 @@ const tagValueClose = (id) => {
 }
 const tagTableClose = (id) => {
   const currRow = tableRef.value.tableSelect.filter((item) => item[dicCode.value] == id)
-  tableRef.value.crudRef.toggleSelection(currRow, false)
+  if (props.column.multiple) {
+    tableRef.value.crudRef.toggleSelection(currRow, false)
+  } else {
+    tableRef.value.clearSelection()
+  }
 }
 
 watch(

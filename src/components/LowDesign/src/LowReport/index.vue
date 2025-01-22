@@ -34,11 +34,19 @@
           <span>导出</span>
         </ElButton>
       </template>
+      <template v-for="prop in numberRange" :key="prop" #[`${prop}-search`]="scope">
+        <InputNumberRange
+          v-model="tableSearch[prop]"
+          :size="scope.size"
+          :column="scope.column"
+        ></InputNumberRange>
+      </template>
     </avue-crud>
   </div>
 </template>
 <script lang="ts" setup>
 import * as ReportApi from '@/api/design/report'
+import { InputNumberRange } from '../shareControl/index'
 import download from '@/utils/download'
 import { cloneDeep } from 'lodash-es'
 import { useWindowSize } from '@vueuse/core'
@@ -74,6 +82,7 @@ const tableSelect = ref<any>([])
 const tableSort = ref({ column: '', order: '' })
 const tableInfo = ref<any>({})
 const timerObj = ref<any>({})
+const numberRange = ref<string[]>([])
 const crudRef = ref()
 
 const exportLoading = ref(false)
@@ -132,6 +141,7 @@ const initTable = async () => {
       config.format = 'YYYY-MM-DD HH:mm:ss'
       config.valueFormat = 'YYYY-MM-DD HH:mm:ss'
     }
+    if (config.type == 'number' && config.searchRange) numberRange.value.push(config.prop)
     tableOption.value.column[item.fieldCode] = config
   })
   isInit.value = true

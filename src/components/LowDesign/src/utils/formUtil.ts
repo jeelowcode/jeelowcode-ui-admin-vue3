@@ -71,6 +71,12 @@ const defaultBtnObj = {
   editBtn: { label: '编辑', type: 'primary', icon: '', btnKey: 'menu', viewShow: false }
 }
 
+const dicFormatterFun = (item, { dictTextFormatter, dictCode, dictText }) => {
+  item.originalDicText = item[dictText]
+  item[dictText] = dictTextFormatter.replace(/{dicCode}/g, item[dictCode]).replace(/{dicText}/g, item[dictText])
+  return item
+}
+
 //控件初始化
 const initColumn = (column: object, control, ruleObj, componentData: Object, otherObj: OtherObj) => {
   const { formType, parentProp, isCell } = otherObj
@@ -99,8 +105,12 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
       delete columnItem.textPosition
     }
     if (controlType == 'select') {
-      if (dicType == 'static') columnItem.dicData = columnItem[`${dicType}DicData`] || []
-      if (dicType == 'code') columnItem.dicData = dictStore.dictMap[dicCode] || []
+      const dictTextFormatter = columnItem.dictTextFormatter
+      if (['static', 'code'].includes(dicType)) {
+        let dicData = cloneDeep(dicType == 'static' ? (columnItem[`${dicType}DicData`] || []) : (dictStore.dictMap[dicCode] || []))
+        if (dictTextFormatter) dicData = dicData.map(item => dicFormatterFun(item, { dictTextFormatter, dictText: 'label', dictCode: 'value' }))
+        columnItem.dicData = dicData
+      }
       if (dicType == 'table' && ['select', 'tree', 'cascader', 'radio', 'checkbox'].includes(type)) {
         const { dictCode, dictTable, dictText } = columnItem
         if (dictCode && dictTable) {
@@ -117,6 +127,7 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
             props: { label: dictText || dictCode, value: dictCode },
             dicQuery: { jeeLowCode_dictTableField: text },
             dicFormatter: (res) => {
+              if (dictTextFormatter) res.records = res.records.map(item => dicFormatterFun(item, { dictTextFormatter, dictText, dictCode }))
               if (['tree', 'cascader'].includes(type)) {
                 return listToTree(res.records)
               }
@@ -209,7 +220,15 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
         columnItem.formatter = (row, value, valueText, column) => {
           if (!value) return ''
           const key = `${column.dictTable}&${column.dictText}`
-          row[`$${column.prop}`] = value.split(',').map(id => lowStore.dicObj[key]?.[id] || id).join(column.separator || ' | ')
+          const { dictTextFormatter, dictCode, dictText } = column
+          row[`$${column.prop}`] = value.split(',').map(id => {
+            const text = lowStore.dicObj[key]?.[id] || ''
+            if (dictTextFormatter) {
+              const dicItem = dicFormatterFun({ [dictCode]: id, [dictText]: text }, { dictTextFormatter, dictText, dictCode })
+              return dicItem[dictText]
+            }
+            return text || id
+          }).join(column.separator || ' | ')
           return row[`$${column.prop}`]
         }
       } else {
@@ -217,7 +236,14 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
         columnItem.formatter = (row, value, valueText, column) => {
           if (!value) return ''
           if (typeof value == 'number') value = value + ''
-          row[`$${column.prop}`] = value.split(',').map(id => lowStore.dicObj[type]?.[id] || id).join(column.separator || ' | ')
+          row[`$${column.prop}`] = value.split(',').map(id => {
+            const text = lowStore.dicObj[type]?.[id] || ''
+            if (column.textFormatter) {
+              const dicItem = dicFormatterFun({ id: id, name: text }, { dictTextFormatter: column.textFormatter, dictText: 'name', dictCode: 'id' })
+              return dicItem.name
+            }
+            return text || id
+          }).join(column.separator || ' | ')
           return row[`$${column.prop}`]
         }
       }
@@ -373,7 +399,7 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
       initColumn(columnItem.column, control, ruleObj, componentData, {
         formType,
         parentProp: `layoutTable_${prop}`,
-        isCell: columnItem.tableType == 'cellEdit'
+        isCell: columnItem.tableType == 'cellEdit',
       })
     }
     if (isCell && columnItem.cell === undefined) columnItem.cell = true
@@ -399,7 +425,7 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
       })
     }
     if (['edit', 'view'].includes(formType)) {
-      if (columnItem.type != 'title') delete columnItem.value //默认值只能对新增生效
+      if (['title', 'layoutTable'].includes(columnItem.type)) delete columnItem.value //默认值只能对新增生效
       if (formType == 'view' && isCell) columnItem.cell = false
     }
 
@@ -441,67 +467,57 @@ export const initFormOption: (formOption: any, formType: string) => InitFormOpti
   return { option, control, ruleObj, componentData, jsEnhance, scssEnhance }
 }
 //表单数据格式化
-export const formDataFormatting = (formOption, formData) => {
-  const echoObj = {
-    userSelect: [],
-    deptSelect: [],
-  }
+export const formDataFormatting = (formOption, formData, formType) => {
+  const echoObj = { userSelect: [], deptSelect: [] }
   const regionSelect: string[] = []
-  const setForm = (column, data, parentType?) => {
-    for (const key in data) {
-      if (data[key] === '' || !column[key]?.type) continue
-      const type = column[key]?.type
-      if (['userSelect', 'deptSelect', 'dicTableSelect'].includes(type)) {
-        if (data[key] instanceof Array || typeof data[key] == 'number') data[key] = data[key].toString()
-        if (type == 'dicTableSelect') {
-          const { dictTable, dictCode, dictText } = column[key]
-          if (dictTable && dictCode && dictText) {
-            const dicKey = `${dictTable}&${dictCode}&${dictText}`
-            if (!echoObj[dicKey]) echoObj[dicKey] = []
-            echoObj[dicKey].push(...data[key].split(','))
-          }
-        } else echoObj[type].push(...data[key].split(','))
-      } else if (column[key]?.controlType == 'date') {
-        if (data[key]) {
-          if (typeof data[key] == 'number' || typeof data[key] == 'string') {
-            data[key] = data[key] + ''
-            if (!(/[-|\/]/g.test(data[key]))) {
-              //如果是时间戳强制转换
-              data[key] = formatDate(new Date(data[key]), column[key].valueFormat || 'YYYY-MM-DD HH:mm:ss')
-            }
+  const handleValue = (column, data, key, parentType) => {
+    const type = column[key]?.type
+    if (data[key] === '' || !type) return
+    if (['userSelect', 'deptSelect', 'dicTableSelect'].includes(type)) {
+      if (data[key] instanceof Array || typeof data[key] == 'number') data[key] = data[key].toString()
+      if (type == 'dicTableSelect') {
+        const { dictTable, dictCode, dictText } = column[key]
+        if (dictTable && dictCode && dictText) {
+          const dicKey = `${dictTable}&${dictCode}&${dictText}`
+          if (!echoObj[dicKey]) echoObj[dicKey] = []
+          echoObj[dicKey].push(...data[key].split(','))
+        }
+      } else echoObj[type].push(...data[key].split(','))
+    } else if (column[key]?.controlType == 'date') {
+      if (data[key]) {
+        if (typeof data[key] == 'number' || typeof data[key] == 'string') {
+          data[key] = data[key] + ''
+          if (!(/[-|\/]/g.test(data[key]))) {
+            //如果是时间戳强制转换
+            data[key] = formatDate(new Date(data[key]), column[key].valueFormat || 'YYYY-MM-DD HH:mm:ss')
           }
         }
-      } else if (type == 'layoutTable') {
-        if (!data[key]?.length) continue
-        setTable(column[key].column, data[key])
-      } else if (type == 'cascader') {
-        if (parentType == 'table' && column[key]?.dictType == 'region') regionSelect.push(...stringToArr(data[key], true))
       }
+    } else if (type == 'cascader') {
+      if (parentType == 'table' && column[key]?.dictType == 'region') regionSelect.push(...stringToArr(data[key], true))
     }
+  }
+
+  const setForm = (column, data, parentType?) => {
+    for (const key in data) handleValue(column, data, key, parentType)
     for (const prop in column) {
-      const { type } = column[prop]
+      const { type, value } = column[prop]
+      if (formType == 'add' && value) handleValue(column, { [prop]: value }, prop, parentType)
+      if (type == 'layoutTable') setTable(column[prop].column, data[prop] || [])
       if (type == 'layoutTabs') setTabs(column[prop].column, data)
-      else if (type == 'comboBox') {
-        if (!data[prop]) data[prop] = {}
-      }
+      if (type == 'comboBox' && !data[prop]) data[prop] = {}
     }
   }
   const setTable = (column, data) => {
-    data.forEach(data => setForm(column, data, 'table'))
+    if (data?.length) data.forEach(data => setForm(column, data, 'table'))
+    else setForm(column, {}, 'table')
   }
   const setTabs = (column, data) => {
-    for (const tabKey in column) {
-      if (!data[tabKey]) continue
-      initForm(column[tabKey], data[tabKey])
-    }
+    for (const tabKey in column) initForm(column[tabKey], data[tabKey] || {})
   }
   const initForm = (option, data) => {
     setForm(option.column, data)
-    if (option.group?.length) {
-      option.group.forEach((item) => {
-        setForm(item.column, data)
-      })
-    }
+    if (option.group?.length) option.group.forEach((item) => setForm(item.column, data))
   }
   initForm(formOption, formData)
 
@@ -551,6 +567,41 @@ export const formDataFormatting = (formOption, formData) => {
       lowStore.setDicObj(regionDicKey, dicObj)
     })
   }
+}
+
+//提交数据格式化
+export const submitDataFormatting = (formOption, formData) => {
+  const ergColumn = (column, data) => {
+    for (const prop in column) {
+      const { type } = column[prop]
+      if (type == 'layoutTable') {
+        if (data[prop]?.length) {
+          data[prop] = data[prop].map(item => {
+            //删除自定义id 防止提交表单报错
+            if (item.id && item.id?.toString()?.indexOf('custom_') === 0) {
+              delete item.id
+            }
+            return item
+          })
+        }
+        ergTable(column[prop].column, data[prop] || [])
+      }
+      if (type == 'layoutTabs') ergTabs(column[prop].column, data)
+    }
+  }
+  const ergTable = (column, data) => {
+    if (data?.length) data.forEach(data => ergColumn(column, data))
+    else ergColumn(column, {})
+  }
+  const ergTabs = (column, data) => {
+    for (const tabKey in column) ergOption(column[tabKey], data[tabKey] || {})
+  }
+  const ergOption = (option, data) => {
+    ergColumn(option.column, data)
+    if (option.group?.length) option.group.forEach((item) => ergColumn(item.column, data))
+  }
+  ergOption(formOption, formData)
+  return formData
 }
 
 //查找表单配置对应字段

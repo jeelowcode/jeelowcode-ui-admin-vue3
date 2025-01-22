@@ -110,7 +110,8 @@ import {
   initFormOption,
   findOptionField,
   findRefOptionField,
-  formDataFormatting
+  formDataFormatting,
+  submitDataFormatting
 } from '../utils/formUtil'
 import { addScssStyle, delScssStyle, setDeepObject } from '../utils/util'
 import { formattingStrFunction } from '@/utils/lowDesign'
@@ -205,6 +206,7 @@ const initForm = async () => {
   isInit.value = false
   viewLoading.value = true
   formOption.value = {}
+  formData.value = {}
   const { option, control, ruleObj, componentData, jsEnhance, scssEnhance } = initFormOption(
     props.formOption,
     props.formType
@@ -228,6 +230,12 @@ const initForm = async () => {
   } catch (error) {
     enhanceErrorTip('js增强【initImport】方法执行异常，请检查', error)
   }
+  //执行初始化增强
+  try {
+    if (jsEnhanceObj.value.initOption) jsEnhanceObj.value.initOption()
+  } catch (error) {
+    enhanceErrorTip('js增强【initOption】方法执行异常，请检查', error)
+  }
   //初始化数据
   let defaultData = {}
   if (props.defaultData) defaultData = cloneDeep(props.defaultData)
@@ -236,14 +244,9 @@ const initForm = async () => {
   } catch (error) {
     enhanceErrorTip('js增强【initData】方法执行异常，请检查', error)
   }
-  formDataFormatting(formOption.value, defaultData)
-  formData.value = defaultData
-  //执行初始化增强
-  try {
-    if (jsEnhanceObj.value.initOption) jsEnhanceObj.value.initOption()
-  } catch (error) {
-    enhanceErrorTip('js增强【initOption】方法执行异常，请检查', error)
-  }
+  formDataFormatting(formOption.value, defaultData, props.formType)
+  formData.value = { ...formData.value, ...defaultData }
+
   //隐藏默认按钮
   formOption.value.submitBtn = false
   formOption.value.emptyBtn = false
@@ -318,6 +321,7 @@ const handleSubmit = (isVerify?: Boolean, done?: Function) => {
     if (!verify) return loading(false)
     viewLoading.value = true
     form = cloneDeep(formData.value) as any
+    submitDataFormatting(formOption.value, form)
     try {
       if (jsEnhanceObj.value.beforeSubmit) form = await jsEnhanceObj.value.beforeSubmit(form)
       if (isDefault) form.id = await handleDefault(props.formType, tableId, form)
@@ -415,6 +419,10 @@ const initEnhanceUseFun = () => {
      * @param parentProp 非必传，布局控件内部子控件修改配置，需要传递对应修改字段的父prop（可不传但如果有重复的key，不能保证找到正确字段进行配置修改）
      */
     setPropConfig: (prop, config, parentProp) => {
+      //非新增不能设置value
+      if (props.formType != 'add' && config.value !== undefined) {
+        delete config.value
+      }
       const curConfig = useFun.getPropConfig(prop, false, parentProp)
       if (!curConfig) enhanceErrorTip(`调用useFun.setPropConfig方法，未找到字段：${prop}`, '')
       else setDeepObject(curConfig, config)
@@ -431,6 +439,10 @@ const initEnhanceUseFun = () => {
         const random = getComponentRandom(path)
         rendControlData.value[refKey] = { show: false, key: refKey, random, params }
       }
+    },
+    //格式化当前表单数据并查询回显文本
+    initDicText: () => {
+      formDataFormatting(formOption.value, formData.value, props.formType)
     },
     getVue: () => Vue,
     ...useFunObj

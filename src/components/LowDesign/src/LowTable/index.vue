@@ -283,7 +283,7 @@
         :show="importDialog"
         :isFull="isFull"
         @close-popup="importDialog = false"
-        @reset-change="resetChange()"
+        @reset-change="() => crudRef.searchReset()"
       ></ImportData>
     </template>
   </DesignPopup>
@@ -356,6 +356,7 @@ interface Props {
   enhanceData?: object //传递给表格js增强内部调用配置
   webConfig?: object //表格配置 erpTable使用
   dicConfigStr?: string //dicTable模式 特定值
+  dicShowList?: string[] //dicTable模式 显示列
   dicSelectType?: 'multiple' | 'radio' //dicTable模式 选择类型
   dicMaxLimit?: number //dicTable模式 最大选择个数
   dicRowKey?: string //dicTable模式 行数据的 Key
@@ -537,6 +538,7 @@ const initTable = async () => {
     calcHeight: props.calcHeight,
     model: props.model,
     dicSelectType: props.dicSelectType,
+    dicShowList: props.dicShowList || [],
     isPermi: props.isPermi,
     useFun
   })
@@ -655,7 +657,6 @@ const initTable = async () => {
     )
     subTableInit()
   }
-  console.log(tableOption.value)
 }
 const initRule = (ruleObj, column, isSub?) => {
   for (const prop in ruleObj) {
@@ -1104,6 +1105,7 @@ const getTableData = async (isLoading = true, config: any = {}) => {
       resolve(data.records)
     } finally {
       if (isLoading) loading.value = false
+      resolve([])
     }
   })
 }
@@ -1239,7 +1241,7 @@ const resetChange = () => {
 }
 const sizeChange = (pageSize) => {
   if (tablePage.value) tablePage.value['pageSize'] = pageSize
-  resetChange()
+  crudRef.value?.searchReset()
 }
 const currentChange = (currentPage) => {
   if (tablePage.value) tablePage.value['currentPage'] = currentPage
@@ -1247,6 +1249,24 @@ const currentChange = (currentPage) => {
 }
 const refreshChange = () => {
   getTableData(true, { isGetSummary: true })
+}
+
+const subDataFormatting = (data, type) => {
+  if (tabsColumn.value) {
+    tabsColumn.value.forEach((item) => {
+      if (!data[item.prop]) data[item.prop] = []
+      if (item.subType == 'one') {
+        if (data[item.prop].length) data[item.prop] = data[item.prop][0]
+        else data[item.prop] = {}
+      }
+      data[item.prop] = tableFormatting(
+        data[item.prop],
+        subTableObj.value[item.tableId].tableOption.column,
+        { isCell: item.subType == 'many' && ['add', 'edit'].includes(type) }
+      )
+    })
+  }
+  return data
 }
 
 const beforeOpen = async (done, type) => {
@@ -1261,7 +1281,17 @@ const beforeOpen = async (done, type) => {
     }
     // 附表处理
     if (tabsColumn.value) {
-      tabsColumn.value.forEach((item) => (formData[item.prop] = item.subType == 'many' ? [] : {}))
+      tabsColumn.value.forEach((item) => {
+        if (!formData[item.prop]) {
+          formData[item.prop] = item.subType == 'many' ? [] : {}
+        } else {
+          const isArray = formData[item.prop] instanceof Array
+          const isObject = formData[item.prop] instanceof Object
+          const isMany = item.subType == 'many'
+          if (isMany && !isArray) formData[item.prop] = []
+          if (!isMany && (isArray || !isObject)) formData[item.prop] = {}
+        }
+      })
     }
     // 左树右表处理
     if (tableInfo.value.tableType == 'treeAround' && !formData['pid'] && treeAroundRow.value.id) {
@@ -1274,6 +1304,10 @@ const beforeOpen = async (done, type) => {
         return message.info('只允许新增一条数据')
       }
     }
+    setTimeout(() => {
+      const formData = subDataFormatting(cloneDeep(tableForm.value), type)
+      tableForm.value = tableFormatting(formData, tableOption.value.column)
+    }, 300)
   }
 
   if (['edit', 'view'].includes(type) && tableForm.value['id']) {
@@ -1287,20 +1321,7 @@ const beforeOpen = async (done, type) => {
       delete data.jeelowcode_subtable_data
     }
     // 附表处理
-    if (tabsColumn.value) {
-      tabsColumn.value.forEach((item) => {
-        if (!data[item.prop]) data[item.prop] = []
-        if (item.subType == 'one') {
-          if (data[item.prop].length) data[item.prop] = data[item.prop][0]
-          else data[item.prop] = {}
-        }
-        data[item.prop] = tableFormatting(
-          data[item.prop],
-          subTableObj.value[item.tableId].tableOption.column,
-          { isCell: item.subType == 'many' && type == 'edit' }
-        )
-      })
-    }
+    data = subDataFormatting(data, type)
     // 左树右表处理
     if (['treeTable', 'treeAround'].includes(tableInfo.value.tableType) && data.pid === 0) {
       data.pid = ''
@@ -1398,7 +1419,7 @@ const rowSave = async (form, done, loading) => {
     await executeAfterRequest('add', { ...apiData, id: bool })
     if (isLazyTree.value && !isSearchData.value) {
       await partUpdateLazyData(formData, 'add')
-    } else await resetChange()
+    } else crudRef.value?.searchReset()
     message.success(t('common.createSuccess'))
     done()
   } else loading()
@@ -1412,7 +1433,7 @@ const rowUpdate = async (form, index, done, loading) => {
   if (bool) {
     await executeAfterRequest('edit', apiData)
     if (isLazyTree.value) {
-      if (isSearchData.value) await resetChange()
+      if (isSearchData.value) crudRef.value?.searchReset()
       else await partUpdateLazyData(formData, 'edit')
     } else await getTableData(true, { isGetSummary: true })
     message.success(t('common.updateSuccess'))
@@ -1438,7 +1459,7 @@ const rowDel = async (data) => {
     if (bool) {
       await executeAfterRequest('del', isArr ? tableSelect.value : [data])
       if (isLazyTree.value) {
-        if (isSearchData.value) await resetChange()
+        if (isSearchData.value) crudRef.value?.searchReset()
         else {
           if (data instanceof Array) {
             const selectObj = {}
@@ -1565,8 +1586,12 @@ const initEnhanceUseFun = () => {
         rendControlData.value[refKey] = { show: false, key: refKey, random, params }
       }
     },
+    //格式化当前表单数据并查询回显文本
+    initDicText: () => {
+      tableForm.value = tableFormatting(tableForm.value, tableOption.value.column)
+    },
     refreshChange, //刷新当前页表格数据
-    resetChange, //清空搜索重新获取数据
+    resetChange: () => crudRef.value?.searchReset(), //清空搜索重新获取数据
     getSearchData: () => getSearchData('search'), //获取搜索参数
     clearSelection, //清空表格选择
     getVue: () => Vue,
@@ -1760,7 +1785,7 @@ defineExpose({
   useFun,
   initTableLayout,
   clearSelection,
-  resetChange,
+  resetChange: () => crudRef.value?.searchReset(),
   initSelectChange
 })
 </script>

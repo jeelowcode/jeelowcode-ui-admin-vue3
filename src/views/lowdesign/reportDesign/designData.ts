@@ -44,7 +44,7 @@ export const dicObj = {
   queryMode: [
     { label: '精确查询', value: 'EQ' },
     { label: '模糊查询', value: 'LIKE' },
-    { label: '范围查询（仅适用于日期、时间）', value: 'RANGE' },
+    { label: '范围查询（仅适用于日期、时间、数字）', value: 'RANGE' },
   ],
 }
 export const getDicObj = (key) => {

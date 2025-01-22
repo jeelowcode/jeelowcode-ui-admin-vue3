@@ -77,6 +77,15 @@
       </el-tabs>
     </div>
   </div>
+  <el-form-item label="字典Text格式化" v-if="['static', 'code', 'table'].includes(option.dicType)">
+    <avue-select
+      v-model="option.dictTextFormatter"
+      :dic="dictTextFormatter"
+      filterable
+      allowCreate
+      placeholder="请选择字典Text格式化"
+    ></avue-select>
+  </el-form-item>
   <el-form-item label="字典排除值" v-if="['static', 'code'].includes(option.dicType)">
     <avue-input-tree
       v-if="option.type == 'tree'"
@@ -174,6 +183,7 @@ import { useDictStoreWithOut } from '@/store/modules/dict'
 import { lowFormDesignKey, lowFormDesignType } from '@/utils/symbols'
 import { filter } from '@/utils/tree'
 import { TableDicOption } from '../index'
+import { dictTextFormatter } from '@/components/LowFormDesign/utils/util'
 
 defineOptions({ name: 'ConfigTree' })
 

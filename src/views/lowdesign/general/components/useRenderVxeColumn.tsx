@@ -11,7 +11,7 @@ const infoTableIsEdit = ({ row, column }, { verifyEdit, noStop }) => {
   //判断如果是 需要编辑校验并且是系统字段 不可编辑
   if (verifyEdit && tableInfoOption.disabledArr.includes(row.fieldCode) && row.only) bool = false
   //判断是否可以绑定字典
-  if (!['select', 'radio', 'checkbox', 'tree', 'cascader', 'dicTableSelect'].includes(row.controlType) && ['dictType', 'dictCode', 'dictTable', 'dictText', 'dictTableColumn'].includes(column.field)) {
+  if (!['select', 'radio', 'checkbox', 'tree', 'cascader', 'dicTableSelect'].includes(row.controlType) && ['dictType', 'dictCode', 'dictTable', 'dictText', 'dictTextFormatter', 'dictTableColumn'].includes(column.field)) {
     if (!noStop) bool = false
   }
   if (row.controlType != 'dicTableSelect' && column.field == 'dictTableColumn') bool = false
@@ -118,7 +118,7 @@ export const useRenderVxeColumn = (useType = 'table') => {
         return <span>{value}</span>
       },
       edit: (renderOpts, { row, rowIndex, column }) => {
-        const { multiple, filterable, typeKey } = renderOpts
+        const { multiple, filterable, allowCreate, typeKey } = renderOpts
         let dicData = [] as any
         if (typeKey && row[typeKey]) {
           dicData = renderOpts[`${row[typeKey]}DicData`]
@@ -153,6 +153,7 @@ export const useRenderVxeColumn = (useType = 'table') => {
             dic={dicData}
             multiple={multiple}
             filterable={filterable}
+            allowCreate={allowCreate}
             onChange={() => renderOpts.events ? renderOpts.events.change(row, column.field, rowIndex) : ''}
           />
         )
