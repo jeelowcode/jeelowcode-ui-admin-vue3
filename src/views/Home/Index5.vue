@@ -625,8 +625,10 @@ const option = ref({
     {
       label: '下单时间',
       overHidden: true,
-      prop: 'date',
-      width: '110'
+      prop: 'xdsj',
+      width: '110',
+      type: "datetime",
+      format: "YYYY-MM-DD HH:mm:ss",
     },
     {
       label: '数量',
@@ -746,7 +748,7 @@ const fluctuateUtil = (data) => {
   fluctuateSeries1.value = []
   fluctuateSeries2.value = []
   data.forEach((ele) => {
-    fluctuateXAxis.value.push(ele.date)
+    fluctuateXAxis.value.push(ele.sj)
     fluctuateSeries1.value.push(ele.xse)
     fluctuateSeries2.value.push(ele.ddl)
   })
@@ -781,7 +783,7 @@ const brokenLineUtil = (data) => {
   brokenLineSeries1.value = []
   brokenLineSeries2.value = []
   data.forEach((ele) => {
-    brokenLineXAxis.value.push(ele.date)
+    brokenLineXAxis.value.push(ele.sj)
     brokenLineSeries1.value.push(ele.xzyh)
     brokenLineSeries2.value.push(ele.xzhy)
   })
@@ -799,7 +801,7 @@ const bdtUtil = (data) => {
   fluctuate2XAxis.value = []
   fluctuate2Series.value = []
   data.forEach((ele) => {
-    fluctuate2XAxis.value.push(ele.date)
+    fluctuate2XAxis.value.push(ele.sj)
     fluctuate2Series.value.push(ele.fwyh)
   })
   fluctuate_option2.value.xAxis.data = fluctuate2XAxis.value

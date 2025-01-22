@@ -498,7 +498,7 @@ const clickCjje = async (type) => {
   transactionAmountSeries1.value = []
   transactionAmountSeries2.value = []
   res.records.forEach((ele) => {
-    transactionAmountXAxis.value.push(ele.date)
+    transactionAmountXAxis.value.push(ele.sj)
     transactionAmountSeries1.value.push(ele.xscj)
     transactionAmountSeries2.value.push(ele.xxcj)
   })
@@ -557,26 +557,26 @@ const init = async () => {
   )
 
   endres.example_trader_daily_turnover?.records.forEach((ele) => {
-    dailyTurnoverXAxis.value.push(ele.time)
+    dailyTurnoverXAxis.value.push(ele.sj)
     dailyTurnoverSeries.value.push(ele.data)
   })
   zxtOption.xAxis.data = dailyTurnoverXAxis.value
   zxtOption.series[0].data = dailyTurnoverSeries.value
   endres.example_trader_weekly_orders.records.forEach((ele) => {
-    weeklyOrdersXAxis.value.push(ele.date)
+    weeklyOrdersXAxis.value.push(ele.sj)
     weeklyOrdersSeries.value.push(ele.data)
   })
   zddlOption.xAxis.data = weeklyOrdersXAxis.value
   zddlOption.series[0].data = weeklyOrdersSeries.value
   expansionNumberDataset.value.push(
     ...endres.example_trader_expansion_number.records.map((item) => [
-      item.date,
+      item.sj,
       item.mbkts,
       item.sjkts
     ])
   )
   endres.example_trader_transaction_amount.records.forEach((ele) => {
-    transactionAmountXAxis.value.push(ele.date)
+    transactionAmountXAxis.value.push(ele.sj)
     transactionAmountSeries1.value.push(ele.xscj)
     transactionAmountSeries2.value.push(ele.xxcj)
   })

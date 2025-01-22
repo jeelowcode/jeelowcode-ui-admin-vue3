@@ -360,7 +360,7 @@ watch(
     if (!val) return
     let date = val?.[0] + ',' + val?.[1]
     loading.value = true
-    let res = await getTableList('example_sytj_dlsyrs', { date: date })
+    let res = await getTableList('example_sytj_dlsyrs', { sj: date })
 
     let dlsyrs = res.records
     if (dlsyrs && dlsyrs.length > 0) {
@@ -369,7 +369,7 @@ watch(
       loginSeries1.value = []
       loginSeries2.value = []
       dlsyrs.forEach((ele) => {
-        loginX.value.push(ele.date)
+        loginX.value.push(ele.sj)
         loginSeries1.value.push(ele.login_num)
         loginSeries2.value.push(ele.users_num)
       })

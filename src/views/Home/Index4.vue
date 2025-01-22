@@ -249,12 +249,12 @@ interface RankingTopList {
 }
 interface SalesTarget {
   cjje: string
-  date: string
+  sj: string
   mbje: string
 }
 interface SalesForecast {
   yjxsje: string
-  date: string
+  sj: string
   glje: string
 }
 interface SalesFunnelgraphic {
@@ -474,7 +474,7 @@ const init = async () => {
   rankingList.value = oneres.example_client_salesman_rank.records
   salesTarget.value = oneres.example_client_sales_target.records
   salesTarget.value?.forEach((ele) => {
-    salesTargetXAxis.value.push(ele.date)
+    salesTargetXAxis.value.push(ele.sj)
     salesTargetSeries1.value.push(ele.mbje)
     salesTargetSeries2.value.push(ele.cjje)
   })
@@ -487,7 +487,7 @@ const init = async () => {
   )
   salesForecast.value = endres.example_client_sales_forecast.records
   salesForecast.value?.forEach((ele) => {
-    salesForecastXAxis.value.push(ele.date)
+    salesForecastXAxis.value.push(ele.sj)
     salesForecastSeries1.value.push(ele.yjxsje)
     salesForecastSeries2.value.push(ele.glje)
   })

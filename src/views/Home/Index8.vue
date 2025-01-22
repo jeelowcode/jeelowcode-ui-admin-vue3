@@ -311,7 +311,7 @@ const init = async () => {
     })
   })
   realtimeVisits.forEach((ele) => {
-    visitorXAxis.value?.push(ele.date)
+    visitorXAxis.value?.push(ele.sj)
     visitorSeries.value?.push(ele.ssfkl)
   })
 
@@ -320,7 +320,7 @@ const init = async () => {
   let sale = endres.example_member_sale.records
   let productPercentage = endres.example_member_product_percentage.records[0]
   sale.forEach((ele) => {
-    salesVolumeXAxis.value?.push(ele.date)
+    salesVolumeXAxis.value?.push(ele.sj)
     salesVolumeSeries.value?.push(ele.xse)
   })
   cyclic_annular_option_data.value = cyclic_annular_option_data.value.map((item) => {
@@ -331,7 +331,7 @@ const init = async () => {
   })
   cyclic_annular_option.value.series[0].data = cyclic_annular_option_data.value
   cyclic_annular_option.value.title.text = '￥' + productPercentage.je
-  cyclic_annular_option.value.title.subtext = productPercentage.date
+  cyclic_annular_option.value.title.subtext = productPercentage.sj
 }
 onMounted(async () => {
   // 判断是否为暗色模式

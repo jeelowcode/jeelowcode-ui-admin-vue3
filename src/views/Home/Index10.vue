@@ -15,7 +15,7 @@
               class="text-white text-14px flex items-center nowrap"
               style="font-family: Arial, Helvetica, sans-serif"
             >
-              {{ conversion.date }}
+              {{ conversion.sj }}
               <div
                 class="w-15px h-15px bg-white rounded-md flex items-center justify-center ml-10px"
               >
@@ -544,7 +544,7 @@ interface MerchantIntroduction {
 
 const conversion = ref({
   cgkhs: 0,
-  date: '',
+  sj: '',
   kdj: 0,
   xzhys: 0
 })
@@ -880,7 +880,7 @@ const initConversion = (realtimeData) => {
 
   realtimeData.data.forEach((ele) => {
     goTo.value.push(ele.zr)
-    oilGaugeLineXAxis.value.push(ele.date)
+    oilGaugeLineXAxis.value.push(ele.sj)
     if (ele.jr) goOut.value.push(ele.jr)
   })
 
@@ -1233,7 +1233,7 @@ const init = async () => {
   let intelligentAssistants = oneres.example_overview_intelligent_assistants.records[0]
   let overviewPending = oneres.example_overview_pending.records
   initConversion(realtimeData)
-  initZnzs(intelligentAssistants)
+  initZnzs(intelligentAssistants)     
   numTop.value = '-' + overviewPending.length * 60 + 'px'
   for (let i = 1; i <= overviewPending.length; i++) {
     animationList.value.push(i)

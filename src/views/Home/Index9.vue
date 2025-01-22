@@ -517,7 +517,7 @@ const init = async () => {
   let thisweekData = oneres.example_datahome_thisweek_data.records[0]
   let lastweekData = oneres.example_datahome_lastweek_data.records[0]
   salesData.forEach((ele) => {
-    xssjXAxis.value.push(ele.date)
+    xssjXAxis.value.push(ele.sj)
     xssjSeries1.value.push(ele.sczhl)
     xssjSeries2.value.push(ele.je)
     ele.rje ? xssjSeries3.value.push(ele.rje) : xssjSeries3.value.push('-')

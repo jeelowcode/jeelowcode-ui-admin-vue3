@@ -251,26 +251,26 @@ const init = async () => {
   //CPU使用率
   let cpuUtilization = oneres.example_systemmonitor_cpu_utilization.records
   cpuUtilization.forEach((ele) => {
-    cpuLineXAxis.value.push(ele.time)
+    cpuLineXAxis.value.push(ele.sj)
     cpuLineSeries.value.push(ele.syl)
   })
   //内存使用率
   let memoryUtilization = oneres.example_systemmonitor_memory_utilization.records
   memoryUtilization.forEach((ele) => {
-    ncLineXAxis.value.push(ele.time)
+    ncLineXAxis.value.push(ele.sj)
     ncLineSeries.value.push(ele.syl)
   })
   //服务器流量
   let serverTraffic = oneres.example_systemmonitor_server_traffic.records
   serverTraffic.forEach((ele) => {
-    llLineXAxis.value.push(ele.time)
+    llLineXAxis.value.push(ele.sj)
     llLineSeries1.value.push(ele.sc)
     llLineSeries2.value.push(ele.xz)
   })
   //服务器磁盘IO
   let diskIo = oneres.example_systemmonitor_disk_io.records
   diskIo.forEach((ele) => {
-    cpLineXAxis.value.push(ele.time)
+    cpLineXAxis.value.push(ele.sj)
     cpLineSeries1.value.push(ele.sc)
     cpLineSeries2.value.push(ele.sr)
   })

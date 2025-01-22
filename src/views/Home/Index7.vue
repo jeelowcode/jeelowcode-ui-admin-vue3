@@ -489,7 +489,7 @@ const init = async () => {
     return a + b.num
   }, 0)
   expenditureForecasts.forEach((ele) => {
-    szycDataset.value.push([ele.date, ele.yjsr, ele.yjzc])
+    szycDataset.value.push([ele.sj, ele.yjsr, ele.yjzc])
   })
   szycOption.dataset.source = szycDataset.value
   fyjgOption.series[0].data = feeStructure
