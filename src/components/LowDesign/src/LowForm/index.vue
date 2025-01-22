@@ -265,8 +265,8 @@ const verifyForm = () => {
       for (let key in formTabsRef.value) promiseArr.push(formTabsRef.value[key].verifyForm())
       let verifyRes = await Promise.all(promiseArr)
       if (valid) {
-        for (let i in verifyRes) {
-          if (errorObj) break
+        for (const i in verifyRes) {
+          if (Object.keys(errorObj).length) break
           if (!verifyRes[i].valid) {
             errorObj = verifyRes[i]
             if (verifyRes[i].tabKey) verifyRes[i].setTabsValue(verifyRes[i].tabKey)
