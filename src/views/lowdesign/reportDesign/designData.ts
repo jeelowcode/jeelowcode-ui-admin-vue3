@@ -150,7 +150,7 @@ const formattingInitData = (editInfoData) => {
   for (const apiKey in infoApiKey) {
     const key = apiKey
     optionObj[key] = {}
-    editInfoData[key].forEach(item => optionObj[key][item.fieldCode] = item)
+    editInfoData[key]?.forEach(item => optionObj[key][item.fieldCode] = item)
   }
 
   const infoData = [] as any

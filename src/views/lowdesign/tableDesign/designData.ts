@@ -477,7 +477,7 @@ const formattingInitData = (editInfoData) => {
     let key = apiKey
     if (apiKey == 'summaryList') key = 'summaryBottomList'
     optionObj[key] = {}
-    editInfoData[key].forEach(item => optionObj[key][item.fieldCode] = item)
+    editInfoData[key]?.forEach(item => optionObj[key][item.fieldCode] = item)
   }
 
   editInfoData.fieldList.forEach(fieldItem => {
