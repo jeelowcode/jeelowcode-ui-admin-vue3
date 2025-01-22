@@ -2,7 +2,7 @@
   <div
     class="layout-table hover"
     :class="{
-      active: selectItem.prop == option.prop,
+      active: isCurrActive && selectItem.prop == option.prop,
       'required-title': option.required,
       hide: !option.display
     }"
@@ -28,7 +28,7 @@
           <div
             class="layout-table__item hover-item drag"
             :class="{
-              'active-item': selectItem.prop == element.prop,
+              'active-item': isSubActive && selectItem.prop == element.prop,
               required: element.required,
               hide: !element.display
             }"
@@ -43,7 +43,7 @@
               <div class="wf-table__body">
                 <LayoutItem :columnItem="element" :controlParams="element.params"></LayoutItem>
                 <LayoutButton
-                  v-if="selectItem.prop == element.prop"
+                  v-if="isSubActive && selectItem.prop == element.prop"
                   type="tableItem"
                   @del-column="handleDelColumn(index)"
                   @copy-column="handleCopyColumn(index)"
@@ -53,7 +53,7 @@
           </div>
         </template>
       </draggable>
-      <div class="table-empty" v-if="option.column.length == 0">
+      <div class="table-empty" v-if="option.column?.length == 0">
         <el-empty size="50" style="width: 100%" description="请拖拽控件到此位置"></el-empty>
       </div>
     </div>
@@ -80,9 +80,10 @@ defineOptions({ name: 'LayoutTable' })
 const props = defineProps({
   // 当前选中的链接
   modelValue: Object,
-  select: Object
+  select: Object,
+  isCurrActive: Boolean
 })
-const { historyCommit, setParentData } = inject<lowFormDesignType>(
+const { parentData, historyCommit, setParentData } = inject<lowFormDesignType>(
   lowFormDesignKey
 ) as lowFormDesignType
 
@@ -98,6 +99,13 @@ const { onMove } = useDrageed()
 
 const option = ref<any>(props.modelValue)
 const selectItem = ref<any>(props.select)
+
+const isSubActive = computed(() => {
+  if (parentData.value.type == option.value.type && parentData.value.prop == option.value.prop) {
+    return true
+  }
+  return false
+})
 
 watch(
   () => props.modelValue,
@@ -156,7 +164,7 @@ const handleCopyColumn = (index) => {
   data.prop = `fields_${Math.ceil(Math.random() * 9999999)}`
   option.value.column.push(data)
   nextTick(() => {
-    handleselectItem(option.value.column.length - 1)
+    handleselectItem(option.value.column?.length - 1)
     historyCommit()
   })
 }

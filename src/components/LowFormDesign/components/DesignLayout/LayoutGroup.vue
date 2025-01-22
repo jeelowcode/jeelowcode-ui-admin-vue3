@@ -1,7 +1,7 @@
 <template>
   <div
     class="layout-group hover"
-    :class="{ active: selectItem.prop == option.prop, hide: !option.display }"
+    :class="{ active: isCurrActive && selectItem.prop == option.prop, hide: !option.display }"
   >
     <div class="el-collapse-item__header">
       <div class="avue-group__header">
@@ -41,6 +41,7 @@
                   :ref="(el) => handleSetRef(el, element)"
                   v-model="option.column[index]"
                   v-model:select="selectItem"
+                  :is-curr-active="isActive"
                   @del-table="handleDelColumn(index)"
                   @copy-table="handleCopyColumn(index)"
                   @select-table="handleselectItem(index)"
@@ -51,6 +52,7 @@
                   :ref="(el) => handleSetRef(el, element)"
                   v-model="option.column[index]"
                   v-model:select="selectItem"
+                  :is-curr-active="isActive"
                   @del-tabs="handleDelColumn(index)"
                   @copy-tabs="handleCopyColumn(index)"
                   @select-tabs="handleselectItem(index)"
@@ -63,7 +65,7 @@
                   :prop="element.prop"
                   :class="[
                     {
-                      'active-item': selectItem.prop == element.prop,
+                      'active-item': isActive && selectItem.prop == element.prop,
                       required: element.required,
                       hide: !element.display,
                       comboBox: element.type == 'comboBox'
@@ -102,7 +104,7 @@
                     :controlParams="element.params"
                   ></LayoutItem>
                   <LayoutButton
-                    v-if="selectItem.prop == element.prop"
+                    v-if="isActive && selectItem.prop == element.prop"
                     type="group-item"
                     @del-column="handleDelColumn(index)"
                     @copy-column="handleCopyColumn(index)"
@@ -150,7 +152,9 @@ const props = defineProps({
   // 当前选中的链接
   modelValue: Object,
   select: Object,
-  customClass: String
+  customClass: String,
+  isActive: Boolean,
+  isCurrActive: Boolean
 })
 const { formOption, historyCommit, setParentData } = inject<lowFormDesignType>(
   lowFormDesignKey

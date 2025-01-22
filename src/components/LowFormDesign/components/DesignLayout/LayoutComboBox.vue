@@ -20,7 +20,7 @@
               class="layout-item hover drag flex"
               :class="[
                 {
-                  active: selectItem.prop == element.prop,
+                  active: isActive && selectItem.prop == element.prop,
                   required: element.required,
                   hide: !element.display
                 }
@@ -33,7 +33,7 @@
                 :controlParams="element.params"
               ></LayoutItem>
               <LayoutButton
-                v-if="selectItem.prop == element.prop"
+                v-if="isActive && selectItem.prop == element.prop"
                 type="combo"
                 @del-column="handleDelColumn(index)"
                 @copy-column="handleCopyColumn(index)"
@@ -70,7 +70,7 @@ const emit = defineEmits([
   'select-group'
 ])
 
-const { formOption, historyCommit, setParentData } = inject<lowFormDesignType>(
+const { parentData, historyCommit, setParentData } = inject<lowFormDesignType>(
   lowFormDesignKey
 ) as lowFormDesignType
 
@@ -78,6 +78,13 @@ const { onMove } = useDrageed()
 
 const option = ref<any>(props.modelValue)
 const selectItem = ref<any>(props.select)
+
+const isActive = computed(() => {
+  if (parentData.value.type == option.value.type && parentData.value.prop == option.value.prop) {
+    return true
+  }
+  return false
+})
 
 watch(
   () => props.modelValue,

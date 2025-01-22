@@ -2,7 +2,7 @@
   <div class="control-config">
     <el-form
       label-suffix="："
-      v-if="option && Object.keys(option).length > 0"
+      v-if="option && Object.keys(option)?.length > 0"
       labelPosition="top"
       labelWidth="90px"
     >
@@ -12,13 +12,13 @@
           <el-form-item label="数据绑定key">
             <div class="w-100% flex">
               <el-select
-                v-model="option.prop"
+                v-model.trim="option.prop"
                 style="width: 100%"
                 placeholder="请选择数据绑定Key"
                 filterable
                 allow-create
                 clearable
-                v-if="propDicData.length"
+                v-if="propDicData?.length"
               >
                 <el-option
                   v-for="item in propDicData"
@@ -383,12 +383,12 @@ const currComponent = computed(() => {
 const propDicData = computed(() => {
   const type = option.value.type
   if (!props.tableDesignId || ['layoutGroup', 'layoutTabs'].includes(type)) return []
-  const dicItem = tableDbOptions['value'][props.tableDesignId] || {}
+  const dicItem = tableDbOptions.value[props.tableDesignId] || {}
   if (type == 'layoutTable') {
     if (dicItem.subList) return dicItem.subList
   }
-  if (parentData['value'].type == 'layoutTable') {
-    const dicItem = tableSubDbOptions['value'][parentData['value'].prop]
+  if (parentData.value.type == 'layoutTable') {
+    const dicItem = tableSubDbOptions.value[parentData.value.prop]
     if (dicItem) return dicItem.field
     else return []
   }
@@ -397,17 +397,17 @@ const propDicData = computed(() => {
 
 const fieldObj = computed(() => {
   const obj = {}
-  if (parentData['value'].type == 'layoutTable') {
-    const dicItem = tableSubDbOptions['value'][parentData['value'].prop]
-    if (dicItem) dicItem.field.forEach((item) => (obj[item.value] = item))
+  if (parentData.value.type == 'layoutTable') {
+    const dicItem = tableSubDbOptions.value[parentData.value.prop]
+    if (dicItem) dicItem.field?.forEach((item) => (obj[item.value] = item))
   } else if (props.tableDesignId) {
-    tableDbOptions['value'][props.tableDesignId]?.field.forEach((item) => (obj[item.value] = item))
+    tableDbOptions.value[props.tableDesignId]?.field.forEach((item) => (obj[item.value] = item))
   }
   return obj
 })
 
 const verifyFilterKey = computed(() => {
-  if (parentData['value'].type != 'layoutTable') return ['only']
+  if (parentData.value.type != 'layoutTable') return ['only']
   else return []
 })
 

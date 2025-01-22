@@ -199,7 +199,7 @@ const defaultOption = {
 const formOption = ref<any>(cloneDeep(defaultOption))
 const enhance = ref({ jsEnhance: Example.formJsEnhanceExample, scssEnhance: '' })
 const currSelect = ref({})
-const parentData = ref({ type: '', prop: '' })
+const parentData = ref({ type: '', prop: '', tabsIndex: null })
 const previewData = ref({
   dialog: false,
   dataDialog: false,
@@ -286,8 +286,8 @@ const previewBeforeClose = (type, form, loading) => {
     try {
       previewData.value.formData = `return ${JSON.stringify(form, null, 2)}`
     } catch (error) {
-      previewData.value.formData=`表单数据预览失败，请在控制台查看表单数据`,
-      console.warn('=== 表单数据 ===',form)
+      previewData.value.formData = `表单数据预览失败，请在控制台查看表单数据`
+      console.warn('=== 表单数据 ===', form)
     }
     previewData.value.dataDialog = true
   }
@@ -419,9 +419,10 @@ const addControl = (controlItem: any) => {
   }
 }
 //设置当前父级
-const setParentData = (type: string, prop: string) => {
+const setParentData = (type: string, prop: string, tabsIndex?) => {
   parentData.value.type = type
   parentData.value.prop = prop
+  parentData.value.tabsIndex = type == 'layoutTabs' ? tabsIndex : null
 }
 //撤销处理
 const handleUndo = () => {
@@ -506,7 +507,7 @@ const getTableDesignOptions = async () => {
     }
     if (item.tableType == 4) {
       tableSubDb.value[item.tableId] = dicItem
-      tableSubDbOptions.value[item.tableName] = dicItem.value
+      tableSubDbOptions.value[item.tableName] = dicItem
     } else {
       tableDbOptions.value[item.tableId] = dicItem
       if (item.tableType == 3 && item.subTableListStr) {
@@ -540,7 +541,7 @@ const copySampleStr = (type) => {
 
 const setOption = (data, isConvert?) => {
   currSelect.value = {}
-  parentData.value = { type: '', prop: '' }
+  parentData.value = { type: '', prop: '', tabsIndex: null }
   enhance.value = { jsEnhance: data.jsEnhance, scssEnhance: data.scssEnhance }
   delete data.jsEnhance
   delete data.scssEnhance
@@ -560,7 +561,7 @@ watch(
         bool = false
       } else {
         currSelect.value = {}
-        parentData.value = { type: '', prop: '' }
+        parentData.value = { type: '', prop: '', tabsIndex: null }
       }
     } catch (error) {
       message.info('表单配置异常，请查看控制台打印')

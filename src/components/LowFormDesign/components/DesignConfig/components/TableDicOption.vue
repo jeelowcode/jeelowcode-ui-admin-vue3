@@ -99,13 +99,13 @@ const codeDic = computed(() => {
         value: 'jeelowcode-tiop',
         disabled: true
       },
-      ...(tableDbOptions['value'][option.value.dictTable].field || [])
+      ...(tableDbOptions.value[option.value.dictTable].field || [])
     ]
   } else return nullDic
 })
 const textDic = computed(() => {
   if (option.value.dictTable) {
-    return tableDbOptions['value'][option.value.dictTable].field
+    return tableDbOptions.value[option.value.dictTable].field
   } else return nullDic
 })
 

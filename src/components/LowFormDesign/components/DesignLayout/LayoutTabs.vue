@@ -1,7 +1,7 @@
 <template>
   <div
     class="layout-tabs hover"
-    :class="{ active: selectItem.prop == option.prop, hide: !option.display }"
+    :class="{ active: isCurrActive && selectItem.prop == option.prop, hide: !option.display }"
   >
     <div class="tabs-content">
       <el-tabs v-model="tabValue" v-bind="option.params" class="demo-tabs">
@@ -32,6 +32,10 @@
                       custom-class="tabs-layout-group__body"
                       v-model="option.column[tabIndex].column[index]"
                       v-model:select="selectItem"
+                      :is-active="
+                        parentData.type == element.type && parentData.prop == element.prop
+                      "
+                      :is-curr-active="isActive && parentData.tabsIndex === tabIndex"
                       @del-group="handleDelColumn(index, tabIndex)"
                       @copy-group="handleCopyColumn(index, tabIndex)"
                       @select-group="handleselectItem(index, tabIndex)"
@@ -53,6 +57,7 @@
                           :ref="(el) => handleSetRef(el, element, tabIndex)"
                           v-model="option.column[tabIndex].column[index]"
                           v-model:select="selectItem"
+                          :is-curr-active="isActive"
                           @del-table="handleDelColumn(index, tabIndex)"
                           @copy-table="handleCopyColumn(index, tabIndex)"
                           @select-table="handleselectItem(index, tabIndex)"
@@ -65,7 +70,10 @@
                           :prop="element.prop"
                           :class="[
                             {
-                              'active-item': selectItem.prop == element.prop,
+                              'active-item':
+                                isActive &&
+                                parentData.tabsIndex === tabIndex &&
+                                selectItem.prop == element.prop,
                               required: element.required,
                               hide: !element.display,
                               comboBox: element.type == 'comboBox'
@@ -106,7 +114,11 @@
                             :controlParams="element.params"
                           ></LayoutItem>
                           <LayoutButton
-                            v-if="selectItem.prop == element.prop"
+                            v-if="
+                              isActive &&
+                              parentData.tabsIndex === tabIndex &&
+                              selectItem.prop == element.prop
+                            "
                             type="group-item"
                             @del-column="handleDelColumn(index, tabIndex)"
                             @copy-column="handleCopyColumn(index, tabIndex)"
@@ -162,9 +174,10 @@ defineOptions({ name: 'LayoutTabs' })
 const props = defineProps({
   // 当前选中的链接
   modelValue: Object,
-  select: Object
+  select: Object,
+  isCurrActive: Boolean
 })
-const { formOption, historyCommit, setParentData } = inject<lowFormDesignType>(
+const { formOption, parentData, historyCommit, setParentData } = inject<lowFormDesignType>(
   lowFormDesignKey
 ) as lowFormDesignType
 
@@ -192,6 +205,13 @@ const propCount = computed(() => {
     tabCount[item.prop] = calcCount(item.column)
   })
   return tabCount
+})
+
+const isActive = computed(() => {
+  if (parentData.value.type == 'layoutTabs' && parentData.value.prop == option.value.prop) {
+    return true
+  }
+  return false
 })
 
 watch(
@@ -247,7 +267,7 @@ const handleTabsEnd = (e, tabsIndex) => {
 
 const handleselectItem = (index, tabsIndex) => {
   selectItem.value = option.value.column[tabsIndex].column[index]
-  setParentData(option.value.type, option.value.prop)
+  setParentData(option.value.type, option.value.prop, tabsIndex)
 }
 const handleDelColumn = (index, tabsIndex) => {
   if (option.value.column[tabsIndex].column.length - 1 == index) {

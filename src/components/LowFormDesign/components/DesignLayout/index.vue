@@ -29,6 +29,8 @@
               :ref="(el) => handleSetRef(el, element)"
               v-model="option.column[index]"
               v-model:select="selectItem"
+              :is-active="parentData.type == element.type && parentData.prop == element.prop"
+              :is-curr-active="!parentData.prop"
               @del-group="handleDelColumn(index)"
               @copy-group="handleCopyColumn(index)"
               @select-group="handleselectItem(index)"
@@ -47,6 +49,7 @@
                   :ref="(el) => handleSetRef(el, element)"
                   v-model="option.column[index]"
                   v-model:select="selectItem"
+                  :is-curr-active="!parentData.prop"
                   @del-table="handleDelColumn(index)"
                   @copy-table="handleCopyColumn(index)"
                   @select-table="handleselectItem(index)"
@@ -57,6 +60,7 @@
                   :ref="(el) => handleSetRef(el, element)"
                   v-model="option.column[index]"
                   v-model:select="selectItem"
+                  :is-curr-active="!parentData.prop"
                   @del-tabs="handleDelColumn(index)"
                   @copy-tabs="handleCopyColumn(index)"
                   @select-tabs="handleselectItem(index)"
@@ -70,7 +74,7 @@
                   :size="option.size || element.size || 'default'"
                   :class="[
                     {
-                      active: selectItem.prop == element.prop,
+                      active: !parentData.prop && selectItem.prop == element.prop,
                       required: element.required,
                       hide: !element.display,
                       comboBox: element.type == 'comboBox'
@@ -105,7 +109,7 @@
                     :controlParams="element.params"
                   ></LayoutItem>
                   <LayoutButton
-                    v-if="selectItem.prop == element.prop"
+                    v-if="!parentData.prop && selectItem.prop == element.prop"
                     @del-column="handleDelColumn(index)"
                     @copy-column="handleCopyColumn(index)"
                   ></LayoutButton>
@@ -134,7 +138,14 @@
 import draggable from 'vuedraggable'
 import { cloneDeep } from 'lodash-es'
 import useDrageed from '@/hooks/design/useDrageed'
-import { LayoutItem, LayoutGroup, LayoutTable, LayoutTabs, LayoutButton, LayoutComboBox } from '../index'
+import {
+  LayoutItem,
+  LayoutGroup,
+  LayoutTable,
+  LayoutTabs,
+  LayoutButton,
+  LayoutComboBox
+} from '../index'
 import { lowFormDesignKey, lowFormDesignType } from '@/utils/symbols'
 import { calcCount } from '../../utils/util'
 
@@ -145,7 +156,7 @@ const props = defineProps({
   modelValue: Object,
   select: Object
 })
-const { historyCommit, setParentData } = inject<lowFormDesignType>(
+const { parentData, historyCommit, setParentData } = inject<lowFormDesignType>(
   lowFormDesignKey
 ) as lowFormDesignType
 

@@ -32,7 +32,7 @@
           type="danger"
           :size="scope.size"
           v-if="isBatchDel"
-          @click="menuHandle({ item: { type: 'batchDelBtn' } })"
+          @click="menuHandle({ item: { prop: 'batchDelBtn' } })"
           v-show="tableSelect.length"
         >
           <Icon :size="14" icon="fluent:delete-16-regular" class="mr-3px" />批量删除
@@ -70,11 +70,20 @@
       <!-- 自定义表单 -->
       <template v-for="c in slotData.form" :key="c.prop" #[`${c.prop}-form`]="scope">
         <AvueSlot
+          v-if="isCell"
           slotType="form"
           :scope="scope"
           :control="c"
           :formType="formType"
           v-model="tableData[scope.index][c.prop]"
+        ></AvueSlot>
+        <AvueSlot
+          v-else
+          slotType="form"
+          :scope="scope"
+          :control="c"
+          :formType="formType"
+          v-model="tableForm[c.prop]"
         ></AvueSlot>
       </template>
       <!-- 自定义列 -->
@@ -159,7 +168,7 @@ const isBatchDel = computed(() => {
 
 const slotData = computed(() => {
   const slotObj = { list: [] as any[], form: [] as any[] }
-  const controlData = controlObj['value'][parentKey.value]
+  const controlData = controlObj.value[parentKey.value]
   for (let key in controlData) {
     controlData[key].forEach((item) => {
       const { slotList } = item
@@ -246,8 +255,8 @@ const initFun = () => {
 }
 
 const initRule = (column) => {
-  for (const prop in rulesObj['value'][parentKey.value]) {
-    rulesObj['value'][parentKey.value][prop].forEach(({ index, rule, ruleStr, type }) => {
+  for (const prop in rulesObj.value[parentKey.value]) {
+    rulesObj.value[parentKey.value][prop].forEach(({ index, rule, ruleStr, type }) => {
       const ruleData = cloneDeep(rule)
       if (type == 'only') {
         ruleData['validator'] = (rule, value, callback) => {

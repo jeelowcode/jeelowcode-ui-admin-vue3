@@ -113,10 +113,10 @@ const parentKey = computed(() => {
 
 const isMonacoEditor = computed(() => {
   let bool = false
-  for (let key in controlObj['value']) {
+  for (let key in controlObj.value) {
     if (bool) break
     if (key.indexOf(`layoutTabs_${props.prop}_`) === 0) {
-      if (controlObj['value'][key].monacoEditor) bool = true
+      if (controlObj.value[key].monacoEditor) bool = true
     }
   }
   return bool
@@ -126,7 +126,7 @@ const slotData = computed(() => {
   const slotObj = {}
   for (let tabKey in tabsOption.value.column) {
     slotObj[tabKey] = { list: [] as any[], form: [] as any[] }
-    const controlData = controlObj['value'][`${parentKey.value}_${tabKey}`]
+    const controlData = controlObj.value[`${parentKey.value}_${tabKey}`]
     for (let key in controlData) {
       controlData[key].forEach((item) => {
         const { slotList } = item
@@ -196,7 +196,7 @@ const initFun = () => {
 
 const initRule = () => {
   const setRule = (column, ruleKey, tabKey) => {
-    const tabRuleObj = rulesObj['value'][ruleKey]
+    const tabRuleObj = rulesObj.value[ruleKey]
     for (const prop in column) {
       if (column[prop].type == 'comboBox') {
         column[prop].rules = [
@@ -297,7 +297,7 @@ const setTabsValue = (tabProp) => {
 }
 const handleTableVerify = (tabProp, errorObj) => {
   return new Promise(async (resolve) => {
-    let tabControl = controlObj['value'][`${props.column.type}_${props.prop}_${tabProp}`]
+    let tabControl = controlObj.value[`${props.column.type}_${props.prop}_${tabProp}`]
     if (tabControl && tabControl.layoutTable) {
       let promiseArr = [] as any
       tabControl.layoutTable.forEach(({ prop }) => {
