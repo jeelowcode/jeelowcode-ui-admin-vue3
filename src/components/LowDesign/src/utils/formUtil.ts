@@ -118,8 +118,7 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
           if (dictText) fieldCodeList.push(dictText)
           if (['tree', 'cascader'].includes(type)) fieldCodeList.push('pid')
           const text = encryptAES(JSON.stringify({ dbformId: dictTable, fieldCodeList: [...new Set(fieldCodeList)] }))
-          column[prop] = {
-            ...column[prop],
+          Object.assign(columnItem, {
             dictCode, dictTable, dictText: dictText || dictCode,
             dictType: 'defaultTable',
             dicUrl: `/jeelowcode/dbform-data/list/${dictTable}`,
@@ -133,7 +132,7 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
               }
               return res.records
             }
-          }
+          })
         }
       }
       //处理字典排除值
