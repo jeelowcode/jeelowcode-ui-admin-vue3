@@ -113,6 +113,7 @@ const tableOption = reactive({
         { label: '统计', value: 'summary' }
       ],
       sortable: true,
+      editDisabled: true,
       width: 140,
       span: 12,
       control: (val) => {

@@ -116,6 +116,7 @@ const tableOption = reactive({
         { label: '导出', value: 'export' }
       ],
       sortable: true,
+      editDisabled: true,
       width: 140,
       span: 12,
       control: (val) => {
