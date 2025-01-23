@@ -427,6 +427,10 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
       if (!['title', 'layoutTable'].includes(columnItem.type)) delete columnItem.value //默认值只能对新增生效
       if (formType == 'view' && isCell) columnItem.cell = false
     }
+    //表格布局列隐藏处理
+    if (columnItem.display === false && parentProp && parentProp.indexOf('layoutTable') === 0) {
+      columnItem.hide = true
+    }
 
     const { isControl, isForm, isList } = verifyControl
     if (isControl) {
