@@ -40,7 +40,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
     children: [
       {
         path: '/redirect/:path(.*)',
-        name: 'Redirect',
+        name: 'RedirectPage',
         component: () => import('@/views/Redirect/Redirect.vue'),
         meta: {}
       }
@@ -310,7 +310,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
   {
     path: '/form/external/:type/:id',
     component: () => import('@/views/lowdesign/formView/index.vue'),
-    name: '',
+    name: 'formExternal',
     meta: {
       hidden: true,
       title: '表单',
