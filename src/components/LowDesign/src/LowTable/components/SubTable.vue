@@ -199,6 +199,22 @@ const initOnlyRule = (ruleObj, column) => {
   }
 }
 
+const verifyForm = () => {
+  const errorObj = { valid: true, prop: '', errorMsg: '', tabProp: props.prop }
+  return new Promise((resolve) => {
+    crudRef.value.validateCellForm().then((res) => {
+      if (res) {
+        const oneKey = Object.keys(res)[0]
+        const oneKeyList = oneKey.split('.')
+        errorObj.prop = oneKeyList[2]
+        errorObj.errorMsg = res[oneKey].message
+        errorObj.valid = false
+      }
+      resolve(errorObj)
+    })
+  })
+}
+
 const menuLeftHandle = (type) => {
   if (type == 'addBtn') rowAdd()
   if (type == 'batchDelBtn') rowDel(selectIndexs.value)
@@ -235,7 +251,12 @@ onMounted(() => {
   initTable()
 })
 
-defineExpose({ prop: props.prop, tableId: props.tableId, tableOption: tableOption.value })
+defineExpose({
+  prop: props.prop,
+  tableId: props.tableId,
+  tableOption: tableOption.value,
+  verifyForm
+})
 </script>
 
 <style lang="scss" scoped>

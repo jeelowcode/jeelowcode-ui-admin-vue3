@@ -5,6 +5,7 @@ import { encryptAES } from '@/components/LowDesign/src/utils/aes'
 import { cloneDeep } from 'lodash-es'
 import { formatDate } from '@/utils/formatTime'
 import { callApiFun, setDeepObject, isValidJson, stringToArr, ruleLeng } from './util';
+import { registerComp } from './registerComponent';
 import * as DicApi from '@/api/design/dic'
 import * as TableApi from '@/api/design/table'
 import { listToTree } from '@/utils/tree';
@@ -225,7 +226,10 @@ const initColumn = (data, componentData, columnParams) => {
           dictTextFormatter,
           props: { lable: dictText || dictCode, value: dictCode },
           formatter: (row, value, valueText, column) => {
-            if (!value) return ''
+            if (!value) {
+              row[`$${column.prop}`] = ''
+              return ''
+            }
             const key = `${column.dictTable}&${column.dictText}`
             row[`$${column.prop}`] = value.split(',').map(id => {
               const text = lowStore.dicObj[key]?.[id] || ''
@@ -250,7 +254,10 @@ const initColumn = (data, componentData, columnParams) => {
       let configData: any = {
         findType: 'all',
         formatter: (row, value, valueText, column) => {
-          if (!value) return ''
+          if (!value) {
+            row[`$${column.prop}`] = ''
+            return ''
+          }
           if (typeof value == 'number') value = value + ''
           row[`$${column.prop}`] = value.split(',').map(id => {
             const text = lowStore.dicObj[controlType]?.[id] || ''
@@ -308,7 +315,10 @@ const initColumn = (data, componentData, columnParams) => {
           })
         },
         formatter: (row, value, valueText, column) => {
-          if (!value) return ''
+          if (!value) {
+            row[`$${column.prop}`] = ''
+            return ''
+          }
           const separator = column.separator || (column.multiple ? ' | ' : '/')
           if (isValidJson(value)) value = JSON.parse(value)
           row[`$${column.prop}`] = (value instanceof Array ? value : value.split(',')).map(id => {
@@ -363,9 +373,7 @@ const initColumn = (data, componentData, columnParams) => {
           if (!random) {
             random = `key_${Math.ceil(Math.random() * 9999999)}`
             componentData['pathOnly'][controlUrl] = random
-            componentData[random] = defineAsyncComponent(
-              () => import(/* @vite-ignore */ `../../../../${controlUrl}`)
-            )
+            componentData[random] = registerComp(controlUrl)
           }
           column[fieldCode].componentKey = random
           verifyControl.isForm = true
@@ -443,7 +451,10 @@ const initColumn = (data, componentData, columnParams) => {
           })
         },
         formatter: (row, value, valueText, column) => {
-          if (!value) return ''
+          if (!value) {
+            row[`$${column.prop}`] = ''
+            return ''
+          }
           const key = `${column.dictTable}&${column.dictText}`
           const separator = column.separator || ' | '
           if (controlType == 'cascader' && isValidJson(value)) value = JSON.parse(value)
@@ -642,8 +653,11 @@ export const initTableOption = (data, context) => {
   }
   if ((dicSelectType || dbForm.tableSelect) == 'radio') {
     //添加单选字段
-    tableOption.column['lowSelectRadio'] = { label: '', display: false, width: 50, overHidden: false, fixed: true, showColumn: false }
-    tableOption.indexFixed = false
+    tableOption.column = {
+      lowSelectRadio: { label: '', display: false, width: 50, overHidden: false, fixed: true, showColumn: false },
+      ...tableOption.column,
+    }
+    tableOption.index = false
   }
   for (const key in defaultBtnObj) {
     const btnItem = { ...defaultBtnObj[key], buttonShow: dbForm.basicFunction.includes(key) ? 'Y' : 'N', buttonCode: key }
@@ -833,12 +847,17 @@ export const tableFormatting = (data, column, otherData: any = {}) => {
 
 //表单存储数据格式化
 export const saveFormFormatting = (data, column) => {
-  for (const key in data) {
-    //处理清空后值为undefined、null问题
-    if (data[key] === undefined || data[key] === null) data[key] = ''
-    //处理空字符串数组问题
-    if (data[key] === '[]') data[key] = ''
+  const formatting = (currData) => {
+    for (const key in currData) {
+      //处理清空后值为undefined、null问题
+      if (currData[key] === undefined || currData[key] === null) currData[key] = ''
+      //处理空字符串数组问题
+      if (currData[key] === '[]') currData[key] = ''
+    }
+    return currData
   }
+  if (data instanceof Array) data = data.map(item => formatting(item))
+  else formatting(data)
   return data
 }
 

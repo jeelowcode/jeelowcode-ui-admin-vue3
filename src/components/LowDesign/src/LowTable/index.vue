@@ -171,6 +171,7 @@
           <!-- 自定义附表表单 -->
           <template #lowCustomSubTable-form="{ type, disabled, column }">
             <avue-tabs
+              ref="subTabsRef"
               :option="column.tabsOption"
               @change="(tab) => (subTabsValue = tab)"
             ></avue-tabs>
@@ -336,6 +337,7 @@ import {
 } from '../utils/tableUtil'
 import { addScssStyle, delScssStyle, setDeepObject, getDicValue, validatenull } from '../utils/util'
 import useFunObj from '../utils/useFun'
+import { registerComp } from '../utils/registerComponent'
 import download from '@/utils/download'
 import { formattingStrFunction } from '@/utils/lowDesign'
 import { cloneDeep } from 'lodash-es'
@@ -413,6 +415,7 @@ const subTableObj = ref({})
 const subTabsValue = ref<any>({})
 const subFormRef = ref({})
 const subTableRef = ref({})
+const subTabsRef = ref()
 
 const erpTabsOption = ref<any>({})
 const menuLeftShow = ref(true)
@@ -761,6 +764,34 @@ const subTableInit = () => {
         if (index == 0) subTabsValue.value = erpTabsOption.value.column[0]
       }
     })
+  })
+}
+
+const verifySubTable = (loading) => {
+  return new Promise(async (resolve) => {
+    if (!tableInfo.value.subTable?.length) return resolve(true)
+    const tabsColumn = tableOption.value.column.lowCustomSubTable.tabsOption.column
+    const promiseArr: any[] = []
+    tabsColumn?.forEach((tab) => {
+      if (tab.subType === 'many' && subTableRef.value[tab.prop]) {
+        promiseArr.push(subTableRef.value[tab.prop].verifyForm())
+      } else if (tab.subType === 'one') {
+        promiseArr.push(subFormRef.value[tab.prop].verifyForm())
+      }
+    })
+    let isVerify = true
+    if (promiseArr.length) {
+      const ruleList = await Promise.all(promiseArr)
+      for (const ruleItem of ruleList) {
+        if (!ruleItem.valid) {
+          subTabsRef.value.active = tabsColumn.findIndex((tab) => tab.prop == ruleItem.tabProp) + ''
+          isVerify = false
+          break
+        }
+      }
+    }
+    if (!isVerify) loading()
+    resolve(isVerify)
   })
 }
 
@@ -1412,6 +1443,8 @@ const executeAfterRequest = (type, formData) => {
   })
 }
 const rowSave = async (form, done, loading) => {
+  const subVerify = await verifySubTable(loading)
+  if (!subVerify) return
   const formData = saveFormatting(form)
   const { mainProp } = tableInfo.value
   if (mainProp) {
@@ -1433,6 +1466,8 @@ const rowSave = async (form, done, loading) => {
   } else loading()
 }
 const rowUpdate = async (form, index, done, loading) => {
+  const subVerify = await verifySubTable(loading)
+  if (!subVerify) return
   const formData = saveFormatting(form)
   if (isLazyTree.value && formData.pid === '') formData.pid = 0
   const apiData = await executeBeforeRequest('edit', formData)
@@ -1552,9 +1587,7 @@ const getComponentRandom = (path) => {
   if (!random) {
     random = `key_${Math.ceil(Math.random() * 9999999)}`
     componentObj.value['pathOnly'][path] = random
-    componentObj.value[random] = defineAsyncComponent(
-      () => import(/* @vite-ignore */ `../../../../${path}`)
-    )
+    componentObj.value[random] = registerComp(path)
   }
   return random
 }

@@ -114,6 +114,7 @@ import {
   submitDataFormatting
 } from '../utils/formUtil'
 import { addScssStyle, delScssStyle, setDeepObject } from '../utils/util'
+import { registerComp } from '../utils/registerComponent'
 import { formattingStrFunction } from '@/utils/lowDesign'
 import { lowFormKey } from '@/utils/symbols'
 import { cloneDeep } from 'lodash-es'
@@ -376,9 +377,7 @@ const getComponentRandom = (path) => {
   if (!random) {
     random = `key_${Math.ceil(Math.random() * 9999999)}`
     componentObj.value['pathOnly'][path] = random
-    componentObj.value[random] = defineAsyncComponent(
-      () => import(/* @vite-ignore */ `../../../../${path}`)
-    )
+    componentObj.value[random] = registerComp(path)
   }
   return random
 }
@@ -543,6 +542,11 @@ provide(lowFormKey, {
   controlObj,
   rulesObj,
   useFun,
+  useImport,
+  message,
+  enhanceData: props.enhanceData,
+  formData,
+  viewLoading,
   getComponent: () => componentObj,
   enhanceErrorTip,
   handleMonacoEditorClick

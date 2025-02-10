@@ -3,6 +3,7 @@ import { useDictStoreWithOut } from '@/store/modules/dict'
 import { useLowStoreWithOut } from '@/store/modules/low'
 import { handleStrObj } from '@/utils/lowDesign'
 import { callApiFun, stringToArr, isValidJson } from './util'
+import { registerComp } from './registerComponent'
 import { patternObj } from './verifyOption';
 import { formatDate } from '@/utils/formatTime'
 import { encryptAES } from '@/components/LowDesign/src/utils/aes'
@@ -187,9 +188,7 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
           if (!random) {
             random = `key_${Math.ceil(Math.random() * 9999999)}`
             componentData['pathOnly'][controlUrl] = random
-            componentData[random] = defineAsyncComponent(
-              () => import(/* @vite-ignore */ `../../../../${controlUrl}`)
-            )
+            componentData[random] = registerComp(controlUrl)
           }
           columnItem.componentKey = random
           verifyControl.isForm = true
@@ -217,7 +216,10 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
       if (type == 'dicTableSelect') {
         //表格选择回显
         columnItem.formatter = (row, value, valueText, column) => {
-          if (!value) return ''
+          if (!value) {
+            row[`$${column.prop}`] = ''
+            return ''
+          }
           const key = `${column.dictTable}&${column.dictText}`
           const { dictTextFormatter, dictCode, dictText } = column
           row[`$${column.prop}`] = value.split(',').map(id => {
@@ -233,7 +235,10 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
       } else {
         //用户、部门回显
         columnItem.formatter = (row, value, valueText, column) => {
-          if (!value) return ''
+          if (!value) {
+            row[`$${column.prop}`] = ''
+            return ''
+          }
           if (typeof value == 'number') value = value + ''
           row[`$${column.prop}`] = value.split(',').map(id => {
             const text = lowStore.dicObj[type]?.[id] || ''
@@ -271,7 +276,10 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
         },
         dataType: columnItem.multiple ? 'json' : 'string',
         formatter: (row, value, valueText, column) => {
-          if (!value) return ''
+          if (!value) {
+            row[`$${column.prop}`] = ''
+            return ''
+          }
           const separator = column.separator || (column.multiple ? ' | ' : '/')
           if (isValidJson(value)) value = JSON.parse(value)
           row[`$${column.prop}`] = (value instanceof Array ? value : value.split(',')).map(id => {
@@ -577,6 +585,13 @@ export const submitDataFormatting = (formOption, formData) => {
   const ergColumn = (column, data) => {
     for (const prop in column) {
       const { type } = column[prop]
+      //处理清空后值为undefined、null问题
+      if (data.hasOwnProperty(prop) && (data[prop] === undefined || data[prop] === null)) {
+        data[prop] = ''
+      }
+      //处理空字符串数组问题
+      if (data[prop] === '[]') data[prop] = ''
+
       if (type == 'layoutTable') {
         if (data[prop]?.length) {
           data[prop] = data[prop].map(item => {

@@ -1,4 +1,5 @@
 import { callApiFun } from './util'
+import { importFile } from './registerComponent'
 import { cloneDeep } from 'lodash-es'
 import { listToTree } from '@/utils/tree';
 import { formatDate, formatPast, betweenDay } from '@/utils/formatTime'
@@ -23,10 +24,11 @@ export default {
   decryptAES,//aes解密
   useUserStoreWithOut, //用户信息
   dynamicImport: async (path) => { //动态导入模块
-    const module = await import(/* @vite-ignore */ `../../../../${path}`).catch((error) => {
-      console.log(error)
-      return false
-    })
-    return module
+    const file = importFile(path)
+    if (file) {
+      const module = await file()
+      return module
+    }
+    return file
   },
 }

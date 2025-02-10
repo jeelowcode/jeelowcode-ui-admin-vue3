@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import { designPopup } from './types/designPopup'
+import { registerComp } from '../src/utils/registerComponent'
 
 defineOptions({ name: 'ControlView' })
 
@@ -51,7 +52,7 @@ const componentData = computed(() => {
 })
 const initControl = async () => {
   isInit.value = false
-  component = defineAsyncComponent(() => import(/* @vite-ignore */ `../../../${props.controlPath}`))
+  component = registerComp(props.controlPath) as any
   setTimeout(() => {
     isInit.value = true
   }, 30)

@@ -88,10 +88,19 @@ const props = withDefaults(defineProps<Props>(), {
     return {}
   }
 })
-const { controlObj, rulesObj, useFun, getComponent, enhanceErrorTip, handleMonacoEditorClick } =
-  inject<LowFormType>(lowFormKey) as LowFormType
-
-const message = useMessage()
+const {
+  controlObj,
+  rulesObj,
+  useFun,
+  useImport,
+  enhanceData,
+  message,
+  formData,
+  viewLoading,
+  getComponent,
+  enhanceErrorTip,
+  handleMonacoEditorClick
+} = inject<LowFormType>(lowFormKey) as LowFormType
 
 const avueFormRef = ref<any>({})
 const formSlotRef = ref({})

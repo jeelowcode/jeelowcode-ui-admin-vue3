@@ -23,6 +23,11 @@ export interface LowFormType {
   controlObj: Ref<object>
   rulesObj: Ref<object>
   useFun: object
+  useImport: object
+  enhanceData: object
+  message: object,
+  formData: Ref<object>
+  viewLoading: Ref<boolean>
   getComponent: () => object
   enhanceErrorTip: (tip: string, error) => any
   handleMonacoEditorClick: (params: object, fun: Function) => any

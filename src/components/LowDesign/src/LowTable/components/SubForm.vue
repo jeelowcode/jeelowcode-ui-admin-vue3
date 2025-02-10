@@ -94,11 +94,27 @@ const initForm = () => {
   }, 100)
 }
 
+const verifyForm = () => {
+  const errorObj = { valid: true, prop: '', errorMsg: '', tabProp: props.prop }
+  return new Promise(async (resolve) => {
+    formRef.value.validate(async (valid, hide, msg) => {
+      hide()
+      if (!valid) {
+        const oneKey = Object.keys(msg)[0]
+        errorObj.valid = false
+        errorObj.prop = oneKey
+        errorObj.errorMsg = msg[oneKey].message
+      }
+      resolve(errorObj)
+    })
+  })
+}
+
 onMounted(() => {
   initForm()
 })
 
-defineExpose({ prop: props.prop, tableId: props.tableId, formOption: formOption.value })
+defineExpose({ prop: props.prop, tableId: props.tableId, formOption: formOption.value, verifyForm })
 </script>
 
 <style lang="scss" scoped>

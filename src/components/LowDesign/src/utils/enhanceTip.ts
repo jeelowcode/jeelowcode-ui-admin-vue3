@@ -18,7 +18,7 @@ const defaultJsTriggerUseFun = [
 `, detail: '接口调用', kind: functionKind
   },
   {
-    label: 'dynamicImport', insertText: `dynamicImport('store/modules/user').then(module => {
+    label: 'dynamicImport', insertText: `dynamicImport('store/modules/user.ts').then(module => {
   if (module) {
     console.log(module)
   }
@@ -62,7 +62,7 @@ const tableJsEnhance = {
       label: 'initImport', detail: '导入其他模块', kind: functionKind,
       insertText: `initImport() { //初始化导入其他模块(其他增强可通过 useImport 获取)
   return new Promise(async resolve => {
-    const userModule = await useFun.dynamicImport('store/modules/user')
+    const userModule = await useFun.dynamicImport('store/modules/user.ts')
     const userStore = userModule.useUserStoreWithOut()
     resolve({ userStore })
     //例如：在initOption中使用 useImport.userStore.user 可以获取到用户信息
@@ -205,18 +205,22 @@ const tableJsEnhance = {
 }
 
 //表单设计 默认增强提示词
+const defaultTipList = [
+  { label: 'formType', insertText: 'props.formType', detail: '当前表单类型', kind: fieldKind },
+  { label: 'formData', insertText: 'formData.value', detail: '表单数据', kind: fieldKind },
+  { label: 'viewLoading', insertText: 'viewLoading.value', detail: '表单Loading', kind: fieldKind },
+  { label: 'useFun', insertText: 'useFun', detail: '增强可调用的方法', kind: fieldKind },
+  { label: 'enhanceData', insertText: 'props.enhanceData', detail: '外部传递的配置', kind: fieldKind },
+  { label: 'message', insertText: 'message', detail: '消息弹窗', kind: fieldKind },
+  { label: 'useImport', insertText: 'useImport.', detail: '异步导入的模块', kind: fieldKind },
+]
 const defaultJsEnhance = {
   tipList: [
-    { label: 'formType', insertText: 'props.formType', detail: '当前表单类型', kind: fieldKind },
     { label: 'formOption', insertText: 'formOption.value', detail: '表单配置', kind: fieldKind },
-    { label: 'formData', insertText: 'formData.value', detail: '表单数据', kind: fieldKind },
-    { label: 'viewLoading', insertText: 'viewLoading.value', detail: '表单Loading', kind: fieldKind },
-    { label: 'useFun', insertText: 'useFun', detail: '增强可调用的方法', kind: fieldKind },
     { label: 'avueFormRef', insertText: 'avueFormRef.value', detail: 'AVUE表单实例', kind: fieldKind },
     { label: 'formTableRef', insertText: 'formTableRef.value', detail: '表格布局实例', kind: fieldKind },
     { label: 'formTabsRef', insertText: 'formTabsRef.value', detail: '选项卡布局实例', kind: fieldKind },
-    { label: 'enhanceData', insertText: 'props.enhanceData', detail: '外部传递的配置', kind: fieldKind },
-    { label: 'message', insertText: 'message', detail: '消息弹窗', kind: fieldKind },
+    ...defaultTipList,
   ],
   triggerObj: {
     'useFun.': [
@@ -246,7 +250,7 @@ const formJsEnhance = {
       label: 'initImport', detail: '导入其他模块', kind: functionKind,
       insertText: `initImport() { //初始化导入其他模块(其他增强可通过 useImport 获取)
   return new Promise(async resolve => {
-    const userModule = await useFun.dynamicImport('store/modules/user')
+    const userModule = await useFun.dynamicImport('store/modules/user.ts')
     const userStore = userModule.useUserStoreWithOut()
     resolve({ userStore })
     //例如：在initOption中使用 useImport.userStore.user 可以获取到用户信息
@@ -260,16 +264,16 @@ const formJsEnhance = {
 },`,
     },
     {
-      label: 'initData', detail: '初始化默认值', kind: functionKind,
+      label: 'initData', detail: '表单赋值前执行', kind: functionKind,
       insertText: `initData(formData) {
-  return new Promise(resolve => { //初始化默认值
+  return new Promise(resolve => { //表单赋值前执行
     resolve(formData)
   })
 },`,
     },
     {
-      label: 'beforeSubmit', detail: '提交前数据处理', kind: functionKind,
-      insertText: `beforeSubmit(submitData) { //提交前数据处理
+      label: 'beforeSubmit', detail: '表单提交前执行', kind: functionKind,
+      insertText: `beforeSubmit(submitData) { //表单提交前执行
   return new Promise((resolve, reject) => {
     resolve(submitData)
   })
@@ -286,16 +290,16 @@ const formJsEnhance = {
 
 
     {
-      label: 'verifyError', detail: '校验失败回调', kind: functionKind,
+      label: 'verifyError', detail: '表单校验失败后执行', kind: functionKind,
       insertText: `verifyError(msg) {
-  return new Promise(resolve => { //校验失败回调
+  return new Promise(resolve => { //表单校验失败后执行
     resolve(true)
   })
 },`,
     },
     {
-      label: 'afterReset', detail: '清空数据回调', kind: functionKind,
-      insertText: `afterReset() { //清空数据回调
+      label: 'afterReset', detail: '清空数据后执行', kind: functionKind,
+      insertText: `afterReset() { //清空数据后执行
 
 },`,
     },
@@ -314,13 +318,12 @@ const formJsEnhance = {
 //表单设计-选项卡增强提示词
 const formTabsEnhance = {
   tipList: [
-    { label: 'formType', insertText: 'props.formType', detail: '当前表单类型', kind: fieldKind },
     { label: 'tabsOption', insertText: 'tabsOption.value', detail: '选项卡配置', kind: fieldKind },
     { label: 'tabsData', insertText: 'tabsData.value', detail: '选项卡数据', kind: fieldKind },
     { label: 'tabsValue', insertText: 'tabsValue.value', detail: '当前选项卡下标值', kind: fieldKind },
-    { label: 'useFun', insertText: 'useFun', detail: '增强可调用的方法', kind: fieldKind },
     { label: 'avueFormRef', insertText: 'avueFormRef.value', detail: '选项卡下的AVUE表单实例', kind: fieldKind },
     { label: 'formTableRef', insertText: 'formTableRef.value', detail: '选项卡下的表格布局实例', kind: fieldKind },
+    ...defaultTipList,
   ],
   triggerObj: defaultJsEnhance.triggerObj
 }
@@ -328,14 +331,13 @@ const formTabsEnhance = {
 //表单设计-表格布局增强提示词
 const formTableEnhance = {
   tipList: [
-    { label: 'formType', insertText: 'props.formType', detail: '当前表单类型', kind: fieldKind },
     { label: 'tableOption', insertText: 'tableOption.value', detail: '当前表格配置', kind: fieldKind },
     { label: 'tableData', insertText: 'tableData.value', detail: '表格数据', kind: fieldKind },
     { label: 'tableSelect', insertText: 'tableSelect.value', detail: '当前表格勾选数据', kind: fieldKind },
     { label: 'headerBtn', insertText: 'headerBtn.value', detail: '头部按钮配置', kind: fieldKind },
     { label: 'menuBtn', insertText: 'menuBtn.value', detail: '操作列按钮配置', kind: fieldKind },
-    { label: 'useFun', insertText: 'useFun', detail: '增强可调用的方法', kind: fieldKind },
     { label: 'avueCrudRef', insertText: 'avueCrudRef.value', detail: '当前Avue表格实例', kind: fieldKind },
+    ...defaultTipList,
   ],
   triggerObj: defaultJsEnhance.triggerObj
 }
