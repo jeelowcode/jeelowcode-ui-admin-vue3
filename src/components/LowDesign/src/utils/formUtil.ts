@@ -645,7 +645,7 @@ export const findOptionField = (formOption: object, prop: string, parentProp?: s
     if (obj[findProp]) return (fieldData = obj[findProp])
     for (const key in obj) {
       const type = obj[key].type
-      if (fieldData || !['layoutTable', 'layoutTabs', 'tab'].includes(type)) break
+      if (fieldData || !['layoutTable', 'layoutTabs', 'tab'].includes(type)) continue
       eachOption(obj[key])
     }
   }
