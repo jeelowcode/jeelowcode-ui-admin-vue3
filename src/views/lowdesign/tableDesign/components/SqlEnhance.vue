@@ -36,6 +36,25 @@
             <Icon :size="16" icon="mi:delete" class="mr-3px" />批量删除
           </el-button>
         </template>
+        <template #buttonCode-form="{ size, column }">
+          <div class="flex">
+            <avue-select
+              v-model="tableForm[column.prop]"
+              :size="size"
+              :placeholder="`请选择 ${column.label}`"
+              :dic="column.dicData"
+            ></avue-select>
+            <div
+              class="absolute left-110% whitespace-nowrap c-#be123c"
+              v-if="tableForm[column.prop]"
+            >
+              <span v-if="['add', 'edit', 'delete', 'import'].includes(tableForm[column.prop])">
+                支持新增、删除、修改sql语句
+              </span>
+              <span v-else>支持查询sql语句</span>
+            </div>
+          </div>
+        </template>
         <template #executeSql-form="{ size, column }">
           <avue-input
             type="textarea"
@@ -119,6 +138,7 @@ const tableOption = reactive({
       editDisabled: true,
       width: 140,
       span: 12,
+      row: true,
       control: (val) => {
         let bool = false
         if (typeObj.value[val] !== undefined && typeObj.value[val] >= 1) bool = true
