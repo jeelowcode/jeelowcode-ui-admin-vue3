@@ -1,4 +1,4 @@
-export {}
+export { }
 declare global {
   interface Fn<T = any> {
     (...arg: T[]): T
@@ -13,6 +13,9 @@ declare global {
   type ComponentRef<T> = InstanceType<T>
 
   type LocaleType = 'zh-CN' | 'en'
+
+  declare type TimeoutHandle = ReturnType<typeof setTimeout>
+  declare type IntervalHandle = ReturnType<typeof setInterval>
 
   type AxiosHeaders =
     | 'application/json'

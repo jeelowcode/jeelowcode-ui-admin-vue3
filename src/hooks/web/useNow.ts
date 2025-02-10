@@ -1,4 +1,4 @@
-import { dateUtil } from '@/utils/dateUtil'
+import dayjs from 'dayjs'
 import { reactive, toRefs } from 'vue'
 import { tryOnMounted, tryOnUnmounted } from '@vueuse/core'
 
@@ -17,7 +17,7 @@ export const useNow = (immediate = true) => {
   })
 
   const update = () => {
-    const now = dateUtil()
+    const now = dayjs()
 
     const h = now.format('HH')
     const m = now.format('mm')
