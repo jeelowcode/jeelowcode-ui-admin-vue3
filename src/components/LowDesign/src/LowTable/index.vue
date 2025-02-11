@@ -770,7 +770,7 @@ const subTableInit = () => {
 const verifySubTable = (loading) => {
   return new Promise(async (resolve) => {
     if (!tableInfo.value.subTable?.length) return resolve(true)
-    const tabsColumn = tableOption.value.column.lowCustomSubTable.tabsOption.column
+    const tabsColumn = tableOption.value.column.lowCustomSubTable?.tabsOption.column
     const promiseArr: any[] = []
     tabsColumn?.forEach((tab) => {
       if (tab.subType === 'many' && subTableRef.value[tab.prop]) {
