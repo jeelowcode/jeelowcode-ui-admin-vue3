@@ -67,6 +67,20 @@ import VueDOMPurifyHTML from 'vue-dompurify-html' // 解决v-html 的安全隐�
 const setupAll = async () => {
   const app = createApp(App)
 
+  //屏蔽avue未处理的问题引发的警告或报错减少控制台无用内容显示
+  app.config.warnHandler = (msg, instance, trace) => {
+    try {
+      if (msg.includes('<AvueUpload')) return;
+    } catch (error) { }
+    console.warn(msg, instance, trace);
+  };
+  app.config.errorHandler = (err, instance, info) => {
+    try {
+      if (`${err}`.includes('this.text.forEach is not a function')) return;
+    } catch (error) { }
+    console.error(err, instance, info);
+  };
+
   await setupI18n(app)
 
   setupStore(app)
@@ -88,7 +102,7 @@ const setupAll = async () => {
 
   app.use(VxeUI)
   app.use(VxeTable, { tooltip: { zIndex: 99999 } })
-  
+
   app.use(Vue3Lottie);
 
   await router.isReady()
