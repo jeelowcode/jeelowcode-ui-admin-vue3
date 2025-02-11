@@ -10,6 +10,8 @@ import * as Java from 'monaco-editor/esm/vs/basic-languages/java/java.js';
 import 'monaco-editor/esm/vs/editor/contrib/find/browser/findController';
 import enhanceTip from '@/components/LowDesign/src/utils/enhanceTip';
 
+import * as sqlFormatter from 'sql-formatter'
+
 interface completions {
   label: string
   insertText: string
@@ -20,6 +22,7 @@ interface completions {
 
 const monacoProviderRef = ref<any>({})
 const providerType = ref('')
+let disposeArr: any[] = []
 //清除提示
 function clearProvider() {
   for (const key in monacoProviderRef.value) monacoProviderRef.value[key]?.dispose()
@@ -126,52 +129,77 @@ function initLanguageProvider() {
   monacoProviderRef.value.javascript = monaco.languages.registerCompletionItemProvider('javascript', javaScriptProvider);
 }
 
+function addMySqlFormat() {
+  const sqlFormatDisposable = monaco.editor.addEditorAction({
+    id: 'format-sql',
+    label: '格式化 SQL',
+    contextMenuGroupId: 'navigation',
+    contextMenuOrder: 1.5,
+    run: (ed) => {
+      const original = ed.getValue();
+      const formatted = sqlFormatter.format(original, {
+        language: 'mysql',
+        params: ['#\\{[^}]+\\}']
+      });
+      ed.setValue(formatted)
+    }
+  })
+  const list = [...(sqlFormatDisposable['_toDispose'] || [])]
+  disposeArr.push(...list)
+}
+
+function emptyDispose() {
+  if (disposeArr.length) {
+    disposeArr.forEach(item => item.dispose && item.dispose())
+    disposeArr = []
+  }
+}
 
 export function useMonacoEditor(language: string = 'javascript') {
   // 编辑器示例
   let monacoEditor: monaco.editor.IStandaloneCodeEditor | null = null
   // 目标元素
   const monacoEditorRef = ref<HTMLElement | null>(null)
-
-
   // 创建实例
   function createEditor(editorOption: monaco.editor.IStandaloneEditorConstructionOptions = {}, type = '') {
     providerType.value = type
     if (!monacoEditorRef.value) return
     initLanguageProvider()
-    monacoEditor = monaco.editor.create(monacoEditorRef.value, {
-      // 初始模型
-      model: monaco.editor.createModel('', language),
+    if (language)
+      monacoEditor = monaco.editor.create(monacoEditorRef.value, {
+        // 初始模型
+        model: monaco.editor.createModel('', language),
 
-      minimap: { enabled: true },
-      // 圆角
-      roundedSelection: true,
-      // 主题
-      theme: 'vs-dark',
-      multiCursorModifier: 'ctrlCmd',
-      // 滚动条
-      scrollbar: {
-        verticalScrollbarSize: 8,
-        horizontalScrollbarSize: 8
-      },
-      // 行号
-      lineNumbers: 'on',
-      // tab大小
-      tabSize: 2,
-      //字体大小
-      fontSize: 14,
-      // 控制编辑器在用户键入、粘贴、移动或缩进行时是否应自动调整缩进
-      autoIndent: 'advanced',
-      autoClosingBrackets: 'always',//补全括号
-      autoClosingQuotes: 'always', //补全冒号
-      // 自动布局
-      automaticLayout: true,
-      fixedOverflowWidgets: true,
-      ...editorOption,
-    })
+        minimap: { enabled: true },
+        // 圆角
+        roundedSelection: true,
+        // 主题
+        theme: 'vs-dark',
+        multiCursorModifier: 'ctrlCmd',
+        // 滚动条
+        scrollbar: {
+          verticalScrollbarSize: 8,
+          horizontalScrollbarSize: 8
+        },
+        // 行号
+        lineNumbers: 'on',
+        // tab大小
+        tabSize: 2,
+        //字体大小
+        fontSize: 14,
+        // 控制编辑器在用户键入、粘贴、移动或缩进行时是否应自动调整缩进
+        autoIndent: 'advanced',
+        autoClosingBrackets: 'always',//补全括号
+        autoClosingQuotes: 'always', //补全冒号
+        // 自动布局
+        automaticLayout: true,
+        fixedOverflowWidgets: true,
+        ...editorOption,
+      })
     return monacoEditor
   }
-
+  emptyDispose()
+  if (language == 'mysql') addMySqlFormat()
   // 格式化
   async function formatDoc() {
     await monacoEditor?.getAction('editor.action.formatDocument')?.run()
@@ -210,11 +238,14 @@ export function useMonacoEditor(language: string = 'javascript') {
     const text = monacoEditor?.getModel()?.getValue() || ''
     const model = monaco.editor.createModel(text, language)
     monacoEditor?.setModel(model)
+    emptyDispose()
+    if (language == 'mysql') addMySqlFormat()
   }
 
   onBeforeUnmount(() => {
     if (monacoEditor) {
       clearProvider()
+      emptyDispose()
       monacoEditor.dispose()
     }
   })
