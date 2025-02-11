@@ -31,10 +31,10 @@
         class="ml-8px mr-8px mt-2px inline-block h-16px w-1px bg-#e8e8e8 .dark:bg-[var(--el-border-color-dark)]"
       ></span>
       <el-dropdown @command="menuHandle" v-if="isMore">
-        <div class="mt--2px cursor-pointer">
+        <div class="mt--2px cursor-pointer flex-basis-48px flex-shrink-0">
           <el-text :size="size" type="primary">
             更多
-            <Icon :size="getIconSize() + 2" icon="iconamoon:arrow-down-2-light" />
+            <Icon class="ml--2px" :size="getIconSize() + 2" icon="iconamoon:arrow-down-2-light" />
           </el-text>
         </div>
         <template #dropdown>

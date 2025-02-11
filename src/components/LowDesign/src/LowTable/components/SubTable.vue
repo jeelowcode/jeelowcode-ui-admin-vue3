@@ -65,6 +65,7 @@ interface Props {
   disabled: boolean
 }
 const props = defineProps<Props>()
+const emit = defineEmits(['execute-custom-btn-enhance'])
 
 const tableForm = ref({})
 const tableData = defineModel<Array<object>>({ default: () => [] })
@@ -217,10 +218,12 @@ const verifyForm = () => {
 
 const menuLeftHandle = (type) => {
   if (type == 'addBtn') rowAdd()
-  if (type == 'batchDelBtn') rowDel(selectIndexs.value)
+  else if (type == 'batchDelBtn') rowDel(selectIndexs.value)
+  else emit('execute-custom-btn-enhance', type)
 }
 const menuHandle = ({ type, row, index }) => {
   if (type == 'delBtn') rowDel(row)
+  else emit('execute-custom-btn-enhance', type, row)
 }
 
 const rowDel = (row) => {
@@ -233,8 +236,8 @@ const rowDel = (row) => {
   })
 }
 
-const rowAdd = () => {
-  crudRef.value.rowCellAdd()
+const rowAdd = (data?) => {
+  crudRef.value.rowCellAdd(data || {})
   setTimeout(() => {
     const tableDom = document.querySelector(
       `.${subClassName.value} .el-table__body-wrapper .el-table__body`
@@ -255,7 +258,9 @@ defineExpose({
   prop: props.prop,
   tableId: props.tableId,
   tableOption: tableOption.value,
-  verifyForm
+  crudRef,
+  verifyForm,
+  rowAdd
 })
 </script>
 

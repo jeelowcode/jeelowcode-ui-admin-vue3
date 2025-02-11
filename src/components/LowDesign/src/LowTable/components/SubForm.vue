@@ -114,7 +114,13 @@ onMounted(() => {
   initForm()
 })
 
-defineExpose({ prop: props.prop, tableId: props.tableId, formOption: formOption.value, verifyForm })
+defineExpose({
+  prop: props.prop,
+  tableId: props.tableId,
+  formOption: formOption.value,
+  formRef,
+  verifyForm
+})
 </script>
 
 <style lang="scss" scoped>

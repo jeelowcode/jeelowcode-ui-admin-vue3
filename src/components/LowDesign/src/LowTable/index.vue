@@ -186,6 +186,7 @@
                   :optionData="subTableObj[sub.tableId]"
                   :type="type"
                   :disabled="disabled"
+                  @execute-custom-btn-enhance="executeCustomBtnEnhance"
                 ></SubTable>
               </template>
               <template v-if="sub.subType == 'one'">
@@ -912,40 +913,39 @@ const customFormClose = (handleType, form, loading) => {
   }
 }
 
+const executeCustomBtnEnhance = (type, row?) => {
+  try {
+    if (jsEnhanceObj.value[type]) {
+      if (row) jsEnhanceObj.value[type](row)
+      else jsEnhanceObj.value[type]()
+    }
+  } catch (error) {
+    enhanceErrorTip(`js增强【${type}】方法执行异常，请检查`, error)
+  }
+}
+
 const menuLeftHandle = (type) => {
   if (type == 'addBtn') {
     if (tableInfo.value.formId) openCustomForm('add')
     else crudRef.value.rowAdd()
-  }
-  if (type == 'batchDelBtn') rowDel(selectIds.value)
-  if (type == 'exportBtn') exportTableData()
-  if (type == 'importBtn') importDialog.value = true
-  try {
-    if (jsEnhanceObj.value[type]) jsEnhanceObj.value[type]()
-  } catch (error) {
-    enhanceErrorTip(`js增强【${type}】方法执行异常，请检查`, error)
-  }
+  } else if (type == 'batchDelBtn') rowDel(selectIds.value)
+  else if (type == 'exportBtn') exportTableData()
+  else if (type == 'importBtn') importDialog.value = true
+  else executeCustomBtnEnhance(type)
 }
 const menuHandle = ({ type, row, index }) => {
   if (type == 'viewBtn') {
     if (tableInfo.value.formId) openCustomForm('view', row)
     else crudRef.value.rowView(row, index)
-  }
-  if (type == 'editBtn') {
+  } else if (type == 'editBtn') {
     if (tableInfo.value.formId) openCustomForm('edit', row)
     else crudRef.value.rowEdit(row, index)
-  }
-  if (type == 'delBtn') rowDel(row)
-  if (type == 'addChild') {
+  } else if (type == 'delBtn') rowDel(row)
+  else if (type == 'addChild') {
     tableForm.value['pid'] = row.id
     if (tableInfo.value.formId) openCustomForm('add')
     else crudRef.value.rowAdd()
-  }
-  try {
-    if (jsEnhanceObj.value[type]) jsEnhanceObj.value[type](row)
-  } catch (error) {
-    enhanceErrorTip(`js增强【${type}】方法执行异常，请检查`, error)
-  }
+  } else executeCustomBtnEnhance(type, row)
 }
 
 const radioClick = (row, index) => {
@@ -1456,7 +1456,7 @@ const rowSave = async (form, done, loading) => {
   let bool = await TableApi.saveTableData(props.tableId, apiData, tableInfo.value.isOpen).catch(
     () => false
   )
-  if (bool) {
+  if (bool !== false) {
     await executeAfterRequest('add', { ...apiData, id: bool })
     if (isLazyTree.value && !isSearchData.value) {
       await partUpdateLazyData(formData, 'add')
@@ -1473,7 +1473,7 @@ const rowUpdate = async (form, index, done, loading) => {
   const apiData = await executeBeforeRequest('edit', formData)
   if (!apiData) return loading()
   const bool = await TableApi.updateTableData(props.tableId, apiData).catch(() => false)
-  if (bool) {
+  if (bool !== false) {
     await executeAfterRequest('edit', apiData)
     if (isLazyTree.value) {
       if (isSearchData.value) resetData()
@@ -1816,6 +1816,7 @@ onUnmounted(() => {
 
 defineExpose({
   crudRef,
+  tableInfo,
   tableOption,
   tableData,
   tablePage,
