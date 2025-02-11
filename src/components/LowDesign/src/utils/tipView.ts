@@ -44,6 +44,7 @@ const SqlEnhance = {
     { label: '是否删除', value: '#{jeelowcode_is_deleted}' },
     { label: '获取当前登录人租户编号', value: '#{jeelowcode_tenant_id}' },
     { label: '获取当前登录人id', value: '#{jeelowcode_user_id}' },
+    { label: '获取当前登录人部门id', value: '#{jeelowcode_user_dept}' },
     { label: '获取当前人账号', value: '#{jeelowcode_user_name}' },
     { label: '获取当前人名称', value: '#{jeelowcode_user_nickname}' },
     { label: '获取主表id', value: '#{jeelowcode_main_id}' },
