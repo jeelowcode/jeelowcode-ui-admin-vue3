@@ -552,7 +552,9 @@ const analysisDataOrigin = async () => {
       let { infoData } = tableInfoOption.formattingInitData(analysisData)
       infoData = infoData.map((item) => {
         for (const key in item) {
-          if (item[key] === null || key == 'fieldList_id') delete item[key]
+          if (item[key] === null || item[key] === undefined || key == 'fieldList_id') {
+            delete item[key]
+          }
         }
         return { ...cloneDeep(tableInfoOption.infoDefaultData.basics), ...item }
       })
