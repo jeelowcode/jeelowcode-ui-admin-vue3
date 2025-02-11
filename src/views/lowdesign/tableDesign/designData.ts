@@ -355,7 +355,7 @@ const infoColumn = {
     queryIsDb: { title: '接口查询', width: 54, align: "center", editRender: { name: 'LowCheckbox' } },
     queryIsWeb: { title: '查询控件', width: 54, align: "center", editRender: { name: 'LowCheckbox' } },
     queryDefaultVal: { title: '查询控件默认值', width: 160, editRender: { name: 'LowInput' } },
-    queryMode: { title: '查询模式', width: 130, editRender: { name: 'LowSelect', verifyEdit: true, dicData: dicObj.queryMode, dicObj: getDicObj('queryMode') } },
+    queryMode: { title: '查询模式', width: 130, editRender: { name: 'LowSelect', dicData: dicObj.queryMode, dicObj: getDicObj('queryMode') } },
     queryConfig: { title: '查询配置', minWidth: 100, editRender: { name: 'LowClickInput', events: {} } },
   },
   dicColumn: {
