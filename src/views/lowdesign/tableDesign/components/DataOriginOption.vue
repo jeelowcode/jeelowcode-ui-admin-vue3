@@ -373,6 +373,42 @@
                       </div>
                     </template>
                   </draggable>
+                  <div>
+                    <div
+                      class="summary-title flex items-center gap-x-10px"
+                      @click="
+                        collapseValue == 'particular'
+                          ? (collapseValue = '')
+                          : (collapseValue = 'particular')
+                      "
+                    >
+                      <div class="flex-1">
+                        <div> 特定占位符 </div>
+                      </div>
+                      <Icon
+                        v-if="collapseValue == 'particular'"
+                        :size="14"
+                        icon="ep:arrow-down"
+                      ></Icon>
+                      <Icon
+                        v-show="collapseValue != 'particular'"
+                        :size="14"
+                        icon="ep:arrow-right"
+                      ></Icon>
+                    </div>
+                    <el-collapse-transition>
+                      <div v-show="collapseValue == 'particular'" class="summary-draggable mb-10px">
+                        <div
+                          class="summary-item cursor-pointer! hover:b-#fff!"
+                          v-for="item in particularDic"
+                          :key="item.value"
+                          @click="copyText(item.value)"
+                        >
+                          <span>{{ item.label }}</span>
+                        </div>
+                      </div>
+                    </el-collapse-transition>
+                  </div>
                   <template v-for="item in tableList" :key="item.value">
                     <div
                       class="summary-title flex items-center gap-x-10px"
@@ -763,7 +799,13 @@
           <el-radio v-model="typeTabsVal" label="custom">自定义</el-radio>
         </template>
         <div class="h-100% p-10px box-border">
-          <div class="mb-10px c-#E6A23C">自定义数据源SQL</div>
+          <div class="mb-10px c-#E6A23C">
+            <span class="mr-20px">自定义数据源SQL</span>
+            <el-button size="small" type="primary" @click="handleSqlTest('custom')">
+              <Icon :size="14" class="is-hover cursor-pointer" icon="mdi:sql-query" />
+              <span>测试</span>
+            </el-button>
+          </div>
           <div class="h-[calc(100%-30px)]">
             <MonacoEditor v-model="customSql" language="mysql"></MonacoEditor>
           </div>
@@ -808,6 +850,7 @@ import draggable from 'vuedraggable'
 import { cloneDeep } from 'lodash-es'
 import { format } from 'sql-formatter'
 import * as TableApi from '@/api/design/table'
+import useCopyText from '@/hooks/design/useCopyText'
 defineOptions({ name: 'DataOriginOption' })
 
 interface Props {
@@ -820,6 +863,7 @@ const isInit = ref(false)
 const originStr = defineModel<string>({ default: '' })
 
 const message = useMessage()
+const { copyText } = useCopyText()
 const typeTabsVal = ref('option')
 const customSql = ref('')
 const tabsValue = ref<any>({})
@@ -858,6 +902,15 @@ const conditionDic = [
 ]
 const conditionObj = {}
 conditionDic.forEach((item) => (conditionObj[item.value] = item.label))
+const particularDic = [
+  { label: '当前登录人租户编号', value: '#{jeelowcode_tenant_id}' },
+  { label: '当前登录人id', value: '#{jeelowcode_user_id}' },
+  { label: '当前人账号', value: '#{jeelowcode_user_name}' },
+  { label: '当前人名称', value: '#{jeelowcode_user_nickname}' },
+  { label: '登录人部门', value: '#{jeelowcode_user_dept}' }
+]
+const particularObj = {}
+particularDic.forEach((item) => (particularObj[item.value] = item.label))
 const orderTypeDic = [
   { label: '升序', value: 'ASC' },
   { label: '降序', value: 'DESC' }
@@ -956,7 +1009,10 @@ watch(
   () => wholeSqlStr.value,
   (val) => {
     try {
-      const text = format(val)
+      const text = format(val, {
+        language: 'mysql',
+        params: ['#\\{[^}]+\\}']
+      })
       wholeSql.value = text
     } catch {}
   }
@@ -1134,7 +1190,7 @@ const handleValue = (filedType, value) => {
   const setValueFormat = (val) => {
     if (!val) return val
     let text = val
-    if (whereType == 'string' && val.indexOf(`'`) == -1) {
+    if (!particularObj[text] && whereType == 'string' && val.indexOf(`'`) == -1) {
       text = `'${val}'`
     }
     return text
@@ -1157,9 +1213,11 @@ const setSelectWidth = (element, num = 0, addClass = '') => {
   }, 30)
 }
 
-const handleSqlTest = async () => {
+const handleSqlTest = async (type?) => {
   await message.confirm('是否确定测试当前SQL?')
-  const data = await TableApi.viewDataOriginTest({ explainSql: wholeSql.value })
+  const data = await TableApi.viewDataOriginTest({
+    explainSql: type == 'custom' ? customSql.value : wholeSql.value
+  })
   if (data.records) {
     testPopup.value = {
       result: JSON.stringify(data, null, '\t'),
