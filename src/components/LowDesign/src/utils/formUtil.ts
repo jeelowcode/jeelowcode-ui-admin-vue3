@@ -520,7 +520,12 @@ export const formDataFormatting = (formOption, formData, formType) => {
     }
   }
   const setTable = (column, data) => {
-    if (data?.length) data.forEach(data => setForm(column, data, 'table'))
+    if (data?.length) data.forEach(item => {
+      if (['add', 'edit'].includes(formType) && item.$cellEdit === undefined) {
+        item.$cellEdit = true
+      }
+      setForm(column, item, 'table')
+    })
     else setForm(column, {}, 'table')
   }
   const setTabs = (column, data) => {
