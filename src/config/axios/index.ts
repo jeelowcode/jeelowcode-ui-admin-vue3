@@ -7,7 +7,7 @@ import { decryptAES } from '@/components/LowDesign/src/utils/aes'
 const { default_headers } = config
 
 const request = (option: any) => {
-  const { url, method, params, data, headersType, responseType, ...config } = option
+  const { url, method, params, data, headersType, responseType, headers, moerData, ...config } = option
   return service({
     url: url,
     method,
@@ -16,8 +16,10 @@ const request = (option: any) => {
     ...config,
     responseType: responseType,
     headers: {
-      'Content-Type': headersType || default_headers
-    }
+      'Content-Type': headersType || default_headers,
+      ...(headers || {})
+    },
+    ...(moerData || {}),
   })
 }
 export default {
@@ -26,7 +28,7 @@ export default {
     if (typeof res == 'string') {
       try {
         res = JSON.parse(decryptAES(res))
-      } catch (error) {}
+      } catch (error) { }
     }
     return res.data as unknown as T
   },
