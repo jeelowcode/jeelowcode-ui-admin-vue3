@@ -97,6 +97,8 @@ const {
   message,
   formData,
   viewLoading,
+  rendControlData,
+  Vue,
   getComponent,
   enhanceErrorTip,
   handleMonacoEditorClick

@@ -28,6 +28,8 @@ export interface LowFormType {
   message: object,
   formData: Ref<object>
   viewLoading: Ref<boolean>
+  rendControlData: Ref<object>,
+  Vue: any,
   getComponent: () => object
   enhanceErrorTip: (tip: string, error) => any
   handleMonacoEditorClick: (params: object, fun: Function) => any

@@ -547,6 +547,8 @@ provide(lowFormKey, {
   enhanceData: props.enhanceData,
   formData,
   viewLoading,
+  rendControlData,
+  Vue,
   getComponent: () => componentObj,
   enhanceErrorTip,
   handleMonacoEditorClick
