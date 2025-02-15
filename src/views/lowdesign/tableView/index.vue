@@ -24,7 +24,6 @@ const setTestTitle = () => {
     if (tableDescribe) {
       if (timer.value) clearInterval(timer.value)
       tagsViewStore.visitedViews = tagsViewStore.visitedViews.map((tag) => {
-        console.log(tag)
         if (tag.path == '/low/table/test/' + tableId.value) {
           if (tag.meta) tag.meta.title = '功能测试：' + tableDescribe
         }
