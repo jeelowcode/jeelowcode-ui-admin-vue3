@@ -162,6 +162,8 @@ const componentRef = ref({})
 
 const { MEDialog, MEData, openMEDialog } = useMEDialog()
 const message = useMessage()
+const route = useRoute()
+const routes = useRouter()
 
 const slotData = computed(() => {
   const slotObj = { list: [] as any[], form: [] as any[] }
@@ -549,6 +551,8 @@ provide(lowFormKey, {
   viewLoading,
   rendControlData,
   Vue,
+  route,
+  routes,
   getComponent: () => componentObj,
   enhanceErrorTip,
   handleMonacoEditorClick

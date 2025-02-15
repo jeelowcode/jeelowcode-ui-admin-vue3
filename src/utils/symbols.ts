@@ -1,6 +1,7 @@
 
 import { DictTypeVO } from '@/api/system/dict/dict.type'
 import { exampleType } from '@/components/LowDesign/src/utils/example'
+import { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 
 interface ParentData {
   type: string
@@ -28,8 +29,10 @@ export interface LowFormType {
   message: object,
   formData: Ref<object>
   viewLoading: Ref<boolean>
-  rendControlData: Ref<object>,
-  Vue: any,
+  rendControlData: Ref<object>
+  Vue: any
+  route:RouteLocationNormalizedLoaded
+  routes:Router
   getComponent: () => object
   enhanceErrorTip: (tip: string, error) => any
   handleMonacoEditorClick: (params: object, fun: Function) => any

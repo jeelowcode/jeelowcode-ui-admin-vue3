@@ -380,6 +380,7 @@ const windowSize = useWindowSize()
 const message = useMessage() // 消息弹窗
 const { t } = useI18n() // 国际化
 const route = useRoute()
+const routes = useRouter()
 const appStore = useAppStore()
 
 const loading = ref(false) // 列表的加载中

@@ -140,6 +140,8 @@ const {
   viewLoading,
   rendControlData,
   Vue,
+  route,
+  routes,
   getComponent,
   enhanceErrorTip,
   handleMonacoEditorClick

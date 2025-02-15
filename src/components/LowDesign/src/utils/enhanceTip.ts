@@ -40,6 +40,26 @@ const defaultMessage = [
   { label: 'notifySuccess', insertText: `notifySuccess('内容')`, detail: '成功通知提示', kind: functionKind },
   { label: 'notifyWarning', insertText: `notifyWarning('内容')`, detail: '警告通知提示', kind: functionKind },
 ]
+const defaultRoute = [
+  { label: 'path', insertText: `path`, detail: '当前路由的路径', kind: fieldKind },
+  { label: 'fullPath', insertText: `fullPath`, detail: '完整的 URL 路径', kind: fieldKind },
+  { label: 'params', insertText: `params`, detail: '动态路由参数', kind: fieldKind },
+  { label: 'query', insertText: `query`, detail: '查询参数', kind: fieldKind },
+  { label: 'hash', insertText: `hash`, detail: 'URL 中的哈希部分', kind: fieldKind },
+  { label: 'name', insertText: `name`, detail: '路由的名称', kind: fieldKind },
+  { label: 'matched', insertText: `matched`, detail: '当前路由匹配的所有路由记录的数组，包含嵌套路由的信息', kind: fieldKind },
+  { label: 'meta', insertText: `meta`, detail: '路由元信息', kind: fieldKind },
+  { label: 'redirectedFrom', insertText: `redirectedFrom`, detail: '如果当前路由是从另一个路由重定向过来的，这个属性会指向原始路由', kind: fieldKind },
+]
+const defaultRoutes = [
+  { label: 'push', insertText: `push({ path: '/index' })`, detail: '导航到新路由', kind: functionKind },
+  { label: 'replace', insertText: `replace('/index')`, detail: '替换当前路由', kind: functionKind },
+  { label: 'go', insertText: `go(-1)`, detail: '在历史记录中前进或后退', kind: functionKind },
+  { label: 'back', insertText: `back()`, detail: '后退一步', kind: functionKind },
+  { label: 'forward', insertText: `forward()`, detail: '前进一步', kind: functionKind },
+  { label: 'currentRoute', insertText: `currentRoute()`, detail: ' 当前路由对象', kind: functionKind },
+
+]
 
 //表单开发-js增强提示词
 const tableJsEnhance = {
@@ -57,6 +77,8 @@ const tableJsEnhance = {
     { label: 'crudRef', insertText: 'crudRef.value', detail: 'Avue表格实例', kind: fieldKind },
     { label: 'props', insertText: 'props', detail: '组件参数', kind: fieldKind },
     { label: 'message', insertText: 'message', detail: '消息弹窗', kind: fieldKind },
+    { label: 'route', insertText: 'route', detail: '当前路由对象', kind: fieldKind },
+    { label: 'routes', insertText: 'routes', detail: '操作路由方法', kind: fieldKind },
     // { label: '', insertText: '.value', detail: '', kind: fieldKind },
     {
       label: 'initImport', detail: '导入其他模块', kind: functionKind,
@@ -200,7 +222,9 @@ const tableJsEnhance = {
       { label: 'tableId', insertText: 'tableId', detail: '表格ID', kind: fieldKind },
       { label: 'fixedSearch', insertText: 'fixedSearch', detail: '固定搜索参数', kind: fieldKind },
     ],
-    'message.': defaultMessage
+    'message.': defaultMessage,
+    'route.': defaultRoute,
+    'routes.': defaultRoutes,
   }
 }
 
@@ -213,6 +237,8 @@ const defaultTipList = [
   { label: 'enhanceData', insertText: 'props.enhanceData', detail: '外部传递的配置', kind: fieldKind },
   { label: 'message', insertText: 'message', detail: '消息弹窗', kind: fieldKind },
   { label: 'useImport', insertText: 'useImport.', detail: '异步导入的模块', kind: fieldKind },
+  { label: 'route', insertText: 'route', detail: '当前路由对象', kind: fieldKind },
+  { label: 'routes', insertText: 'routes', detail: '操作路由方法', kind: fieldKind },
 ]
 const defaultJsEnhance = {
   tipList: [
@@ -238,7 +264,9 @@ const defaultJsEnhance = {
       },
       ...defaultJsTriggerUseFun,
     ],
-    'message.': defaultMessage
+    'message.': defaultMessage,
+    'route.': defaultRoute,
+    'routes.': defaultRoutes,
   }
 }
 
