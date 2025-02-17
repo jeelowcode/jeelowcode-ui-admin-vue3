@@ -177,9 +177,8 @@ const props = defineProps({
   select: Object,
   isCurrActive: Boolean
 })
-const { formOption, parentData, historyCommit, setParentData } = inject<lowFormDesignType>(
-  lowFormDesignKey
-) as lowFormDesignType
+const { formOption, parentData, historyCommit, setParentData, setConfigTab } =
+  inject<lowFormDesignType>(lowFormDesignKey) as lowFormDesignType
 
 const emit = defineEmits([
   'update:modelValue',
@@ -268,6 +267,7 @@ const handleTabsEnd = (e, tabsIndex) => {
 const handleselectItem = (index, tabsIndex) => {
   selectItem.value = option.value.column[tabsIndex].column[index]
   setParentData(option.value.type, option.value.prop, tabsIndex)
+  setConfigTab('control')
 }
 const handleDelColumn = (index, tabsIndex) => {
   if (option.value.column[tabsIndex].column.length - 1 == index) {

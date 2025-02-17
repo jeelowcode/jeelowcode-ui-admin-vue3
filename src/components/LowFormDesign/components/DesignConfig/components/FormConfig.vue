@@ -2,21 +2,33 @@
   <div class="form-config">
     <el-form label-position="top" label-suffix="：" label-width="130px">
       <el-form-item label="绑定表单开发">
-        <el-select
-          class="w-100%"
-          v-model="option.tableDesignId"
-          clearable
-          filterable
-          placeholder="请选择表单开发"
-        >
-          <el-option
-            v-for="item in tableDbOptions"
-            :key="item['value']"
-            :label="item['label']"
-            :value="item['value']"
-          ></el-option>
-        </el-select>
-        <el-checkbox v-model="option.isSubmitTable">表单数据提交到绑定的表单开发中</el-checkbox>
+        <div class="flex w-100%">
+          <el-select
+            class="w-100% flex-1"
+            v-model="option.tableDesignId"
+            clearable
+            filterable
+            placeholder="请选择表单开发"
+          >
+            <el-option
+              v-for="item in tableDbOptions"
+              :key="item['value']"
+              :label="item['label']"
+              :value="item['value']"
+            ></el-option>
+          </el-select>
+          <el-button
+            v-show="option.tableDesignId"
+            type="primary"
+            class="ml-5px px-8px! flex-basis-90px"
+            @click="generateFormOption"
+          >
+            <span class="text-12px">一键生成表单</span>
+          </el-button>
+        </div>
+        <el-checkbox v-show="option.tableDesignId" v-model="option.isSubmitTable">
+          表单数据提交到绑定的表单开发中
+        </el-checkbox>
       </el-form-item>
       <el-form-item label="表单基础配置">
         <div class="mb-5px w-100% flex">
@@ -100,6 +112,7 @@
 
 <script setup lang="ts">
 import { lowFormDesignKey, lowFormDesignType } from '@/utils/symbols'
+import { generateOption } from '../../../utils/generate'
 defineOptions({ name: 'FormConfig' })
 
 const props = defineProps({
@@ -109,8 +122,16 @@ const props = defineProps({
 const { tableDbOptions } = inject<lowFormDesignType>(lowFormDesignKey) as lowFormDesignType
 
 const emit = defineEmits(['update:modelValue'])
-
+const message = useMessage()
 const option = ref<any>(props.modelValue)
+
+const generateFormOption = async () => {
+  await message.confirm('是否确认根据当前表单开发生成表单？')
+  const currOption = await generateOption(option.value.tableDesignId)
+  option.value.column = []
+  option.value.group = []
+  option.value = { ...option.value, ...currOption }
+}
 
 watch(
   () => props.modelValue,

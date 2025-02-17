@@ -63,7 +63,7 @@
             ></el-option>
           </el-select>
         </el-tab-pane>
-        <el-tab-pane label="字典数据" name="table">
+        <el-tab-pane label="表格数据" name="table">
           <TableDicOption v-model="option" type="tree"></TableDicOption>
         </el-tab-pane>
         <el-tab-pane label="远端数据" name="remote">

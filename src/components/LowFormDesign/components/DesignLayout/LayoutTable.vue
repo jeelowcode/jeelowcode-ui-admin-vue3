@@ -83,7 +83,7 @@ const props = defineProps({
   select: Object,
   isCurrActive: Boolean
 })
-const { parentData, historyCommit, setParentData } = inject<lowFormDesignType>(
+const { parentData, historyCommit, setParentData, setConfigTab } = inject<lowFormDesignType>(
   lowFormDesignKey
 ) as lowFormDesignType
 
@@ -148,6 +148,7 @@ const handleAddTableColumn = (e) => {
 const handleselectItem = (index) => {
   selectItem.value = option.value.column[index]
   setParentData(option.value.type, option.value.prop)
+  setConfigTab('control')
 }
 const handleDelColumn = (index) => {
   if (option.value.column.length - 1 == index) {

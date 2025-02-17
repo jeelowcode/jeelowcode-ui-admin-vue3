@@ -31,6 +31,20 @@
       :column="{ editorOption: { height: '200px' } }"
     ></MarkDown>
   </div>
+  <div
+    v-else-if="
+      ['radio', 'checkbox'].includes(columnItem.type) &&
+      ['table', 'remote'].includes(columnItem.dicType)
+    "
+    class="color-#999"
+    :class="{
+      'h-32px': formOption.size == 'default',
+      'h-40px': formOption.size == 'large',
+      'h-24px': formOption.size == 'small'
+    }"
+  >
+    请在预览查看字典
+  </div>
   <component
     v-else-if="isShow"
     class="w-100%"
@@ -120,7 +134,8 @@ watch(
   (val: any) => {
     const { controlType } = columnItem.value
     if (['input', 'array', 'select'].includes(controlType)) defaultValue.value = val
-  }
+  },
+  { immediate: true, deep: true }
 )
 
 const setShow = () => {

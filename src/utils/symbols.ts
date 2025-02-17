@@ -19,6 +19,7 @@ export interface lowFormDesignType {
   example: exampleType
   setParentData: (type: string, prop: string, tabsIndex?: number | null) => void
   historyCommit: () => void
+  setConfigTab: (type: 'control' | 'form') => void
 }
 export interface LowFormType {
   controlObj: Ref<object>
@@ -31,8 +32,8 @@ export interface LowFormType {
   viewLoading: Ref<boolean>
   rendControlData: Ref<object>
   Vue: any
-  route:RouteLocationNormalizedLoaded
-  routes:Router
+  route: RouteLocationNormalizedLoaded
+  routes: Router
   getComponent: () => object
   enhanceErrorTip: (tip: string, error) => any
   handleMonacoEditorClick: (params: object, fun: Function) => any

@@ -1,6 +1,11 @@
 <template>
   <div class="design-config h-100%">
-    <avue-tabs :option="tabsOption" v-model="tabsValue" @change="handleTabsChange"></avue-tabs>
+    <avue-tabs
+      ref="tabsRef"
+      :option="tabsOption"
+      v-model="tabsValue"
+      @change="handleTabsChange"
+    ></avue-tabs>
     <div class="config-content">
       <ControlConfig
         v-if="tabsValue.prop == 'control'"
@@ -35,6 +40,8 @@ const tabsOption = ref({
 })
 const tabsValue = ref(tabsOption.value.column[0])
 
+const tabsRef = ref()
+
 watch(
   () => props.modelValue,
   (val: object) => {
@@ -65,6 +72,13 @@ watch(
 const handleTabsChange = (column) => {
   tabsValue.value = column
 }
+
+const setTabsVal = (prop) => {
+  const index = tabsOption.value.column.findIndex((item) => item.prop == prop)
+  if (index != -1) tabsRef.value.active = index + ''
+}
+
+defineExpose({ setTabsVal })
 </script>
 
 <style lang="scss" scoped>

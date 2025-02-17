@@ -95,7 +95,11 @@
         ></DesignLayout>
       </el-main>
       <el-aside>
-        <DesignConfig v-model="formOption" v-model:select="currSelect"></DesignConfig>
+        <DesignConfig
+          ref="configRef"
+          v-model="formOption"
+          v-model:select="currSelect"
+        ></DesignConfig>
       </el-aside>
     </el-container>
   </el-container>
@@ -236,6 +240,8 @@ const defaultField = [
   'update_time',
   'is_deleted'
 ]
+
+const configRef = ref()
 
 const message = useMessage()
 const { copyText } = useCopyText()
@@ -549,6 +555,10 @@ const setOption = (data, isConvert?) => {
   formOption.value = isConvert ? convertFormViewOption(data, 'formDesign') : data
 }
 
+const setConfigTab = (type) => {
+  configRef.value.setTabsVal(type)
+}
+
 watch(
   () => props.isShow,
   (val: boolean) => {
@@ -587,9 +597,10 @@ provide(lowFormDesignKey, {
   tableDbOptions,
   tableSubDb,
   tableSubDbOptions,
-  setParentData,
   example: Example,
-  historyCommit: commit
+  setParentData,
+  historyCommit: commit,
+  setConfigTab
 })
 
 onMounted(async () => {})
