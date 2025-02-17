@@ -387,7 +387,7 @@ const initColumn = (data, componentData, columnParams) => {
       }
     }
     //部分控件栅格处理
-    if (!controlsData['span'] && ['upload', 'textarea', 'ueditor', 'markdown'].includes(column[fieldCode].type)) column[fieldCode].span = 24
+    if (!controlsData['span'] && ['upload', 'textarea', 'ueditor', 'markDown'].includes(column[fieldCode].type)) column[fieldCode].span = 24
     //查询配置格式化
     const queryStrData = handleStrObj(queryConfig, `${defaultTip} ${fieldName}（${fieldCode}）字段的查询配置解析异常，请检查`) as any
     const queryData = {}
@@ -397,7 +397,7 @@ const initColumn = (data, componentData, columnParams) => {
     //范围查询处理
     if (queryMode == 'RANGE' && !queryData['searchRange']) column[fieldCode].searchRange = true
     //默认查询处理
-    if (['file', 'image', 'monacoEditor', 'ueditor', 'markdown', 'customControl'].includes(controlType)) {
+    if (['file', 'image', 'monacoEditor', 'ueditor', 'markDown', 'customControl'].includes(controlType)) {
       column[fieldCode].searchType = 'input'
     }
     //日期、时间默认控件配置处理
