@@ -59,6 +59,23 @@ export const getRawRoute = (route: RouteLocationNormalized): RouteLocationNormal
   }
 }
 
+const getDynamicComponent = (path) => {
+  let componentUrl = ''
+  let isTop = false
+  const urlObj = {
+    'table/view/': '/lowdesign/tableView', //表单开发
+    'form/view/': '/lowdesign/formView', //表单设计
+    'report/view/': '/lowdesign/reportView' //报表设计
+  }
+  for (const key in urlObj) {
+    const other = path.indexOf(key) === 0
+    const top = path.indexOf('/' + key) === 0
+    if (other || top) componentUrl = urlObj[key]
+    if (top) isTop = true
+  }
+  return { isTop, componentUrl }
+}
+
 // 后端控制路由生成
 export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecordRaw[] => {
   const res: AppRouteRecordRaw[] = []
@@ -113,28 +130,14 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
         data.meta.catalogue = true
         // 外链
       } else if (isUrl(route.path)) {
-        data = {
-          path: '/external-link',
-          component: Layout,
-          meta: {
-            name: route.name
-          },
-          children: [data]
-        } as AppRouteRecordRaw
+        data = { path: '/external-link', component: Layout, meta: { name: route.name }, children: [data] } as AppRouteRecordRaw
         // 菜单
       } else {
         // 对后端传component组件路径和不传做兼容（如果后端传component组件路径，那么path可以随便写，如果不传，component组件路径会根path保持一致）
-        if (route.path.indexOf('table/view/') === 0 && !route.component) {
-          // 表单开发 指定组件路径
-          route.component = '/lowdesign/tableView'
-        }
-        if (route.path.indexOf('form/view/') === 0 && !route.component) {
-          // 表单设计 指定组件路径
-          route.component = '/lowdesign/formView'
-        }
-        if (route.path.indexOf('report/view/') === 0 && !route.component) {
-          // 报表设计 指定组件路径
-          route.component = '/lowdesign/reportView'
+        if (!route.component) {
+          const { componentUrl, isTop } = getDynamicComponent(route.path)
+          route.component = componentUrl
+          route['isTop'] = isTop //临时存储
         }
         const index = route?.component
           ? modulesRoutesKeys.findIndex((ev) => ev.includes(route.component))
@@ -142,7 +145,10 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
         data.component = modules[modulesRoutesKeys[index]]
         if (!data.component) {
           console.warn('请检查菜单配置是否正确', data.component, index, route.component, route.name, route['id'])
+        } else if (route['isTop']) {
+          data = { path: '', component: Layout, meta: { name: route.name }, children: [data], } as AppRouteRecordRaw
         }
+        delete route['isTop']
       }
       if (route.children) {
         data.children = generateRoute(route.children)
@@ -150,6 +156,7 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
     }
     res.push(data as AppRouteRecordRaw)
   }
+  console.log(res)
   return res
 }
 export const getRedirect = (parentPath: string, children: AppCustomRouteRecordRaw[]) => {
