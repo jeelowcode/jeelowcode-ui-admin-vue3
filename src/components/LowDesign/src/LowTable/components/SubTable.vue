@@ -6,7 +6,14 @@
       :table-loading="loading"
       :data="tableData"
       :option="tableOption"
+      :row-style="tableDefaultFun.rowStyle"
+      :cell-style="tableDefaultFun.cellStyle"
+      :summary-method="tableDefaultFun.summaryMethod"
       @selection-change="selectionChange"
+      @row-click="tableDefaultFun.rowClick"
+      @row-dblclick="tableDefaultFun.rowDblclick"
+      @cell-click="tableDefaultFun.cellClick"
+      @cell-dblclick="tableDefaultFun.cellDblclick"
     >
       <!-- 自定义表格头部操作 -->
       <template #menu-left="{ size }">
@@ -250,6 +257,16 @@ const selectionChange = (data) => {
   tableSelect.value = data
 }
 
+const tableDefaultFun = ref({
+  cellStyle: null,
+  rowStyle: null,
+  rowClick: null,
+  rowDblclick: null,
+  cellClick: null,
+  cellDblclick: null,
+  summaryMethod: null
+})
+
 onMounted(() => {
   initTable()
 })
@@ -258,6 +275,7 @@ defineExpose({
   prop: props.prop,
   tableId: props.tableId,
   tableOption: tableOption.value,
+  tableDefaultFun: tableDefaultFun.value,
   crudRef,
   verifyForm,
   rowAdd
