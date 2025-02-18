@@ -156,7 +156,6 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
     }
     res.push(data as AppRouteRecordRaw)
   }
-  console.log(res)
   return res
 }
 export const getRedirect = (parentPath: string, children: AppCustomRouteRecordRaw[]) => {
