@@ -1,12 +1,18 @@
 <template>
   <!-- 自定义控件例子 -->
-  <div class="low-form-comboBox" :class="{ view: props.type == 'view' }">
-    <el-row class="flex-nowrap pos-relative">
+  <div class="low-form-comboBox overflow-y-auto" :class="{ view: props.type == 'view' }">
+    <el-row class="flex-nowrap! pos-relative items-center w-[calc(100%-1px)]">
       <template v-for="(value, key) in column.column" :key="key">
         <el-col
           :md="value.span"
           :offset="value.offset"
-          :class="[value.className, { is_danger: errorObj[value.prop] }]"
+          :class="[
+            value.className,
+            {
+              is_danger: errorObj[value.prop],
+              'is-controls-right': value.type == 'number' && value.controlsPosition == 'right'
+            }
+          ]"
         >
           <template v-if="['input', 'password'].includes(value.type)">
             <avue-input
@@ -275,7 +281,6 @@ defineExpose({ validate })
 
 <style lang="scss" scoped>
 .low-form-comboBox {
-  padding-right: 1px;
   box-sizing: border-box;
 
   :deep(.el-col) {
@@ -302,6 +307,11 @@ defineExpose({ validate })
       .table-input {
         margin-right: -1px;
         border-radius: 0;
+      }
+
+      .user-input,
+      .dept-input {
+        border: 0;
       }
 
       &:nth-last-child(1) {
@@ -362,13 +372,62 @@ defineExpose({ validate })
 
       .el-input-number__increase,
       .el-input-number__decrease {
-        height: calc(100% - 3px);
+        height: calc(100% - 2px);
+      }
+    }
+
+    &.control-number {
+      .el-input__wrapper {
+        padding-right: 42px;
+        padding-left: 42px;
+
+        .el-input__inner {
+          &::-webkit-outer-spin-button,
+          &::-webkit-inner-spin-button {
+            margin: 0;
+            appearance: none;
+          }
+        }
+      }
+
+      &.is-controls-right {
+        .el-input__wrapper {
+          padding-right: 42px;
+          padding-left: 15px;
+        }
+
+        .el-input-number__decrease {
+          top: auto;
+          right: 0;
+          left: auto;
+          border-right: none;
+          border-left: var(--el-border);
+          border-radius: 0 0 var(--el-border-radius-base) 0;
+        }
+
+        .el-input-number__increase {
+          bottom: auto;
+          left: auto;
+          border-bottom: var(--el-border);
+          border-radius: 0 var(--el-border-radius-base) 0 0;
+        }
+
+        .el-input-number__decrease,
+        .el-input-number__increase {
+          --el-input-number-controls-height: 15px;
+
+          height: var(--el-input-number-controls-height);
+          line-height: var(--el-input-number-controls-height);
+        }
       }
     }
 
     &.control-input > div,
     &.control-number > div,
     &.control-password > div,
+    &.control-time > div,
+    &.control-date > div,
+    &.control-dicTableSelect > div,
     &.control-cascader,
     &.control-regionSelect,
     .control-map {
@@ -429,6 +488,12 @@ defineExpose({ validate })
 
     :deep(.avue-input) {
       margin-top: 0 !important;
+    }
+
+    :deep(.dept-input),
+    :deep(.user-input),
+    :deep(.table-input) {
+      box-shadow: none;
     }
   }
 }

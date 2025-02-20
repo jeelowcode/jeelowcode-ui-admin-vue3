@@ -6,7 +6,8 @@
     box-sizing: border-box;
     padding-right: 1px;
     padding-left: 1px;
-    // overflow: scroll hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     .draggable-ghost {
       background: white;
