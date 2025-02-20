@@ -1,18 +1,31 @@
 <template>
   <div class="dept-select-box w-100%">
     <div class="dept-input" :class="[{ disabled }, type, size]" @click="openDeptSelect">
-      <div class="dept-text-list" v-if="selectId.length">
-        <el-tag
-          v-for="id in selectId"
-          :key="id"
-          :closable="!disabled && !column.readonly"
-          type="info"
-          :size="size"
-          @close="tagValueClose(id)"
-        >
-          {{ getCurrText(id) }}
-        </el-tag>
-      </div>
+      <template v-if="selectId.length">
+        <div class="dept-text-list" v-if="props.column?.multiple">
+          <el-tag
+            v-for="id in selectId"
+            :key="id"
+            :closable="!disabled && !column.readonly"
+            type="info"
+            :size="size"
+            @close="tagValueClose(id)"
+          >
+            {{ getCurrText(id) }}
+          </el-tag>
+        </div>
+        <div v-else class="px-11px overflow-hidden text-ellipsis ws-nowrap">
+          {{ getCurrText(selectId[0]) }}
+          <span
+            v-if="['add', 'edit'].includes(type) && props.column?.clearable !== false"
+            class="dept-input-clear pos-absolute right-5px top-50% cursor-pointer hidden"
+            style="transform: translateY(-50%)"
+            @click.stop="tagValueClose(selectId[0])"
+          >
+            <Icon :size="14" color="#909399" icon="ep:circle-close"></Icon>
+          </span>
+        </div>
+      </template>
       <div class="empty-text" v-else>{{ placeholderText }}</div>
       <div class="dept-num" v-if="column.multiple && selectId.length >= 2">
         已选择
@@ -149,6 +162,7 @@ interface Column {
   readonly?: boolean
   placeholder?: string
   textFormatter?: string //回显名称格式化
+  clearable?: boolean
 }
 interface Props {
   column: Column
@@ -434,6 +448,12 @@ watch(
 
     .dept-num {
       height: var(--el-component-size-large);
+    }
+  }
+
+  &:hover {
+    .table-input-clear {
+      display: flex;
     }
   }
 }

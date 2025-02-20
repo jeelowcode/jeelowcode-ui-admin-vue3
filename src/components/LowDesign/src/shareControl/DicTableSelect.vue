@@ -1,18 +1,36 @@
 <template>
   <div class="dic-table-select-box w-100%">
-    <div class="table-input" :class="[{ disabled }, type, size]" @click="openTableSelect">
-      <div class="table-text-list" v-if="selectId.length">
-        <el-tag
-          v-for="id in selectId"
-          :key="id"
-          :closable="!disabled && !column.readonly"
-          type="info"
-          :size="size"
-          @close="tagValueClose(id)"
-        >
-          {{ getCurrText(id) }}
-        </el-tag>
-      </div>
+    <div
+      class="table-input pos-relative"
+      :class="[{ disabled }, type, size]"
+      @click="openTableSelect"
+    >
+      <template v-if="selectId.length">
+        <div class="table-text-list" v-if="props.column?.multiple">
+          <el-tag
+            v-for="id in selectId"
+            :key="id"
+            :closable="!disabled && !column.readonly"
+            type="info"
+            :size="size"
+            @close="tagValueClose(id)"
+          >
+            {{ getCurrText(id) }}
+          </el-tag>
+        </div>
+        <div v-else class="px-11px overflow-hidden text-ellipsis ws-nowrap">
+          {{ getCurrText(selectId[0]) }}
+          <span
+            v-if="['add', 'edit'].includes(type) && props.column?.clearable !== false"
+            class="table-input-clear pos-absolute right-5px top-50% cursor-pointer hidden"
+            style="transform: translateY(-50%)"
+            @click.stop="tagValueClose(selectId[0])"
+          >
+            <Icon :size="14" color="#909399" icon="ep:circle-close"></Icon>
+          </span>
+        </div>
+      </template>
+
       <div class="empty-text" v-else>{{ placeholderText }}</div>
       <div class="table-num" v-if="column.multiple && selectId.length >= 2">
         共
@@ -139,6 +157,7 @@ interface Column {
   limit?: number //最大选择数
   separator?: string //分隔符
   readonly?: boolean
+  clearable?:boolean
 }
 
 interface Props {
@@ -405,6 +424,12 @@ watch(
 
     .table-num {
       height: var(--el-component-size-large);
+    }
+  }
+
+  &:hover {
+    .table-input-clear {
+      display: flex;
     }
   }
 }

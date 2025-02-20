@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: 'DeptSelect' })
+defineOptions({ name: 'InputNumberRange' })
 
 interface Column {
   label: string

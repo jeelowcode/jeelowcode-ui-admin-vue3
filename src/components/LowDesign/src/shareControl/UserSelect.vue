@@ -1,18 +1,31 @@
 <template>
   <div class="user-select-box w-100%">
     <div class="user-input" :class="[{ disabled }, type, size]" @click="openTableSelect">
-      <div class="user-text-list" v-if="selectId.length">
-        <el-tag
-          v-for="id in selectId"
-          :key="id"
-          :closable="!disabled && !column.readonly"
-          type="info"
-          :size="size"
-          @close="tagValueClose(id)"
-        >
-          {{ getCurrText(id) }}
-        </el-tag>
-      </div>
+      <template v-if="selectId.length">
+        <div class="user-text-list" v-if="props.column?.multiple">
+          <el-tag
+            v-for="id in selectId"
+            :key="id"
+            :closable="!disabled && !column.readonly"
+            type="info"
+            :size="size"
+            @close="tagValueClose(id)"
+          >
+            {{ getCurrText(id) }}
+          </el-tag>
+        </div>
+        <div v-else class="px-11px overflow-hidden text-ellipsis ws-nowrap">
+          {{ getCurrText(selectId[0]) }}
+          <span
+            v-if="['add', 'edit'].includes(type) && props.column?.clearable !== false"
+            class="user-input-clear pos-absolute right-5px top-50% cursor-pointer hidden"
+            style="transform: translateY(-50%)"
+            @click.stop="tagValueClose(selectId[0])"
+          >
+            <Icon :size="14" color="#909399" icon="ep:circle-close"></Icon>
+          </span>
+        </div>
+      </template>
       <div class="empty-text" v-else>{{ placeholderText }}</div>
       <div class="user-num" v-if="column.multiple && selectId.length >= 2">
         已选择
@@ -213,6 +226,7 @@ interface Column {
   separator?: string //分隔符
   readonly?: boolean
   placeholder?: string
+  clearable?: boolean
 }
 interface Props {
   column: Column
@@ -798,6 +812,12 @@ watch(
 
     .user-num {
       height: var(--el-component-size-large);
+    }
+  }
+
+  &:hover {
+    .table-input-clear {
+      display: flex;
     }
   }
 }
