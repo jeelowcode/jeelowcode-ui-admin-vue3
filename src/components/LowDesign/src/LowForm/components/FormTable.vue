@@ -12,6 +12,10 @@
       @selection-change="selectionChange"
       @row-save="rowSave"
       @row-update="rowUpdate"
+      :upload-before="uploadBefore"
+      :upload-exceed="uploadExceed"
+      :upload-sized="uploadSized"
+      :upload-preview="uploadPreview"
     >
       <template #menu-left="scope">
         <template v-for="(item, index) in headerBtn" :key="item.prop">
@@ -107,6 +111,7 @@
 
 <script setup lang="ts">
 import useMEDialog from '@/hooks/design/useMEDialog'
+import useAvueUpload from '@/hooks/design/useAvueUpload'
 import { lowFormKey, LowFormType } from '@/utils/symbols'
 import { formattingStrFunction } from '@/utils/lowDesign'
 import { TableEnhanceObj } from '../../utils/formUtil'
@@ -163,6 +168,7 @@ const btnParams = ref({
 })
 
 const { MEDialog, MEData, openMEDialog } = useMEDialog()
+const { uploadBefore, uploadExceed, uploadSized, uploadPreview } = useAvueUpload()
 
 const parentKey = computed(() => {
   return 'layoutTable_' + props.prop

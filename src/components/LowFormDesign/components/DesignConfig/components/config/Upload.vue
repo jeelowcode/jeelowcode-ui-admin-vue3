@@ -3,7 +3,7 @@
     <el-input
       v-model="option.accept"
       clearable
-      placeholder="接受文件类型，如：image/png,image/jpg"
+      placeholder="接受文件类型，如：image/png,image/jpeg"
     ></el-input>
   </el-form-item>
   <el-form-item label="上传回调配置">

@@ -20,6 +20,10 @@
           v-model="tabsData[key]"
           :option="item"
           :key="key"
+          :upload-before="uploadBefore"
+          :upload-exceed="uploadExceed"
+          :upload-sized="uploadSized"
+          :upload-preview="uploadPreview"
         >
           <!-- 自定义表单 -->
           <template v-for="c in slotData[key].form" :key="c.prop" #[c.prop]="scope">
@@ -68,6 +72,7 @@
 
 <script setup lang="ts">
 import useMEDialog from '@/hooks/design/useMEDialog'
+import useAvueUpload from '@/hooks/design/useAvueUpload'
 import { lowFormKey, LowFormType } from '@/utils/symbols'
 import { formattingStrFunction } from '@/utils/lowDesign'
 import { TabsEnhanceObj } from '../../utils/formUtil'
@@ -117,6 +122,7 @@ const isInit = ref(false)
 const componentObj = ref({})
 
 const { MEDialog, MEData, openMEDialog } = useMEDialog()
+const { uploadBefore, uploadExceed, uploadSized, uploadPreview } = useAvueUpload()
 
 const emit = defineEmits(['update:modelValue'])
 

@@ -163,7 +163,7 @@ export const uplaodExample = `return {
   verify(file) {
     //自定义上传文件校验
     return new Promise((resolve, reject) => {
-      let fileSize = file.size / 1024
+      let fileSize = file.size / 1024 //KB
       if (size > 1000) {
         reject() //校验不通过
       } else {

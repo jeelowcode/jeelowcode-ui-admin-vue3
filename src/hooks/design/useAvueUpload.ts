@@ -25,7 +25,7 @@ export default function () {
     return false
   }
 
-  const uploadBefore = (file, done, loading, column) => {
+  const uploadBefore = async (file, done, loading, column) => {
     let bool = false
     if (column.controlType == 'image') {
       if (column.accept == 'image/*' && verifyFileType(file.name) == column.accept) bool = true
@@ -46,6 +46,11 @@ export default function () {
         if (accept.includes(suffix) || accept.includes(file.type)) bool = true
       } else bool = true
     }
+    try {
+      if (column.verify) {
+        bool = await column.verify(file).then(() => true).catch(() => false)
+      }
+    } catch (error) { }
     if (!bool) {
       message.info(`请上传正确的${column.label}格式`)
       loading()

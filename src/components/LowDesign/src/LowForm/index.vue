@@ -6,6 +6,10 @@
       v-loading="viewLoading"
       v-model="formData"
       :option="formOption"
+      :upload-before="uploadBefore"
+      :upload-exceed="uploadExceed"
+      :upload-sized="uploadSized"
+      :upload-preview="uploadPreview"
     >
       <!-- 自定义表单按钮 -->
       <template #menu-form="{ size, disabled }">
@@ -105,6 +109,7 @@
 <script setup lang="ts">
 import { FormTable, FormTabs } from './components/index'
 import useMEDialog from '@/hooks/design/useMEDialog'
+import useAvueUpload from '@/hooks/design/useAvueUpload'
 import {
   JsEnhanceObj,
   initFormOption,
@@ -161,6 +166,7 @@ const formTabsRef = ref({})
 const componentRef = ref({})
 
 const { MEDialog, MEData, openMEDialog } = useMEDialog()
+const { uploadBefore, uploadExceed, uploadSized, uploadPreview } = useAvueUpload()
 const message = useMessage()
 const route = useRoute()
 const routes = useRouter()
