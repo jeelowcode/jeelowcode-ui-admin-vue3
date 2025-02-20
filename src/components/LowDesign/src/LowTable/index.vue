@@ -2017,7 +2017,7 @@ defineExpose({
 
                 .avue-form__group {
                   .avue-form__row:nth-last-of-type(2) {
-                    border-bottom: 0;
+                    // border-bottom: 0;
                   }
                 }
               }
