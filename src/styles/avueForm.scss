@@ -220,6 +220,13 @@
       .el-collapse-item__wrap {
         border: none !important;
       }
+      .el-collapse-item__header {
+        margin-bottom: 1px !important;
+        transition: margin 0.3s ease-in-out;
+        &.is-active {
+          margin-bottom: 20px !important;
+        }
+      }
     }
   }
 }
