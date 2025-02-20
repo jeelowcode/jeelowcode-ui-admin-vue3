@@ -98,10 +98,7 @@ const handleBtnClick = async (type) => {
 
 const beforeClose = (type, form?, loading?) => {
   if (loading) loading()
-  if (type == 'submit') {
-    message.success('提交成功')
-    resetForm()
-  }
+  if (type == 'submit') resetForm()
 }
 
 onMounted(async () => {
