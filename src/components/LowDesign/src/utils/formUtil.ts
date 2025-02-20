@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash-es'
 import { useDictStoreWithOut } from '@/store/modules/dict'
 import { useLowStoreWithOut } from '@/store/modules/low'
 import { handleStrObj } from '@/utils/lowDesign'
-import { callApiFun, stringToArr, isValidJson } from './util'
+import { callApiFun, stringToArr, isValidJson, setDeepObject } from './util'
 import { registerComp } from './registerComponent'
 import { patternObj } from './verifyOption';
 import { formatDate } from '@/utils/formatTime'
@@ -49,7 +49,7 @@ const regionDicKey = 'regionSelect'
 
 const specialControlObj = {
   map: [{ key: 'mapOptionStr', label: '高德地图配置' }],
-  monacoEditor: [{ key: 'editorOptionStr', label: 'MonacoEditor配置', dataKey: 'params' }],
+  monacoEditor: [{ key: 'editorOptionStr', label: 'MonacoEditor配置', dataKey: 'params.editorOption' }],
   markDown: [{ key: 'editorOptionStr', label: 'v-md-editor配置', dataKey: 'editorOption' }],
   ueditor: [{ key: 'wangEditorStr', label: 'wangEditor配置', dataKey: 'customConfig' }],
   customControl: [{ key: 'controlOptionStr', label: '控件配置', dataKey: 'params' }],
@@ -333,10 +333,8 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
             `【${columnItem.label}】 ${label}格式异常，请检查`,
             { requestApi: callApiFun }
           )
-          if (dataKey) {
-            if (!columnItem[dataKey]) columnItem[dataKey] = {}
-            Object.assign(columnItem[dataKey], controlObj)
-          } else Object.assign(columnItem, controlObj)
+          if (dataKey) setDeepObject(columnItem, { [dataKey]: controlObj })
+          else Object.assign(columnItem, controlObj)
           delete columnItem[key]
         }
       })
