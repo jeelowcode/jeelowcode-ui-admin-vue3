@@ -227,6 +227,11 @@
           margin-bottom: 20px !important;
         }
       }
+      &:nth-last-child(1){
+        .el-collapse-item__header{
+          margin-bottom: 20px !important;
+        }
+      }
     }
   }
 }
