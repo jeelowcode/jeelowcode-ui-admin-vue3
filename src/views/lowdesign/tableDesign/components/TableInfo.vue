@@ -91,7 +91,11 @@
 </template>
 
 <script setup lang="ts">
-import { ConfigOption, FormattingOption, SqlOption, InfoVxeTable, InfoVxeTopBtn } from './index'
+import ConfigOption from './ConfigOption.vue'
+import FormattingOption from './FormattingOption.vue'
+import SqlOption from './SqlOption.vue'
+import InfoVxeTable from './InfoVxeTable.vue'
+import InfoVxeTopBtn from './InfoVxeTopBtn.vue'
 import { MonacoEditor } from '@/components/MonacoEditor/index'
 import { VerifyOption } from '../../general/components/index'
 import { tableInfoOption, dicObj } from '../designData'
