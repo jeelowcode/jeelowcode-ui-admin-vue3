@@ -227,9 +227,21 @@
           margin-bottom: 20px !important;
         }
       }
-      &:nth-last-child(1){
-        .el-collapse-item__header{
+      &:nth-last-child(1) {
+        .el-collapse-item__header {
           margin-bottom: 20px !important;
+        }
+      }
+    }
+  }
+  &.avue--detail {
+    .avue-group {
+      &:not(.avue-group--header) {
+        .el-collapse-item__header {
+          margin-bottom: 0 !important;
+          &:not(.is-active) {
+            margin-bottom: 1px !important;
+          }
         }
       }
     }
