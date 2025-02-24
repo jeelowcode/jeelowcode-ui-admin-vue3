@@ -1,4 +1,7 @@
 const modules = import.meta.glob([
+  //页面
+  '@/views/lowTemplate/**/*.vue',
+  '@/views/lowexample/**/*.vue',
   //组件
   '@/components/**/*.vue',
   '!@/components/Backtop/**',
@@ -13,7 +16,7 @@ const modules = import.meta.glob([
   '!@/components/Echart/**',
   '!@/components/Error/**',
   '!@/components/Highlight/**',
-  '!@/components/Icon/**',
+  // '!@/components/Icon/**',
   '!@/components/IFrame/**',
   '!@/components/ImageViewer/**',
   '!@/components/Infotip/**',
