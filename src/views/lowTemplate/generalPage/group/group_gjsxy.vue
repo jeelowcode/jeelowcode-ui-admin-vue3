@@ -37,7 +37,6 @@
 
 <script setup lang="ts">
 import { FormView, LowTable } from '@/components/LowDesign/index'
-import useFun from '@/components/LowDesign/src/utils/useFun';
 import type { TagProps } from 'element-plus'
 
   interface TagsItem {

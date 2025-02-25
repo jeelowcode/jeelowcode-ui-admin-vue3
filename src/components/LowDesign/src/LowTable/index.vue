@@ -337,7 +337,7 @@ import {
   summaryTopFormatting
 } from '../utils/tableUtil'
 import { addScssStyle, delScssStyle, setDeepObject, getDicValue, validatenull } from '../utils/util'
-import useFunObj from '../utils/useFun'
+import defaultUseObj from '../utils/defaultUseUtil'
 import { registerComp } from '../utils/registerComponent'
 import download from '@/utils/download'
 import { formattingStrFunction } from '@/utils/lowDesign'
@@ -1638,7 +1638,7 @@ const initEnhanceUseFun = () => {
     clearSelection, //清空表格选择
     getVue: () => Vue,
     copyText, //复制到剪切板
-    ...useFunObj
+    ...defaultUseObj
   }
 }
 const executeJsEnhance = (enhance: string, errTip?: string) => {

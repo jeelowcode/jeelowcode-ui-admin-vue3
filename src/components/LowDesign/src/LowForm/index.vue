@@ -125,7 +125,7 @@ import { lowFormKey } from '@/utils/symbols'
 import { cloneDeep } from 'lodash-es'
 import * as TableApi from '@/api/design/table'
 import controlPath from '../controlPath'
-import useFunObj from '../utils/useFun'
+import defaultUseObj from '../utils/defaultUseUtil'
 import * as Vue from 'vue'
 
 defineOptions({ name: 'LowForm' })
@@ -452,7 +452,7 @@ const initEnhanceUseFun = () => {
       formDataFormatting(formOption.value, formData.value, props.formType)
     },
     getVue: () => Vue,
-    ...useFunObj
+    ...defaultUseObj
   }
 }
 const initRule = (ruleKey) => {
