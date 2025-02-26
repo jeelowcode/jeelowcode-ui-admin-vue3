@@ -1344,30 +1344,27 @@ const beforeOpen = async (done, type) => {
         return message.info('只允许新增一条数据')
       }
     }
-    setTimeout(() => {
-      const formData = subDataFormatting(cloneDeep(tableForm.value), type)
-      tableForm.value = tableFormatting(formData, tableOption.value.column)
-    }, 300)
+    //设置附表默认值
+    subDataFormatting(formData, type)
   }
 
   if (['edit', 'view'].includes(type) && tableForm.value['id']) {
-    let data = await TableApi.getTableDetail(
+    let detailData = await TableApi.getTableDetail(
       props.tableId,
       tableForm.value['id'],
       tableInfo.value.isOpen
     )
-    if (data.jeelowcode_subtable_data) {
-      data = { ...data, ...data.jeelowcode_subtable_data }
-      delete data.jeelowcode_subtable_data
+    if (detailData.jeelowcode_subtable_data) {
+      detailData = { ...detailData, ...detailData.jeelowcode_subtable_data }
+      delete detailData.jeelowcode_subtable_data
     }
     // 附表处理
-    data = subDataFormatting(data, type)
+    subDataFormatting(detailData, type)
     // 左树右表处理
-    if (['treeTable', 'treeAround'].includes(tableInfo.value.tableType) && data.pid === 0) {
-      data.pid = ''
+    if (['treeTable', 'treeAround'].includes(tableInfo.value.tableType) && detailData.pid === 0) {
+      detailData.pid = ''
     }
-    data = tableFormatting(data, tableOption.value.column)
-    formData = data
+    formData = tableFormatting(detailData, tableOption.value.column)
   }
   try {
     if (jsEnhanceObj.value.beforeFormData)
@@ -1390,6 +1387,13 @@ const beforeOpen = async (done, type) => {
   tableForm.value = formData
   loading.value = false
   done()
+
+  //回显新增字典默认值文本
+  if (type == 'add') {
+    setTimeout(() => {
+      tableFormatting(cloneDeep(tableForm.value), tableOption.value.column)
+    }, 30)
+  }
 }
 
 const saveFormatting = (form) => {
