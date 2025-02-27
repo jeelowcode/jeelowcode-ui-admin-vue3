@@ -1043,10 +1043,8 @@ const initFun = () => {
   })
   if (originStr.value && originStr.value !== '{}') {
     const data = JSON.parse(originStr.value)
-    if (data.typeKey) {
-      typeTabsVal.value = data.typeKey
-      if (data.typeKey === 'custom') customSql.value = data.executeSql
-    }
+    customSql.value = data.customSql || ''
+    if (data.typeKey) typeTabsVal.value = data.typeKey
 
     aliasObj.value = {
       ...data.aliasObj,
@@ -1144,6 +1142,7 @@ const getOptionStr = () => {
 
   return JSON.stringify({
     optionObj: optionObj.value,
+    customSql: customSql.value,
     aliasObj: aliasObj.value,
     typeKey: typeTabsVal.value,
     executeSql: typeTabsVal.value == 'option' ? wholeSql.value : customSql.value
