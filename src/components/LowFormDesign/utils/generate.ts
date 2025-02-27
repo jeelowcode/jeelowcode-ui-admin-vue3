@@ -48,8 +48,8 @@ const getColumn = (fieldList, span, subType?) => {
     }
     //基本属性
     if (field.fieldDefaultVal !== '' && field.fieldDefaultVal !== null) column[field.fieldCode].value = field.fieldDefaultVal
-    if (field.isRequired == 'Y') column[field.fieldCode].required = true
-    if (field.isShowForm == 'N') column[field.fieldCode].display = false
+    if (field.webEntity.isRequired == 'Y') column[field.fieldCode].required = true
+    if (field.webEntity.isShowForm == 'N') column[field.fieldCode].display = false
     if (controlsConfig.multiple) column[field.fieldCode].multiple = controlsConfig.multiple
     //时间处理
     if (['date', 'time'].includes(controlType)) {
