@@ -668,8 +668,6 @@ watch(
     }
 
     if (tableInfoRef.value) tableInfoRef.value.setTableInfoTree(val)
-    const { subTableListStr } = customFormOption.value.column
-    subTableListStr['display'] = tableForm.value.tableType == 3 && tableForm.value.subTableListStr
   }
 )
 watch(

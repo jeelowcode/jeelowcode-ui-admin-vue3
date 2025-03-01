@@ -81,7 +81,7 @@ const dataOrigin_dicFormatter = (data) => {
       })
     }
     if (item.tableId == item.tableName) sysList.push(row)
-    else if (item.tableName.indexOf('view_') !== 0) dbList.push(row)
+    else if (item.tableClassify !== 2) dbList.push(row)
     dataOriginObj[item.tableId] = row
   })
   return [

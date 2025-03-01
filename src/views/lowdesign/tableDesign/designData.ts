@@ -196,7 +196,7 @@ export const getDicObj = (key) => {
   return obj
 }
 
-const control_tableType = (val) => {
+const control_tableType = (val, form) => {
   dicObj.dataConfig = dicObj.dataConfig.map(item => {
     if (item.value == 'page') {
       item['disabled'] = val == 2
@@ -217,10 +217,12 @@ const control_tableType = (val) => {
     dicObj.basicFunction.splice(1, 0, { label: '新增子级', value: 'addChild' })
     dicObj.basicFunction = [...dicObj.basicFunction]
   }
+  if (val != 3 && form.themeTemplate != 'normal') form.themeTemplate = 'normal'
   return {
     themeTemplate: { disabled: val != 3 },
     treeLabelField: { display: val == 2 },
     subTableTitle: { display: val == 4 },
+    subTableListStr: { display: val == 3 && form.subTableListStr },
     isDesForm: { display: val != 4 },
     dataConfig: { dicData: dicObj.dataConfig },
     tableSelect: { dicData: dicObj.tableSelect },
@@ -270,7 +272,7 @@ const dataOrigin_dicFormatter = (data) => {
       })
     }
     if (item.tableId == item.tableName) sysList.push(row)
-    else if (item.tableName.indexOf('view_') !== 0) dbList.push(row)
+    else if (item.tableClassify !== 2) dbList.push(row)
     dataOriginObj[item.tableId] = row
   })
   return [
@@ -312,7 +314,7 @@ const customFormColumn = {
   tableStyle: { label: '单表样式', display: false },
   formStyle: { label: '表单风格', type: 'select', value: 2, dicData: dicObj.formStyle, clearable: false },
   isDesForm: { label: '默认表单', type: 'select', value: 'N', control: control_isDesForm, clearable: false, dicData: [{ label: '是', value: 'N' }, { label: '否', value: 'Y' }] },
-  desformWebId: { label: '自定义表单', display: false, type: 'select', filterable: true, rules: rules_required('自定义表单', 'select'), dicUrl: '/jeelowcode/desform/page', dicMethod: 'post', props: { label: 'desformName', value: 'id' }, dicFormatter: (data) => data.records },
+  desformWebId: { label: '自定义表单', display: false, type: 'select', filterable: true, rules: rules_required('自定义表单', 'select'), dicUrl: '/jeelowcode/desform/page', dicMethod: 'post', virtualize: true, props: { label: 'desformName', value: 'id' }, dicFormatter: (data) => data.records },
   subTableListStr: { label: '关联的附表', display: false, span: 24, disabled: true },
   dataConfig: { label: '数据配置', type: 'checkbox', span: 24, dicData: dicObj.dataConfig, dataType: 'string', value: ['page', 'initDataReq', 'authFalse'] },
   tableConfig: { label: '表格配置', type: 'checkbox', span: 24, dicData: dicObj.tableConfig, dataType: 'string', value: ['height', 'header', 'menu', 'index', 'border', 'rollBottom'] },
