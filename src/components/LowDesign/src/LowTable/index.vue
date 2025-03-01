@@ -385,6 +385,7 @@ const appStore = useAppStore()
 
 const loading = ref(false) // 列表的加载中
 const isInit = ref(false)
+const isSubInit = ref(false)
 const timerObj = ref<any>({})
 
 const tableOption = ref<any>({})
@@ -689,6 +690,7 @@ const initRule = (ruleObj, column, isSub?) => {
   }
 }
 const subTableInit = () => {
+  isSubInit.value = false
   const subTemplate = tableInfo.value.subTemplate
   const promiseArr: Promise<any>[] = []
   for (const tableId in subTableObj.value) {
@@ -766,7 +768,10 @@ const subTableInit = () => {
         if (index == 0) subTabsValue.value = erpTabsOption.value.column[0]
       }
     })
+
+    isSubInit.value = true
   })
+  if (!promiseArr.length) isSubInit.value = true
 }
 
 const verifySubTable = (loading) => {
@@ -1618,6 +1623,37 @@ const initEnhanceUseFun = () => {
       const curConfig = useFun.getPropConfig(prop)
       if (!curConfig) enhanceErrorTip(`调用useFun.setPropConfig方法，未找到字段：${prop}`, '')
       else setDeepObject(curConfig, config)
+    },
+    /**
+     * 设置附表控件配置
+     * @param prop 数据绑定key
+     * @param config 需修改的配置，非覆盖，格式Object,支持深结构修改 例：'params.deep.deep'
+     * @param subName 附表表名
+     */
+    setSubPropConfig: async (prop, config, subName?) => {
+      if (tableInfo.value.subTable?.length && !isSubInit.value) {
+        const timerKey = 'sub_config_' + Math.floor(Math.random() * 100000)
+        await new Promise((resolve) => {
+          timerObj[timerKey] = setInterval(() => {
+            if (isSubInit.value) {
+              clearInterval(timerObj[timerKey])
+              resolve(true)
+            }
+          }, 100)
+        })
+      }
+      for (const subId in subTableObj.value) {
+        const subConfig = subTableObj.value[subId]
+        if ((subName && subConfig.tableInfo.tableName == subName) || !subName) {
+          const propConfig = findOptionField(subConfig.tableOption, prop)
+          if (!propConfig) {
+            enhanceErrorTip(
+              `调用useFun.setSubPropConfig方法，未在【${subConfig.tableInfo.tableName}】附表中找到字段：${prop}`,
+              ''
+            )
+          } else setDeepObject(propConfig, config)
+        }
+      }
     },
     /**
      * 初始化控件

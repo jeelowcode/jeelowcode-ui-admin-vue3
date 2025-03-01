@@ -211,6 +211,7 @@ const tableJsEnhance = {
     'useFun.': [
       { label: 'setPropConfig', insertText: `setPropConfig('age', { label: '测试' })`, detail: '设置控件配置', kind: functionKind },
       { label: 'getPropConfig', insertText: `getPropConfig('age')`, detail: '获取控件配置', kind: functionKind },
+      { label: 'setSubPropConfig', insertText: `setSubPropConfig('age', { label: '测试' }, 'subTableName')`, detail: '设置附表控件配置', kind: functionKind },
       { label: 'refreshChange', insertText: `refreshChange()`, detail: '刷新当前页表格数据', kind: functionKind },
       { label: 'resetChange', insertText: `resetChange()`, detail: '清空搜索重新获取数据', kind: functionKind },
       { label: 'getSearchData', insertText: `getSearchData().then(searchObj => { })`, detail: '获取搜索参数', kind: functionKind },
