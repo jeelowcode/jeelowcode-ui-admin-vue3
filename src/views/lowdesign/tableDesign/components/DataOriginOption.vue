@@ -1043,7 +1043,7 @@ const initFun = () => {
   })
   if (originStr.value && originStr.value !== '{}') {
     const data = JSON.parse(originStr.value)
-    customSql.value = data.customSql || ''
+    customSql.value = data.customSql || (data.typeKey == 'custom' ? data.executeSql : '')
     if (data.typeKey) typeTabsVal.value = data.typeKey
 
     aliasObj.value = {
