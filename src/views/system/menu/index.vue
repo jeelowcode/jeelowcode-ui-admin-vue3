@@ -542,7 +542,7 @@ const createLowTable = (defaultMenu) => {
     })
     const apiData = btnData.filter((item) => !nameList.includes(item.name))
 
-    resolve({ apiData, tipData: btnName })
+    resolve({ apiData, tipData: tipName })
   })
 }
 const createLowReport = (defaultMenu) => {
