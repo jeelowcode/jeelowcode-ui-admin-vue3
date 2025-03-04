@@ -108,7 +108,7 @@
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
-import { formatDate, dateFormatter } from '@/utils/formatTime'
+import { formatDate, dateFormatter, getSearchDate } from '@/utils/formatTime'
 import download from '@/utils/download'
 import * as SmsChannelApi from '@/api/system/sms/smsChannel'
 import * as SmsLogApi from '@/api/system/sms/smsLog'

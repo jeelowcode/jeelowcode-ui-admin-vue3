@@ -59,7 +59,7 @@ const message = useMessage() // 消息弹窗
 
 const dialogVisible = ref(false) // 弹窗的是否展示
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
-const formData = reactive({
+const formData = ref({
   id: 0,
   name: '',
   code: '',
@@ -78,9 +78,9 @@ const open = async (row: RoleApi.RoleVO) => {
   // 加载 Menu 列表。注意，必须放在前面，不然下面 setChecked 没数据节点
   menuOptions.value = handleTree(await MenuApi.getSimpleMenusList())
   // 设置数据
-  formData.id = row.id
-  formData.name = row.name
-  formData.code = row.code
+  formData.value.id = row.id
+  formData.value.name = row.name
+  formData.value.code = row.code
   formLoading.value = true
   try {
     formData.value.menuIds = await PermissionApi.getRoleMenuList(row.id)
@@ -105,7 +105,7 @@ const submitForm = async () => {
   formLoading.value = true
   try {
     const data = {
-      roleId: formData.id,
+      roleId: formData.value.id,
       menuIds: [
         ...(treeRef.value.getCheckedKeys(false) as unknown as Array<number>), // 获得当前选中节点
         ...(treeRef.value.getHalfCheckedKeys() as unknown as Array<number>) // 获得半选中的父节点
@@ -159,11 +159,11 @@ const handleCheckedTreeExpand = () => {
   max-height: 400px;
   overflow-y: scroll;
 
-  ::v-deep(.el-card__header){
+  ::v-deep(.el-card__header) {
     padding: 10px 20px;
   }
 
-  ::v-deep(.el-card__body){
+  ::v-deep(.el-card__body) {
     padding: 10px;
   }
 }
