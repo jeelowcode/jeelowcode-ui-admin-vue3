@@ -88,6 +88,7 @@
           :control="c"
           :formType="formType"
           v-model="tableForm[c.prop]"
+          @set-form-data="(key, val) => (tableForm[key] = val)"
         ></AvueSlot>
       </template>
       <!-- 自定义列 -->

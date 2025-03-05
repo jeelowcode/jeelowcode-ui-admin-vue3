@@ -34,6 +34,7 @@
               :control="c"
               :formType="formType"
               v-model="tabsData[key][c.prop]"
+              @set-form-data="(prop, val) => (tabsData[key][prop] = val)"
             ></AvueSlot>
           </template>
           <!-- 表格布局 -->

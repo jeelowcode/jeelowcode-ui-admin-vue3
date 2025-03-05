@@ -43,6 +43,7 @@
           :control="c"
           :formType="formType"
           v-model="formData[c.prop]"
+          @set-form-data="(key, val) => (formData[key] = val)"
         ></AvueSlot>
       </template>
       <!-- 表格布局 -->

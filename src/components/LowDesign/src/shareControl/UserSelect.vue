@@ -237,6 +237,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 const model = defineModel<string | number>()
+const emit = defineEmits(['set-form-data'])
 const lowStore = useLowStoreWithOut()
 const dicKey = 'userSelect'
 
@@ -269,7 +270,7 @@ const dialogData = ref({
         icon: 'material-symbols:check-rounded',
         clickFun: () => {
           dialogData.value.value = false
-          model.value = getCurrTableSelect().join(',')
+          model.value = getCurrTableSelect('confirm').join(',')
         }
       }
     ]
@@ -504,12 +505,19 @@ const radioClick = (row, index) => {
   }
 }
 
-const getCurrTableSelect = () => {
+const getCurrTableSelect = (type?) => {
   const dicObj = {}
+  const textList: string[] = []
   const ids = tableSelect.value.map((item) => {
-    if (item.userId) dicObj[item.userId] = item.nickName
+    if (item.userId && item.nickName) {
+      dicObj[item.userId] = item.nickName
+      textList.push(item.nickName)
+    }
     return item.userId
   })
+  if (type == 'confirm') {
+    emit('set-form-data', '$' + props.prop, textList.join(props.column.separator || ' | '))
+  }
   lowStore.setDicObj(dicKey, dicObj)
   return ids
 }
@@ -540,12 +548,14 @@ const openTableSelect = () => {
 }
 
 const setTableSelect = (ids) => {
+  if (!ids) ids = []
+  if (typeof ids == 'string') ids = ids.split(',')
   const dicObj = {}
   const rows: Array<any> = []
   tableData.value.forEach((item) => (dicObj[item.userId] = item))
   ids.forEach((id) => {
     if (dicObj[id]) rows.push(dicObj[id])
-    else rows.push({ id })
+    else rows.push({ userId: id })
   })
   if (tableOption.value['column']['lowSelectRadio']) {
     tableSelect.value = rows

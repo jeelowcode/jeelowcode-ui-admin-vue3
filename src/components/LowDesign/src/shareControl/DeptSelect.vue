@@ -173,6 +173,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 const model = defineModel<string>()
+const emit = defineEmits(['set-form-data'])
 const lowStore = useLowStoreWithOut()
 const dicKey = 'deptSelect'
 
@@ -210,7 +211,7 @@ const dialogData = ref({
         icon: 'material-symbols:check-rounded',
         clickFun: () => {
           dialogData.value.value = false
-          model.value = getCurrDeptSelect().join(',')
+          model.value = getCurrDeptSelect('confirm').join(',')
         }
       }
     ],
@@ -292,12 +293,19 @@ const tagTableClose = (id) => {
     deptRef.value.setChecked(id, false)
   } else deepClear()
 }
-const getCurrDeptSelect = () => {
+const getCurrDeptSelect = (type?) => {
   const dicObj = {}
+  const textList: string[] = []
   const ids = deptSelect.value.map((item) => {
-    if (item.deptId) dicObj[item.deptId] = item.deptName
+    if (item.deptId && item.deptName) {
+      dicObj[item.deptId] = item.deptName
+      textList.push(item.deptName)
+    }
     return item.deptId
   })
+  if (type == 'confirm') {
+    emit('set-form-data', '$' + props.prop, textList.join(props.column.separator || ' | '))
+  }
   lowStore.setDicObj(dicKey, dicObj)
   return ids
 }

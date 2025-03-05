@@ -157,7 +157,7 @@ interface Column {
   limit?: number //最大选择数
   separator?: string //分隔符
   readonly?: boolean
-  clearable?:boolean
+  clearable?: boolean
 }
 
 interface Props {
@@ -173,6 +173,7 @@ const props = withDefaults(defineProps<Props>(), {})
 const lowStore = useLowStoreWithOut()
 
 const model = defineModel<string>()
+const emit = defineEmits(['set-form-data'])
 const tableSelectId = ref<Array<number | string>>([])
 const windowSize = useWindowSize()
 
@@ -196,7 +197,7 @@ const dialogData = ref({
         icon: 'material-symbols:check-rounded',
         clickFun: () => {
           dialogData.value.value = false
-          model.value = getCurrTableSelect().join(',')
+          model.value = getCurrTableSelect('confirm').join(',')
         }
       }
     ]
@@ -259,12 +260,19 @@ const getCurrText = (id) => {
   return text || id
 }
 
-const getCurrTableSelect = () => {
+const getCurrTableSelect = (type?) => {
   const dicObj = {}
+  const textList: string[] = []
   const ids = tableRef.value.tableSelect.map((item) => {
-    if (item[props.column.dictText]) dicObj[item[dicCode.value]] = item[props.column.dictText]
+    if (item[props.column.dictText]) {
+      dicObj[item[dicCode.value]] = item[props.column.dictText]
+      textList.push(item[props.column.dictText])
+    }
     return item[dicCode.value]
   })
+  if (type == 'confirm') {
+    emit('set-form-data', '$' + props.prop, textList.join(props.column.separator || ' | '))
+  }
   lowStore.setDicObj(dicKey.value, dicObj)
   return ids
 }

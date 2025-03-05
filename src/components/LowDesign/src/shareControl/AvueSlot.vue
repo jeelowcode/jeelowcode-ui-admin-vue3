@@ -9,6 +9,7 @@
       :size="scope.size"
       :type="currFormType"
       :prop="control.prop"
+      @set-form-data="setFormData"
     ></UserSelect>
   </template>
   <template v-else-if="control.controlType == 'deptSelect'">
@@ -21,6 +22,7 @@
       :size="scope.size"
       :type="currFormType"
       :prop="control.prop"
+      @set-form-data="setFormData"
     ></DeptSelect>
   </template>
   <template v-else-if="control.controlType == 'dicTableSelect'">
@@ -33,6 +35,7 @@
       :size="scope.size"
       :type="currFormType"
       :prop="control.prop"
+      @set-form-data="setFormData"
     ></DicTableSelect>
   </template>
   <template v-else-if="control.controlType == 'monacoEditor'">
@@ -141,6 +144,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const model = defineModel<any>()
+const emit = defineEmits(['set-form-data'])
 const slotRef = ref()
 
 const currFormType = computed(() => {
@@ -157,6 +161,10 @@ const currColumn = computed(() => {
   }
   return props.scope.column
 })
+
+const setFormData = (prop, value) => {
+  emit('set-form-data', prop, value)
+}
 
 defineExpose({ slotRef })
 </script>
