@@ -549,6 +549,13 @@ const analysisDataOrigin = async () => {
   const dataOption = JSON.parse(tableForm.value.originButton)
   TableApi.viewDataOriginAnalysis(dataOption.optionObj.select)
     .then((analysisData) => {
+      for (const key in analysisData) {
+        analysisData[key] = analysisData[key]?.map((item) => {
+          delete item.id
+          delete item.dbformId
+          return item
+        })
+      }
       let { infoData } = tableInfoOption.formattingInitData(analysisData)
       infoData = infoData.map((item) => {
         for (const key in item) {
