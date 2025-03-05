@@ -71,7 +71,7 @@ router.beforeEach(async (to, from, next) => {
       const lowStore = useLowStoreWithOut()
       const permissionStore = usePermissionStoreWithOut()
       if (!dictStore.getIsSetDict) await dictStore.setDictMap()
-      if (!lowStore.isSetRegion) lowStore.setRegion()
+      if (!lowStore.getIsSetRegion) await lowStore.setRegion()
       if (!userStore.getIsSetUser) {
         isRelogin.show = true
         await userStore.setUserInfoAction()

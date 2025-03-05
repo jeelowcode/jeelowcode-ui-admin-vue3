@@ -16,7 +16,7 @@ export const useLowStore = defineStore('low-info', {
     isSetRegion: false
   }),
   getters: {
-    getIsSetDict(): boolean {
+    getIsSetRegion(): boolean {
       return this.isSetRegion
     },
   },
@@ -37,6 +37,7 @@ export const useLowStore = defineStore('low-info', {
       } else {
         const res = await getAreaTree()
         const regionObj = {}
+        console.log(res)
         forEach(res, (region) => {
           regionObj[region.id] = region.name
         })
