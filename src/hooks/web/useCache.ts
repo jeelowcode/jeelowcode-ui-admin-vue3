@@ -12,6 +12,7 @@ export const CACHE_KEY = {
   LANG: 'lang',
   THEME: 'theme',
   LAYOUT: 'layout',
+  LOW_REGION: 'lowRegion',
   ROLE_ROUTERS: 'roleRouters',
   DICT_CACHE: 'dictCache'
 }

@@ -2,16 +2,15 @@ import { cloneDeep } from 'lodash-es'
 import { useDictStoreWithOut } from '@/store/modules/dict'
 import { useLowStoreWithOut } from '@/store/modules/low'
 import { handleStrObj } from '@/utils/lowDesign'
-import { callApiFun, stringToArr, isValidJson, setDeepObject } from './util'
+import { callApiFun, isValidJson, setDeepObject } from './util'
 import { registerComp } from './registerComponent'
 import { patternObj } from './verifyOption';
 import { formatDate } from '@/utils/formatTime'
 import { encryptAES } from '@/components/LowDesign/src/utils/aes'
 import { listToTree, filter } from '@/utils/tree';
 import * as DicApi from '@/api/design/dic'
-import { getRegionEchoData } from '@/api/design/table'
 export interface JsEnhanceObj {
-  initImport?: () => object
+  initImport?: () => Promise<object>
   initOption?: () => void
   initData?: (formData: object) => Promise<any>
   beforeSubmit?: (submitData: object) => Promise<any>
@@ -478,7 +477,6 @@ export const initFormOption: (formOption: any, formType: string) => InitFormOpti
 //表单数据格式化
 export const formDataFormatting = (formOption, formData, formType) => {
   const echoObj = { userSelect: [], deptSelect: [] }
-  const regionSelect: string[] = []
   const handleValue = (column, data, key, parentType) => {
     const type = column[key]?.type
     if (data[key] === '' || !type) return
@@ -502,9 +500,7 @@ export const formDataFormatting = (formOption, formData, formType) => {
           }
         }
       }
-    } else if (type == 'cascader') {
-      if (parentType == 'table' && column[key]?.dictType == 'region') regionSelect.push(...stringToArr(data[key], true))
-    }
+    } 
   }
 
   const setForm = (column, data, parentType?) => {
@@ -574,13 +570,6 @@ export const formDataFormatting = (formOption, formData, formType) => {
       }
     })
   }
-  if (regionSelect.length) {
-    getRegionEchoData([...new Set(regionSelect)]).then(resData => {
-      const dicObj = {}
-      for (const key in resData) resData[key].forEach(item => dicObj[item.id] = item.name)
-      lowStore.setDicObj(regionDicKey, dicObj)
-    })
-  }
 }
 
 //提交数据格式化
@@ -594,6 +583,16 @@ export const submitDataFormatting = (formOption, formData) => {
       }
       //处理空字符串数组问题
       if (data[prop] === '[]') data[prop] = ''
+
+      //处理地区text
+      if (column[prop].dictType == 'region' && type == 'cascader') {
+        const separator = column[prop].separator || (column[prop].multiple ? ' | ' : '/')
+        if (isValidJson(data[prop])) data[prop] = JSON.parse(data[prop])
+        data[`$${prop}`] = (data[prop] instanceof Array ? data[prop] : data[prop].split(',')).map(id => {
+          if (id instanceof Array) return id.map(i => lowStore.dicObj[regionDicKey]?.[i] || i).join('/')
+          return lowStore.dicObj[regionDicKey]?.[id] || id
+        }).join(separator)
+      }
 
       if (type == 'layoutTable') {
         if (data[prop]?.length) {

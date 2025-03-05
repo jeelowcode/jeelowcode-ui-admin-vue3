@@ -7,6 +7,7 @@ import { useNProgress } from '@/hooks/web/useNProgress'
 import { usePageLoading } from '@/hooks/web/usePageLoading'
 import { useDictStoreWithOut } from '@/store/modules/dict'
 import { useUserStoreWithOut } from '@/store/modules/user'
+import { useLowStoreWithOut } from '@/store/modules/low'
 import { usePermissionStoreWithOut } from '@/store/modules/permission'
 
 const { start, done } = useNProgress()
@@ -67,10 +68,10 @@ router.beforeEach(async (to, from, next) => {
       // 获取所有字典
       const dictStore = useDictStoreWithOut()
       const userStore = useUserStoreWithOut()
+      const lowStore = useLowStoreWithOut()
       const permissionStore = usePermissionStoreWithOut()
-      if (!dictStore.getIsSetDict) {
-        await dictStore.setDictMap()
-      }
+      if (!dictStore.getIsSetDict) await dictStore.setDictMap()
+      if (!lowStore.isSetRegion) lowStore.setRegion()
       if (!userStore.getIsSetUser) {
         isRelogin.show = true
         await userStore.setUserInfoAction()

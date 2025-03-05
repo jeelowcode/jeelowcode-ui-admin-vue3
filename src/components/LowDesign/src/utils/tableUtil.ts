@@ -14,7 +14,7 @@ import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { graphic } from 'echarts';
 import { TdHTMLAttributes } from 'vue';
 export interface JsEnhanceObj {
-  initImport?: () => object
+  initImport?: () => Promise<object>
   initOption?: () => void
   beforeData?: (tableData: Array<any>) => Promise<any>
   beforeSearch?: (search: object) => Promise<any>
@@ -739,7 +739,6 @@ export const tableFormatting = (data, column, otherData: any = {}) => {
   const dateControl = {}
   const userAndDeptControl: any = { props: [], userIds: [], deptIds: [], typeKey: { userSelect: 'user', deptSelect: 'dept' } }
   const dicTableData = { propObj: {}, keyList: [] as Array<string>, dicStoreKey: {} }
-  const regionData = { props: [] as Array<string>, dataList: [] as Array<string> }
   for (const prop in column) {
     const { type, hide, lazy, dictType, valueFormat } = column[prop]
     // 日期 时间处理
@@ -754,7 +753,6 @@ export const tableFormatting = (data, column, otherData: any = {}) => {
         dicTableData[key] = { dbformId: dictTable, code: dictCode, label: dictText, dataList: [] }
       }
       if (Object.keys(userAndDeptControl.typeKey).includes(type)) userAndDeptControl.props.push({ type: userAndDeptControl.typeKey[type], prop })
-      if (type == 'cascader' && dictType == 'region') regionData.props.push(prop)
     }
   }
   currData = currData.map((item) => {
@@ -767,9 +765,6 @@ export const tableFormatting = (data, column, otherData: any = {}) => {
       const key = dicTableData.propObj[prop]
       if (item[prop]) dicTableData[key].dataList = [...dicTableData[key].dataList, ...stringToArr(item[prop])]
     }
-    regionData.props.forEach(prop => {
-      if (item[prop]) regionData.dataList.push(...stringToArr(item[prop], true))
-    })
     userAndDeptControl.props.forEach(({ type, prop }) => {
       if (item[prop]) {
         item[prop] = item[prop].toString()
@@ -831,15 +826,6 @@ export const tableFormatting = (data, column, otherData: any = {}) => {
         dicData[key].forEach(item => dicObj[item[valueKey]] = item[labelKey])
         lowStore.setDicObj(dicKey, dicObj)
       }
-    })
-  }
-  const regionKey = 'regionSelect'
-  regionData.dataList = [...new Set(regionData.dataList)].filter(id => !lowStore.dicObj[regionKey] ? true : !lowStore.dicObj[regionKey][id])
-  if (regionData.dataList.length) {
-    TableApi.getRegionEchoData(regionData.dataList).then(resData => {
-      const dicObj = {}
-      for (const key in resData) resData[key].forEach(item => dicObj[item.id] = item.name)
-      lowStore.setDicObj(regionKey, dicObj)
     })
   }
   return isArray ? currData : currData[0]
