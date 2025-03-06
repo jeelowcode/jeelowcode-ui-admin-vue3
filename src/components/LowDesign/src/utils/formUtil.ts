@@ -585,7 +585,7 @@ export const submitDataFormatting = (formOption, formData) => {
       if (data[prop] === '[]') data[prop] = ''
 
       //处理地区text
-      if (column[prop].dictType == 'region' && type == 'cascader') {
+      if (column[prop].dictType == 'region' && type == 'cascader' && data[prop]) {
         const separator = column[prop].separator || (column[prop].multiple ? ' | ' : '/')
         if (isValidJson(data[prop])) data[prop] = JSON.parse(data[prop])
         data[`$${prop}`] = (data[prop] instanceof Array ? data[prop] : data[prop].split(',')).map(id => {
