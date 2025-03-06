@@ -1027,8 +1027,22 @@ const showApiUrl = async (row) => {
       label: '新增数据[post]',
       value: `/jeelowcode/${isOpen ? 'open' : 'dbform-data'}/save/${row.id}`
     },
+    {
+      label: '批量新增数据[post]',
+      value: `/jeelowcode/${isOpen ? 'open' : 'dbform-data'}/save/batch/${row.id}`,
+      tipText: '接口参数格式：data:[ { 新增的数据... },{ ... } ]'
+    },
     { label: '编辑数据[put]', value: `/jeelowcode/dbform-data/edit/${row.id}` },
-    { label: '删除数据[delete]', value: `/jeelowcode/dbform-data/delete/${row.id}` }
+    {
+      label: '批量编辑数据[put]',
+      value: `/jeelowcode/dbform-data/edit/batch/${row.id}`,
+      tipText: '接口参数格式：data:[ { 编辑的数据... },{ ... } ]'
+    },
+    {
+      label: '删除数据[delete]',
+      value: `/jeelowcode/dbform-data/delete/${row.id}`,
+      tipText: '接口参数格式：data:[ id,id... ]'
+    }
   ]
   if (isOpen) {
     apiList.push({
@@ -1048,7 +1062,8 @@ const showApiUrl = async (row) => {
             () => '复制'
           )
         ]),
-        h('div', { style: { fontSize: '12px' } }, item.value)
+        h('div', { style: { fontSize: '12px' } }, item.value),
+        h('div', { style: { display: !!item.tipText, fontSize: '12px',color:'#E6A23C' } }, item.tipText)
       ])
     )
   })

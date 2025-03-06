@@ -72,9 +72,14 @@ export const getWebConfig = (tableId) => {
   return request.get({ url: '/jeelowcode/dbform/get/web-config?dbformId=' + tableId })
 }
 
-//获取所有表名和表字段(字典配置用)
-export const getAllDbDicData = () => {
-  return request.get({ url: '/jeelowcode/dbform/get/all-table' })
+/**
+ * 获取所有表名和表字段(字典配置用)
+ * @param systemFlag 'Y' 是否查询系统表
+ * @param dataSourcesCode 数据源
+ * @param onlyTableName 'Y' 是否只查表
+ */
+export const getAllDbDicData = (params = {}) => {
+  return request.get({ url: '/jeelowcode/dbform/get/all-table', params })
 }
 
 //获取表单懒加载控件回显结构数据
@@ -118,9 +123,19 @@ export const saveTableData = (tableId, data, isOpen?) => {
   return request.post({ url: `/jeelowcode/${isOpen ? 'open' : 'dbform-data'}/save/${tableId}`, data })
 }
 
+//批量新增表数据
+export const batchSaveTableData = (tableId, data: object[], isOpen?) => {
+  return request.post({ url: `/jeelowcode/${isOpen ? 'open' : 'dbform-data'}/save/batch/${tableId}`, data })
+}
+
 //修改表数据
 export const updateTableData = (tableId, data) => {
   return request.put({ url: `/jeelowcode/dbform-data/edit/${tableId}`, data })
+}
+
+//批量修改表数据
+export const batchUpdateTableData = (tableId, data) => {
+  return request.put({ url: `/jeelowcode/dbform-data/edit/batch/${tableId}`, data })
 }
 
 //删除表数据
