@@ -145,7 +145,7 @@ const tableJsEnhance = {
     }).then(() => {
       resolve(true)
     }).catch(() => {
-      reject() //取消新增 当前表单弹窗不会关闭，保留原本数据
+      reject() //取消编辑 当前表单弹窗不会关闭，保留原本数据
     })
   })
 },`
