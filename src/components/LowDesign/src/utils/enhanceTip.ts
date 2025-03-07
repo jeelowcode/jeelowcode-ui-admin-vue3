@@ -77,6 +77,7 @@ const tableJsEnhance = {
     { label: 'crudRef', insertText: 'crudRef.value', detail: 'Avue表格实例', kind: fieldKind },
     { label: 'props', insertText: 'props', detail: '组件参数', kind: fieldKind },
     { label: 'message', insertText: 'message', detail: '消息弹窗', kind: fieldKind },
+    { label: 'useImport', insertText: 'useImport.', detail: '异步导入的模块', kind: fieldKind },
     { label: 'route', insertText: 'route', detail: '当前路由对象', kind: fieldKind },
     { label: 'routes', insertText: 'routes', detail: '操作路由方法', kind: fieldKind },
     // { label: '', insertText: '.value', detail: '', kind: fieldKind },
@@ -120,6 +121,48 @@ const tableJsEnhance = {
     resolve(formData)
   })
 },`
+    },
+    {
+      label: 'customAddHandle', detail: '自定义新增处理', kind: functionKind,
+      insertText: `customAddHandle(tableId, addData) { //自定义新增处理
+  return new Promise(async (resolve, reject) => {
+    useFun.requestApi('post', ${'`'}/jeelowcode/dbform-data/save/${'${tableId}`'}, {
+      data: addData
+    }).then(addId => {
+      resolve(addId)
+    }).catch(() => {
+      reject() //取消新增 当前表单弹窗不会关闭，保留原本数据
+    })
+  })
+},`
+    },
+    {
+      label: 'customEditHandle', detail: '自定义编辑处理', kind: functionKind,
+      insertText: `customEditHandle(tableId, editData) { //自定义编辑处理
+  return new Promise(async (resolve, reject) => {
+    useFun.requestApi('put', ${'`'}/jeelowcode/dbform-data/edit/${'${tableId}`'}, {
+      data: editData
+    }).then(() => {
+      resolve(true)
+    }).catch(() => {
+      reject() //取消新增 当前表单弹窗不会关闭，保留原本数据
+    })
+  })
+},`
+    },
+    {
+      label: 'customDelHandle', detail: '自定义删除处理', kind: functionKind,
+      insertText: `customDelHandle(tableId, ids) { //自定义删除处理
+  return new Promise(async (resolve, reject) => {
+    useFun.requestApi('delete', ${'`'}/jeelowcode/dbform-data/delete/${'${tableId}`'}, {
+      data: ids
+    }).then(() => {
+      resolve(true)
+    }).catch(() => {
+      reject() //取消删除
+    })
+  })
+}`
     },
     {
       label: 'beforeRequest', detail: '新增、修改、删除请求接口前执行', kind: functionKind,
@@ -216,6 +259,7 @@ const tableJsEnhance = {
       { label: 'resetChange', insertText: `resetChange()`, detail: '清空搜索重新获取数据', kind: functionKind },
       { label: 'getSearchData', insertText: `getSearchData().then(searchObj => { })`, detail: '获取搜索参数', kind: functionKind },
       { label: 'clearSelection', insertText: `clearSelection()`, detail: '清空表格选择', kind: functionKind },
+      { label: 'initDicText', insertText: `initDicText()`, detail: '格式化当前表单数据并查询回显文本', kind: functionKind },
       ...defaultJsTriggerUseFun,
     ],
     'props.': [

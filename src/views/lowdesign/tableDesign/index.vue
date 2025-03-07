@@ -315,7 +315,7 @@
               v-bind="MEData.params"
             ></MonacoEditor>
           </el-main>
-          <el-aside width="300px" v-if="MEDialog.otherParams">
+          <el-aside width="310px" v-if="MEDialog.otherParams">
             <TipView v-bind="MEDialog.otherParams"></TipView>
           </el-aside>
         </el-container>

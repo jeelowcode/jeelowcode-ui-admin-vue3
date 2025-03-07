@@ -1424,7 +1424,7 @@ const saveFormatting = (form) => {
   }
   return formData
 }
-const executeBeforeRequest = (type, apiData) => {
+const executeBeforeRequest = (type, apiData): Promise<string[] | false> => {
   let data = cloneDeep(apiData)
   return new Promise(async (resolve) => {
     try {
@@ -1463,17 +1463,29 @@ const rowSave = async (form, done, loading) => {
   }
   const apiData = await executeBeforeRequest('add', formData)
   if (!apiData) return loading()
-  let bool = await TableApi.saveTableData(props.tableId, apiData, tableInfo.value.isOpen).catch(
-    () => false
-  )
-  if (bool !== false) {
-    await executeAfterRequest('add', { ...apiData, id: bool })
-    if (isLazyTree.value && !isSearchData.value) {
-      await partUpdateLazyData(formData, 'add')
-    } else resetData()
-    message.success(t('common.createSuccess'))
-    done()
-  } else loading()
+  let addId = ''
+  try {
+    if (jsEnhanceObj.value.customAddHandle) {
+      const res = await jsEnhanceObj.value.customAddHandle(props.tableId, apiData)
+      if (typeof res == 'string') addId = res
+    } else {
+      addId = await TableApi.saveTableData(props.tableId, apiData, tableInfo.value.isOpen)
+    }
+  } catch (error) {
+    enhanceErrorTip(
+      jsEnhanceObj.value.customAddHandle
+        ? 'js增强【customAddHandle】方法执行异常，请检查'
+        : '新增数据异常',
+      error
+    )
+    return loading()
+  }
+  await executeAfterRequest('add', { ...apiData, id: addId })
+  if (isLazyTree.value && !isSearchData.value) {
+    await partUpdateLazyData(formData, 'add')
+  } else resetData()
+  message.success(t('common.createSuccess'))
+  done()
 }
 const rowUpdate = async (form, index, done, loading) => {
   const subVerify = await verifySubTable(loading)
@@ -1482,23 +1494,35 @@ const rowUpdate = async (form, index, done, loading) => {
   if (isLazyTree.value && formData.pid === '') formData.pid = 0
   const apiData = await executeBeforeRequest('edit', formData)
   if (!apiData) return loading()
-  const bool = await TableApi.updateTableData(props.tableId, apiData).catch(() => false)
-  if (bool !== false) {
-    await executeAfterRequest('edit', apiData)
-    if (isLazyTree.value) {
-      if (isSearchData.value) resetData()
-      else await partUpdateLazyData(formData, 'edit')
-    } else await getTableData(true, { isGetSummary: true })
-    message.success(t('common.updateSuccess'))
-    done()
-    // 主附表内嵌
-    if (
-      tableInfo.value.subTemplate == 'innerTable' &&
-      tableOption.value.expandRowKeys.includes(formData.id)
-    ) {
-      for (let key in innerTableRef.value) innerTableRef.value[key]?.resetChange()
+  try {
+    if (jsEnhanceObj.value.customEditHandle) {
+      await jsEnhanceObj.value.customEditHandle(props.tableId, apiData)
+    } else {
+      await TableApi.updateTableData(props.tableId, apiData)
     }
-  } else loading()
+  } catch (error) {
+    enhanceErrorTip(
+      jsEnhanceObj.value.customEditHandle
+        ? 'js增强【customEditHandle】方法执行异常，请检查'
+        : '编辑数据异常',
+      error
+    )
+    return loading()
+  }
+  await executeAfterRequest('edit', apiData)
+  if (isLazyTree.value) {
+    if (isSearchData.value) resetData()
+    else await partUpdateLazyData(formData, 'edit')
+  } else await getTableData(true, { isGetSummary: true })
+  message.success(t('common.updateSuccess'))
+  done()
+  // 主附表内嵌
+  if (
+    tableInfo.value.subTemplate == 'innerTable' &&
+    tableOption.value.expandRowKeys.includes(formData.id)
+  ) {
+    for (let key in innerTableRef.value) innerTableRef.value[key]?.resetChange()
+  }
 }
 const rowDel = async (data) => {
   try {
@@ -1508,22 +1532,34 @@ const rowDel = async (data) => {
     const ids = isArr ? data : [data.id]
     const apiData = await executeBeforeRequest('del', ids)
     if (!apiData) return (loading.value = false)
-    const bool = await TableApi.deleteTableData(props.tableId, apiData).catch(() => false)
-    if (bool) {
-      await executeAfterRequest('del', isArr ? tableSelect.value : [data])
-      if (isLazyTree.value) {
-        if (isSearchData.value) resetData()
-        else {
-          if (data instanceof Array) {
-            const selectObj = {}
-            tableSelect.value.forEach((item) => (selectObj[item.pid] = item))
-            for (const key in selectObj) await partUpdateLazyData(selectObj[key], 'del')
-          } else await partUpdateLazyData(data, 'del')
-        }
-      } else await getTableData(true, { isGetSummary: true })
-      clearSelection()
-      message.success(t('common.delSuccess'))
+    try {
+      if (jsEnhanceObj.value.customDelHandle) {
+        await jsEnhanceObj.value.customDelHandle(props.tableId, apiData)
+      } else {
+        await TableApi.deleteTableData(props.tableId, apiData)
+      }
+    } catch (error) {
+      enhanceErrorTip(
+        jsEnhanceObj.value.customDelHandle
+          ? 'js增强【customDelHandle】方法执行异常，请检查'
+          : '编辑数据异常',
+        error
+      )
+      return (loading.value = false)
     }
+    await executeAfterRequest('del', isArr ? tableSelect.value : [data])
+    if (isLazyTree.value) {
+      if (isSearchData.value) resetData()
+      else {
+        if (data instanceof Array) {
+          const selectObj = {}
+          tableSelect.value.forEach((item) => (selectObj[item.pid] = item))
+          for (const key in selectObj) await partUpdateLazyData(selectObj[key], 'del')
+        } else await partUpdateLazyData(data, 'del')
+      }
+    } else await getTableData(true, { isGetSummary: true })
+    clearSelection()
+    message.success(t('common.delSuccess'))
     loading.value = false
   } catch {}
 }

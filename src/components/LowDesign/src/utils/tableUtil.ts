@@ -21,6 +21,9 @@ export interface JsEnhanceObj {
   beforeFormData?: (formData: object, type: string) => Promise<any>
   beforeRequest?: (type: 'add' | 'edit' | 'del', apiData: object) => Promise<any>
   afterRequest?: (type: 'add' | 'edit' | 'del', apiData: object | Array<object>) => Promise<boolean>
+  customAddHandle?: (tableId: string, addData: object) => Promise<string | boolean>
+  customEditHandle?: (tableId: string, editData: object) => Promise<string | boolean>
+  customDelHandle?: (tableId: string, ids: string[]) => Promise<string | boolean>
   selectable?: (row: object, index: number) => boolean
   rowStyle?: (data: any) => object
   cellStyle?: (data) => object

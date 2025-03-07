@@ -19,7 +19,7 @@
                     {{ valueStyle == 'simple' ? tr.value : `【 ${tr.value} 】` }}
                   </template>
                 </div>
-                <div :class="{ 'pl-5px': valueStyle == 'simple' }" v-if="tr.label">
+                <div class="text-12px" :class="{ 'pl-5px': valueStyle == 'simple' }" v-if="tr.label">
                   {{ tr.label }}
                 </div>
               </div>
