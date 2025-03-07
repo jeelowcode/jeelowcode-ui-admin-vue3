@@ -655,7 +655,7 @@ const initTable = async () => {
   isInit.value = true
   if (optionData.tableInfo.isGetData || isDicTable.value) {
     getTableData(true, { type: 'init', isGetSummary: true })
-  }
+  } else loading.value = false
   initTableLayout()
   if (optionData.tableInfo.subTable?.length) {
     optionData.tableInfo.subTable.forEach(
