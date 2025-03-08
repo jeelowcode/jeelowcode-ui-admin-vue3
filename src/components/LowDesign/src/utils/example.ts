@@ -34,17 +34,19 @@ export const formJsEnhanceExample = `return {
 /* 通用配置模板 */
 // 远端数据配置模板
 export const remoteExample = `return {
-  dicUrl: '',
-  dicMethod: 'get',
+  dicUrl: '/jeelowcode/dbform-data/list/表单开发id', //请求接口
+  dicMethod: 'post', //请求类型
   dicHeaders: {},
-  props: {
+  props: { //字典text 字典value对应的字段名
     label: 'label',
     value: 'value',
   },
-  dicQuery: {},
-  dicFormatter: (res) => {
+  dicQuery: { //请求参数
+    state: '1'
+  },
+  dicFormatter: (res) => { //请求数据格式化
     console.log('===远端数据===', res)
-    return res
+    return res.records
   }
 }
 `
