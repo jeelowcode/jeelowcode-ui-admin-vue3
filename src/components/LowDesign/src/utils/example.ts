@@ -283,11 +283,11 @@ export const TableJsEnhanceExample = `return {
 //自定义按钮-其他配置模板
 export const customButtonExample = `return {
   color: '#626aef',
+  plain: true,
   handleShow: (row) => { //按钮显隐增强  row：当前行数据（row 仅操作列按钮可用）
     return true //true 显示 false 隐藏
   }
 }`
-
 
 //java在线脚本模板
 export const JavaDataExample = `import cn.hutool.json.JSONUtil;
