@@ -11,6 +11,7 @@ const TableJsEnhance = {
     { label: '自定义删除处理', value: 'customDelHandle' },
     { label: '新增、修改、删除请求接口前执行', value: 'beforeRequest' },
     { label: '新增、修改、删除请求接口后执行', value: 'afterRequest' },
+    { label: '勾选表格数据时触发', value: 'selectionChange' },
     { label: '控制行是否可勾选', value: 'selectable' },
     { label: '表格底部统计格式化', value: 'summaryBottomFormatting' },
     { label: '表格头部统计格式化', value: 'summaryTopFormatting' },

@@ -954,6 +954,16 @@ const menuHandle = ({ type, row, index }) => {
   } else executeCustomBtnEnhance(type, row)
 }
 
+const executeSelectionChange = () => {
+  try {
+    if (jsEnhanceObj.value.selectionChange) {
+      jsEnhanceObj.value.selectionChange(cloneDeep(tableSelect.value))
+    }
+  } catch (error) {
+    enhanceErrorTip(`js增强【selectionChange】方法执行异常，请检查`, error)
+  }
+}
+
 const radioClick = (row, index) => {
   const bool = tableOption.value.selectable(row, index)
   if (!bool) return
@@ -983,10 +993,16 @@ const radioClick = (row, index) => {
       }
     }, 50)
   }
+
+  setTimeout(() => {
+    executeSelectionChange()
+  }, 40);
 }
 const selectionChange = (data) => {
   tableSelect.value = data
+  executeSelectionChange()
 }
+
 const selectAll = () => {
   const { model, dicMaxLimit } = props
   if (model == 'dicTable' && dicMaxLimit && tableSelect.value.length > dicMaxLimit) {

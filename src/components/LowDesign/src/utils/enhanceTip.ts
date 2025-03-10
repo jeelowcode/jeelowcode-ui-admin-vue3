@@ -192,6 +192,12 @@ const tableJsEnhance = {
 },`
     },
     {
+      label: 'selectionChange', detail: '勾选表格数据时触发', kind: functionKind,
+      insertText: `selectionChange(selectData) { //勾选表格数据时触发
+  //selectData 表格勾选数据
+}`
+    },
+    {
       label: 'selectable', detail: '控制行是否可勾选', kind: functionKind,
       insertText: `selectable(row, index) { //控制行是否可勾选
       return true

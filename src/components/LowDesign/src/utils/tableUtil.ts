@@ -24,6 +24,7 @@ export interface JsEnhanceObj {
   customAddHandle?: (tableId: string, addData: object) => Promise<string | boolean>
   customEditHandle?: (tableId: string, editData: object) => Promise<string | boolean>
   customDelHandle?: (tableId: string, ids: string[]) => Promise<string | boolean>
+  selectionChange?: (selectData: any[]) => void
   selectable?: (row: object, index: number) => boolean
   rowStyle?: (data: any) => object
   cellStyle?: (data) => object
