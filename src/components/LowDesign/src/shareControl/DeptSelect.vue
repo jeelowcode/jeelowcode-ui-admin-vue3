@@ -337,11 +337,9 @@ const getDeptList = (getType) => {
 
 watch(
   () => model.value,
-  (value, oldVal) => {
-    if (oldVal !== undefined) {
-      if (props.column['onChange']) props.column['onChange']({ value, column: props.column })
-      else if (props.column['change']) props.column['change']({ value, column: props.column })
-    }
+  (value) => {
+    if (props.column['onChange']) props.column['onChange']({ value, column: props.column })
+    else if (props.column['change']) props.column['change']({ value, column: props.column })
   }
 )
 

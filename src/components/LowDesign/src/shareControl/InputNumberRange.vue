@@ -72,7 +72,7 @@ watch([() => startNum.value, () => endNum.value], (newVal) => {
 
 watch(
   () => model.value,
-  (value, oldVal) => {
+  (value) => {
     if (value) {
       const numList = (value + '').split(',')
       startNum.value = numList[0] !== undefined ? Number(numList[0]) : null
@@ -81,10 +81,8 @@ watch(
       startNum.value = null
       endNum.value = null
     }
-    if (oldVal !== undefined) {
-      if (props.column['onChange']) props.column['onChange']({ value, column: props.column })
-      else if (props.column['change']) props.column['change']({ value, column: props.column })
-    }
+    if (props.column['onChange']) props.column['onChange']({ value, column: props.column })
+    else if (props.column['change']) props.column['change']({ value, column: props.column })
   }
 )
 </script>
