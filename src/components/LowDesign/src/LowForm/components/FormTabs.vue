@@ -192,7 +192,7 @@ watch(
 )
 
 const initFun = () => {
-  componentObj.value = getComponent()
+  componentObj.value = getComponent().value
   const tabsEnhanceFun = executeJsEnhance(
     props.column.tabsEnhanceStr,
     props.prop + ' 选项卡增强配置初始化异常，请检查增强内容'

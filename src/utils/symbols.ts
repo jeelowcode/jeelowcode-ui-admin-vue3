@@ -34,7 +34,7 @@ export interface LowFormType {
   Vue: any
   route: RouteLocationNormalizedLoaded
   routes: Router
-  getComponent: () => object
+  getComponent: () => Ref<object>
   enhanceErrorTip: (tip: string, error) => any
   handleMonacoEditorClick: (params: object, fun: Function) => any
 }

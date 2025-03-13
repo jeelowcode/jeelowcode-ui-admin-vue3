@@ -233,7 +233,7 @@ watch(
   }
 )
 const initFun = () => {
-  componentObj.value = getComponent()
+  componentObj.value = getComponent().value
   const tableEnhanceFun = executeJsEnhance(
     props.column.tableEnhanceStr,
     props.prop + ' 表格增强配置初始化异常，请检查增强内容'
