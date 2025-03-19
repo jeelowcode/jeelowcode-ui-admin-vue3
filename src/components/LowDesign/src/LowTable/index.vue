@@ -69,6 +69,7 @@
           :data="tableData"
           :option="tableOption"
           :before-open="beforeOpen"
+          :before-close="beforeClose"
           :row-style="tableDefaultFun.rowStyle"
           :cell-style="tableDefaultFun.cellStyle"
           :summary-method="tableDefaultFun.summaryMethod"
@@ -1182,7 +1183,14 @@ const getSummaryData = async (searchObj) => {
 const onSummaryTopResize = (data) => {
   summaryTop.value.height = data.height + 20
 }
-
+const initLeftTreeData = async () => {
+  if (tableInfo.value.tableType == 'treeAround' && !treeAroundOption.value.lazy) {
+    const searchObj = { ...props.fixedSearch }
+    const data = await TableApi.getTableList(props.tableId, searchObj, tableInfo.value.isOpen)
+    data.records = await tableDataFormatting(data.records)
+    treeAroundData.value = listToTree(data.records)
+  }
+}
 const treeLoad = (row, treeNode, resolve) => {
   return new Promise(async (treeResolve) => {
     tableTreeLoad.value[row.id] = { row, treeNode, resolve }
@@ -1248,7 +1256,7 @@ const treeAroundNodeClick = (data) => {
   getTableData(true, { type: 'reset' })
 }
 const treeAroundLoad = async (node, resolve) => {
-  const paramsData = { pid: 0 }
+  const paramsData = { pid: 0, ...props.fixedSearch }
   tableTreeLoad.value[`${node.data.id ? node.data.id : 0}`] = {
     row: node.data,
     treeNode: node,
@@ -1257,6 +1265,7 @@ const treeAroundLoad = async (node, resolve) => {
   if (node.level !== 0) paramsData.pid = node.data.id
   const resData = await TableApi.getTableList(props.tableId, paramsData, tableInfo.value.isOpen)
   let data = resData.records
+  data = await tableDataFormatting(data)
   if (data instanceof Array) {
     data = data.map((item) => {
       item.leaf = !item.hasChildren
@@ -1266,6 +1275,8 @@ const treeAroundLoad = async (node, resolve) => {
   }
   if (node.level === 0) {
     getTableData(true, { type: 'init' })
+    treeAroundData.value = data
+    return resolve([])
   }
   resolve(data)
 }
@@ -1291,7 +1302,7 @@ const searchChange = (params, done) => {
 const resetChange = () => {
   return new Promise(async (resolve) => {
     tableSearch.value = {}
-    if (tableInfo.value.tableType == 'treeAround') {
+    if (tableInfo.value.tableType == 'treeAround' && tableCurrType.value != 'add') {
       treeRef.value.setCurrentKey(null)
       treeAroundRow.value = {}
     }
@@ -1416,6 +1427,11 @@ const beforeOpen = async (done, type) => {
     }, 30)
   }
 }
+const beforeClose = async (done, type) => {
+  tableCurrRow.value = {}
+  tableCurrType.value = ''
+  done()
+}
 
 const saveFormatting = (form) => {
   let formData = cloneDeep(form)
@@ -1499,7 +1515,10 @@ const rowSave = async (form, done, loading) => {
   await executeAfterRequest('add', { ...apiData, id: addId })
   if (isLazyTree.value && !isSearchData.value) {
     await partUpdateLazyData(formData, 'add')
-  } else resetData()
+  } else {
+    initLeftTreeData()
+    resetData()
+  }
   message.success(t('common.createSuccess'))
   done()
 }
@@ -1529,7 +1548,10 @@ const rowUpdate = async (form, index, done, loading) => {
   if (isLazyTree.value) {
     if (isSearchData.value) resetData()
     else await partUpdateLazyData(formData, 'edit')
-  } else await getTableData(true, { isGetSummary: true })
+  } else {
+    initLeftTreeData()
+    await getTableData(true, { isGetSummary: true })
+  }
   message.success(t('common.updateSuccess'))
   done()
   // 主附表内嵌
@@ -1573,7 +1595,10 @@ const rowDel = async (data) => {
           for (const key in selectObj) await partUpdateLazyData(selectObj[key], 'del')
         } else await partUpdateLazyData(data, 'del')
       }
-    } else await getTableData(true, { isGetSummary: true })
+    } else {
+      initLeftTreeData()
+      await getTableData(true, { isGetSummary: true })
+    }
     clearSelection()
     message.success(t('common.delSuccess'))
     loading.value = false
