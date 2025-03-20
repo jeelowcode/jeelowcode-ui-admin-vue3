@@ -60,6 +60,8 @@
               :dic-max-limit="column.limit"
               :dic-select-type="column.multiple ? 'multiple' : 'radio'"
               :dic-row-key="dicCode"
+              :fixed-search="column.fixedSearch"
+              :enhance-data="column.enhanceData"
             />
           </el-main>
           <el-aside width="200px">
@@ -158,6 +160,8 @@ interface Column {
   separator?: string //分隔符
   readonly?: boolean
   clearable?: boolean
+  fixedSearch?: object //固定表格搜索值（每次查询都会带上）
+  enhanceData?: object //传递给表格js增强内部调用配置
 }
 
 interface Props {
