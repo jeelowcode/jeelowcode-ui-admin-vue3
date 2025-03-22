@@ -2,6 +2,7 @@ import type { RouteLocationNormalized, Router, RouteRecordNormalized } from 'vue
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { isUrl } from '@/utils/is'
 import { cloneDeep, omit } from 'lodash-es'
+import qs from 'qs'
 
 const modules = import.meta.glob('../views/**/*.{vue,tsx}')
 /**
@@ -89,11 +90,16 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
       alwaysShow:
         route.children &&
         route.children.length > 0 &&
-        (route.alwaysShow !== undefined ? route.alwaysShow : true)
+        (route.alwaysShow !== undefined ? route.alwaysShow : true),
+      params: {},
     }
     // 路由地址转首字母大写驼峰，作为路由名称，适配keepAlive
+    const isParams = route.path.indexOf('?') > -1 && !isUrl(route.path)
+    try {
+      if (isParams) meta.params = qs.parse(route.path.split('?')[1])
+    } catch (error) { }
     let data: AppRouteRecordRaw = {
-      path: route.path.indexOf('?') > -1 && !isUrl(route.path) ? route.path.split('?')[0] : route.path, // 注意，需要排除 http 这种 url，避免它带 ? 参数被截取掉
+      path: isParams ? route.path.split('?')[0] : route.path, // 注意，需要排除 http 这种 url，避免它带 ? 参数被截取掉
       name:
         route.componentName && route.componentName.length > 0
           ? route.componentName
