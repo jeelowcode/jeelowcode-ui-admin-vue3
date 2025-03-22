@@ -64,7 +64,7 @@ watch(
 watch(
   () => props.language,
   () => {
-    if (props.language) setLanguage(props.language,props.providerType)
+    if (props.language) setLanguage(props.language, props.providerType)
   }
 )
 
@@ -73,4 +73,6 @@ function updateMonacoVal(val: string, type = 'modified') {
     updateVal(val, type)
   }
 }
+
+defineExpose({ getValue: () => getEditor('modified')?.getValue() })
 </script>

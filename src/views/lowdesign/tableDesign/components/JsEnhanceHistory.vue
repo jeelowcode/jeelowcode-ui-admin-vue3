@@ -45,7 +45,12 @@
             v-model="MEData.value"
             v-bind="MEData.params"
           ></MonacoEditor>
-          <DeffEditor v-else v-model="MEData.value" v-bind="MEData.params"></DeffEditor>
+          <DeffEditor
+            ref="deffRef"
+            v-else
+            v-model="MEData.value"
+            v-bind="MEData.params"
+          ></DeffEditor>
         </div>
       </template>
     </DesignPopup>
@@ -116,6 +121,7 @@ const currType = ref('')
 const isFull = ref(true)
 
 const crudRef = ref()
+const deffRef = ref()
 const { initTableLayout, windowSize } = useCrudHeight(crudRef)
 
 const calcHeight = computed(() => {
@@ -195,10 +201,10 @@ const handleJs = async (type, row) => {
               id: data.id,
               dbformId: props.dbformId,
               jsType: 'js',
-              jsJson: MEData.value.value
+              jsJson: deffRef.value.getValue()
             }).catch(() => false)
 
-            if (upadteData) {
+            if (upadteData !== false) {
               if (isLock) await JsApi.unlockJs(props.dbformId, 'js')
               message.success('保存成功')
               getTableData()
