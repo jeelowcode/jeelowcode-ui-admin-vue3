@@ -238,21 +238,29 @@ const tableJsEnhance = {
       label: 'cellDblclick', detail: '单元格双击', kind: functionKind,
       insertText: `cellDblclick(row, column, cell, event) { //单元格双击
 
-}`,
+},`,
     },
     {
       label: 'summaryBottomFormatting', detail: '表格底部统计格式化', kind: functionKind,
       insertText: `summaryBottomFormatting(sums, columns, tableData, summaryData) { //表格底部统计格式化
   console.log(sums, columns, tableData, summaryData)
   return sums
-}`,
+},`,
     },
     {
       label: 'summaryTopFormatting', detail: '表格头部统计格式化', kind: functionKind,
       insertText: `summaryTopFormatting(data) { //表格头部统计格式化
   console.log(data)
   return data
-}`,
+},`,
+    },
+    {
+      label:'beforeExpandInnerSub', detail: '内嵌主附表展开前触发', kind: functionKind,
+      insertText:`beforeExpandInnerSub(row, searchData) {
+  //row 当前行数据  searchData 每附表对应的搜索参数
+  console.log(row, searchData)
+  return searchData
+},`
     }
 
   ],

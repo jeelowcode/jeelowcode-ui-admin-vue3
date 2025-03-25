@@ -15,6 +15,7 @@ const TableJsEnhance = {
     { label: '控制行是否可勾选', value: 'selectable' },
     { label: '表格底部统计格式化', value: 'summaryBottomFormatting' },
     { label: '表格头部统计格式化', value: 'summaryTopFormatting' },
+    { label: '内嵌主附表展开前触发', value: 'beforeExpandInnerSub' },
     { label: '行样式', value: 'rowStyle' },
     { label: '列样式', value: 'cellStyle' },
     { label: '行单击', value: 'rowClick' },

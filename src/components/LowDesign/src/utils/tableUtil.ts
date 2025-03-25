@@ -34,6 +34,7 @@ export interface JsEnhanceObj {
   cellDblclick?: (row: object, column: object, cell: TdHTMLAttributes, event: Event) => void
   summaryBottomFormatting?: (sums: Array<string | VNode>, columns, tableData, summaryData) => Array<string | VNode>
   summaryTopFormatting?: (data) => Array<any>
+  beforeExpandInnerSub?: (data, searchData) => object
 }
 
 interface TableInfo {

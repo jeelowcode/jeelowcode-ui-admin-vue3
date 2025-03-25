@@ -218,7 +218,7 @@
                       :ref="(el) => (innerTableRef[sub.prop] = el)"
                       :tableId="sub.tableId"
                       v-bind="sub.vBind"
-                      :fixedSearch="{ [sub.mainProp]: row.id }"
+                      :fixedSearch="{ ...(innerSubSearch[row.id]?.[sub.prop] || {}) }"
                     ></LowTable>
                   </div>
                 </template>
@@ -426,7 +426,8 @@ const menuLeftShow = ref(true)
 const erpTableRef = ref({})
 
 const innerTabsOption = ref<any>({})
-const innerTabsValue = ref<any>({})
+const innerSubSearch = ref<any>({})
+const innerSubSearch = ref<any>({})
 const innerTableRef = ref({})
 
 const importDialog = ref(false)
@@ -1607,6 +1608,18 @@ const rowDel = async (data) => {
 const expandChanges = (row, expendList) => {
   //内嵌表格处理
   if (tableInfo.value.tableType == 'default' && tableInfo.value.subTemplate == 'innerTable') {
+    let searchData = {}
+    innerTabsOption.value.column.forEach(
+      (item) => (searchData[item.prop] = { [item.mainProp]: row.id })
+    )
+    try {
+      if (jsEnhanceObj.value.beforeExpandInnerSub) {
+        searchData = jsEnhanceObj.value.beforeExpandInnerSub(row, searchData)
+      }
+    } catch (error) {
+      enhanceErrorTip('js增强【beforeExpandInnerSub】方法执行异常，请检查', error)
+    }
+    innerSubSearch.value[row.id] = searchData
     innerTabsValue.value = innerTabsOption.value.column[0]
     tableOption.value.expandRowKeys = []
     if (expendList.length && row) tableOption.value.expandRowKeys.push(row.id)
