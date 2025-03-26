@@ -148,6 +148,7 @@
 import { useLowStoreWithOut } from '@/store/modules/low'
 import { listToTree } from '@/utils/tree'
 import * as DicApi from '@/api/design/dic/index'
+import { cloneDeep } from 'lodash-es'
 
 defineOptions({ name: 'DeptSelect' })
 
@@ -210,8 +211,10 @@ const dialogData = ref({
         name: '确定',
         icon: 'material-symbols:check-rounded',
         clickFun: () => {
-          dialogData.value.value = false
           model.value = getCurrDeptSelect('confirm').join(',')
+          setTimeout(() => {
+            dialogData.value.value = false
+          }, 30)
         }
       }
     ],
@@ -338,8 +341,16 @@ const getDeptList = (getType) => {
 watch(
   () => model.value,
   (value) => {
-    if (props.column['onChange']) props.column['onChange']({ value, column: props.column })
-    else if (props.column['change']) props.column['change']({ value, column: props.column })
+    const selectObj = {}
+    cloneDeep(deptSelect.value).forEach((item) => {
+      delete item.children
+      selectObj[item[treeDeptOption.value.nodeKey]] = item
+    })
+    if (props.column['onChange']) {
+      props.column['onChange']({ value, column: props.column, selectObj })
+    } else if (props.column['change']) {
+      props.column['change']({ value, column: props.column, selectObj })
+    }
   }
 )
 

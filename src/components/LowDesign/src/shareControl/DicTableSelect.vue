@@ -145,6 +145,7 @@
 import { useWindowSize } from '@vueuse/core'
 import { encryptAES } from '@/components/LowDesign/src/utils/aes'
 import { useLowStoreWithOut } from '@/store/modules/low'
+import { cloneDeep } from 'lodash-es'
 defineOptions({ name: 'DicTableSelect' })
 
 interface Column {
@@ -200,8 +201,10 @@ const dialogData = ref({
         name: '确定',
         icon: 'material-symbols:check-rounded',
         clickFun: () => {
-          dialogData.value.value = false
           model.value = getCurrTableSelect('confirm').join(',')
+          setTimeout(() => {
+            dialogData.value.value = false
+          }, 30)
         }
       }
     ]
@@ -317,8 +320,15 @@ const tagTableClose = (id) => {
 watch(
   () => model.value,
   (value) => {
-    if (props.column['onChange']) props.column['onChange']({ value, column: props.column })
-    else if (props.column['change']) props.column['change']({ value, column: props.column })
+    const selectObj = {}
+    cloneDeep(tableRef.value.tableSelect).forEach(
+      (item) => (selectObj[item[props.column.dictCode]] = item)
+    )
+    if (props.column['onChange']) {
+      props.column['onChange']({ value, column: props.column, selectObj })
+    } else if (props.column['change']) {
+      props.column['change']({ value, column: props.column, selectObj })
+    }
   }
 )
 

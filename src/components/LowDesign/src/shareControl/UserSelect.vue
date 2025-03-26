@@ -204,6 +204,7 @@
 import { listToTree, filter } from '@/utils/tree'
 import { useLowStoreWithOut } from '@/store/modules/low'
 import * as DicApi from '@/api/design/dic/index'
+import { cloneDeep } from 'lodash-es'
 defineOptions({ name: 'UserSelect' })
 
 interface Column {
@@ -269,8 +270,10 @@ const dialogData = ref({
         name: '确定',
         icon: 'material-symbols:check-rounded',
         clickFun: () => {
-          dialogData.value.value = false
           model.value = getCurrTableSelect('confirm').join(',')
+          setTimeout(() => {
+            dialogData.value.value = false
+          }, 30)
         }
       }
     ]
@@ -644,8 +647,15 @@ const initSelect = (val) => {
 watch(
   () => model.value,
   (value) => {
-    if (props.column['onChange']) props.column['onChange']({ value, column: props.column })
-    else if (props.column['change']) props.column['change']({ value, column: props.column })
+    const selectObj = {}
+    cloneDeep(tableSelect.value).forEach(
+      (item) => (selectObj[item[tableOption.value.rowKey]] = item)
+    )
+    if (props.column['onChange']) {
+      props.column['onChange']({ value, column: props.column, selectObj })
+    } else if (props.column['change']) {
+      props.column['change']({ value, column: props.column, selectObj })
+    }
   }
 )
 
