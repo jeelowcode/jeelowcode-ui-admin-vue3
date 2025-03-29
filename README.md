@@ -1,14 +1,14 @@
 
 <a href="http://doc.jeelowcode.com/club" target="_blank">
 <p align="center">
-	<img alt="logo"  src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/xct.jpg">
+	<img alt="logo"  src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/xct.jpg">
 </p>
 </a>
 
 <a href="http://doc.jeelowcode.com/club" target="_blank"> 🔥🔥🔥 前往俱乐部获取内测资格 🔥🔥🔥 </a>
 
 <p align="center">
-	<img alt="logo" width=200" src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/logo.png">
+	<img alt="logo" width=200" src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/logo.png">
 </p>
 <h4 align="center">在线轻松驾驭99.99%编程挑战</h4>
 <p align="center">
@@ -68,24 +68,24 @@ com.jeelowcode
 
 
 ## 5.系统架构图
-<img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/jsjg2.png"/>
+<img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/jsjg2.png"/>
 
 
 ## 6.Hello World入门
 只需要**4步**带你了解低代码JeeLowCode
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/hello1.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/hello2.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/hello1.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/hello2.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/hello3.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/hello4.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/hello3.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/hello4.png"/></td>
     </tr>
 </table>
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/hello5.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/hello5.png"/></td>
     </tr>
 </table>
 
@@ -94,38 +94,38 @@ com.jeelowcode
 ### 7.1 手机端效果图：
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/app1.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/app2.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/app3.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/app1.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/app2.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/app3.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/app5.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/app6.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/app7.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/app5.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/app6.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/app7.png"/></td>
     </tr>
 </table>
 
 ### 7.2 电脑端效果图：
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/pc1.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/pc2.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/pc3.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/pc1.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/pc2.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/pc3.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/pc4.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/pc5.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/pc6.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/pc4.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/pc5.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/pc6.png"/></td>
     </tr>
 </table>
 
 ### 7.3 动态效果图：
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/gif1.gif"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/gif1.gif"/></td>
     </tr>
     <tr>
-       <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/gif2.gif"/></td>
+       <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/gif2.gif"/></td>
     </tr>
 </table>
 
@@ -135,7 +135,7 @@ com.jeelowcode
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/jeelowcode-sy.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/jeelowcode-sy.png"/></td>
     </tr>
 </table>
 
@@ -145,10 +145,10 @@ com.jeelowcode
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/bcj1.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/bcj1.png"/></td>
     </tr>
         <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/bcj2.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/bcj2.png"/></td>
     </tr>
 </table>
 
@@ -158,10 +158,10 @@ com.jeelowcode
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/jeelowcode-tj-pz.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/jeelowcode-tj-pz.png"/></td>
     </tr>
         <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/jeelowcode-tj.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/jeelowcode-tj.png"/></td>
     </tr>
 </table>
 
@@ -171,13 +171,13 @@ com.jeelowcode
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/duobiao1.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/duobiao1.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/duobiao2.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/duobiao2.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/duobiao3.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/duobiao3.png"/></td>
     </tr>
 </table>
 
@@ -187,10 +187,10 @@ com.jeelowcode
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/zdgshxs1.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/zdgshxs1.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/zdgshxs2.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/zdgshxs2.png"/></td>
     </tr>
 </table>
 
@@ -200,7 +200,7 @@ com.jeelowcode
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/zdpx1.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/zdpx1.png"/></td>
     </tr>
 </table>
 
@@ -210,7 +210,7 @@ com.jeelowcode
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/8.jpeg"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/8.jpeg"/></td>
     </tr>
 </table>
 
@@ -245,7 +245,7 @@ com.jeelowcode
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/zxbd1.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/zxbd1.png"/></td>
     </tr>
 </table>
 
@@ -255,16 +255,16 @@ com.jeelowcode
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/lizi1.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/lizi2.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/lizi1.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/lizi2.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/lizi3.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/lizi4.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/lizi3.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/lizi4.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/lizi5.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/lizi6.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/lizi5.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/lizi6.png"/></td>
     </tr>
 </table>
 
@@ -274,16 +274,16 @@ com.jeelowcode
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/mb-sy1.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/mb-sy2.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/mb-sy1.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/mb-sy2.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/mb-ty1.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/mb-ty2.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/mb-ty1.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/mb-ty2.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/mb-ty3.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/mb-ty4.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/mb-ty3.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/mb-ty4.png"/></td>
     </tr>
 </table>
 
@@ -318,12 +318,12 @@ com.jeelowcode
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/bz1.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/bz2.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/bz1.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/bz2.png"/></td>
     </tr>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/bz3.png"/></td>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/bz4.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/bz3.png"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/bz4.png"/></td>
     </tr>
 </table>
 
@@ -356,7 +356,7 @@ com.jeelowcode
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/13.jpg"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/13.jpg"/></td>
     </tr>
 </table>
 
@@ -376,7 +376,7 @@ npm install -g pnpm
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/14.jpg"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/14.jpg"/></td>
     </tr>
 </table>
 
@@ -390,7 +390,7 @@ pnpm install
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/15.jpg"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/15.jpg"/></td>
     </tr>
 </table>
 
@@ -400,7 +400,7 @@ pnpm install
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/16.jpg"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/16.jpg"/></td>
     </tr>
 </table>
 
@@ -418,7 +418,7 @@ pnpm run dev-server
 
 <table>
     <tr>
-        <td ><img src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/18.jpg"/></td>
+        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/18.jpg"/></td>
     </tr>
 </table>
 
@@ -433,7 +433,7 @@ pnpm run dev-server
     <td >JeeLowCode公众号</td>
   </tr>
   <tr>
-    <td ><img height="320" width="250" src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/jeelowcode-kf.png"/></td>  
-    <td ><img height="250" width="250" src="https://ai.oss.mj.ink/chatgpt/jeelowcode/gitee/wxgzh.jpg"/></td>  
+    <td ><img height="320" width="250" src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/jeelowcode-kf.png"/></td>  
+    <td ><img height="250" width="250" src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/wxgzh.jpg"/></td>  
   </tr>
 </table>
