@@ -18,6 +18,7 @@ export const useGroup = (treeRef, DataApi, resetChange, isView?) => {
   })
   const treeData = ref<any>([])
   const groupValue = ref<string | number>(0)
+  const currMenuNodeData = ref<any>({})
 
   if (isView) {
     treeOption.value['addBtn'] = false
@@ -29,6 +30,10 @@ export const useGroup = (treeRef, DataApi, resetChange, isView?) => {
   const treePermission = (key, data) => {
     if (key != 'addBtn' && data.id === 0) return false
     return true
+  }
+
+  const treeNodeContextmenu = (data) => {
+    currMenuNodeData.value = data
   }
 
   const treeBeforeOpen = (done, type) => {
@@ -48,6 +53,8 @@ export const useGroup = (treeRef, DataApi, resetChange, isView?) => {
           }
         })
         treeForm.value.oldPid = treeForm.value.pid
+      } else {
+        treeForm.value.pid = currMenuNodeData.value.id
       }
       treeOption.value.formOption.column.pid.dicData = treeList
     }, 30)
@@ -104,5 +111,5 @@ export const useGroup = (treeRef, DataApi, resetChange, isView?) => {
     done()
   }
 
-  return { treeForm, treeOption, treeData, groupValue, treePermission, treeBeforeOpen, treeNodeClick, getTreeData, treeUpdate, treeSave, treeDel }
+  return { treeForm, treeOption, treeData, groupValue, treePermission, treeNodeContextmenu, treeBeforeOpen, treeNodeClick, getTreeData, treeUpdate, treeSave, treeDel }
 }

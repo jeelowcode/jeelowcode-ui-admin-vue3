@@ -9,6 +9,7 @@
           :data="treeData"
           :permission="treePermission"
           :before-open="treeBeforeOpen"
+          @node-contextmenu="treeNodeContextmenu"
           @node-click="treeNodeClick"
           @update="treeUpdate"
           @save="treeSave"
@@ -141,7 +142,7 @@ import * as FormApi from '@/api/design/form'
 import { ElLoading } from 'element-plus'
 import { LowFormDesign } from '@/components/LowFormDesign/index'
 import { cloneDeep } from 'lodash-es'
-import { useGroup } from '../useGroup'
+import { useGroup } from '@/hooks/design/useGroup'
 import { checkPermi } from '@/utils/permission'
 import { ElButton } from 'element-plus'
 import useCopyText from '@/hooks/design/useCopyText'
@@ -255,6 +256,7 @@ const {
   groupValue,
   treePermission,
   treeBeforeOpen,
+  treeNodeContextmenu,
   treeNodeClick,
   getTreeData,
   treeUpdate,

@@ -9,6 +9,7 @@
           :data="treeData"
           :permission="treePermission"
           :before-open="treeBeforeOpen"
+          @node-contextmenu="treeNodeContextmenu"
           @node-click="treeNodeClick"
           @update="treeUpdate"
           @save="treeSave"
@@ -444,7 +445,7 @@ import useCopyText from '@/hooks/design/useCopyText'
 import { ElButton, ElLoading } from 'element-plus'
 import { cloneDeep } from 'lodash-es'
 import { useRenderVxeColumn } from '../general/components/useRenderVxeColumn'
-import { useGroup } from '../useGroup'
+import { useGroup } from '@/hooks/design/useGroup'
 import { checkPermi } from '@/utils/permission'
 import { ElMessage } from 'element-plus'
 
@@ -619,6 +620,7 @@ const {
   groupValue,
   treePermission,
   treeBeforeOpen,
+  treeNodeContextmenu,
   treeNodeClick,
   getTreeData,
   treeUpdate,

@@ -9,6 +9,7 @@
           :data="treeData"
           :permission="treePermission"
           :before-open="treeBeforeOpen"
+          @node-contextmenu="treeNodeContextmenu"
           @node-click="treeNodeClick"
           @update="treeUpdate"
           @save="treeSave"
@@ -177,7 +178,7 @@ import { ElMessage, ElButton, ElLoading } from 'element-plus'
 import { cloneDeep } from 'lodash-es'
 import useCopyText from '@/hooks/design/useCopyText'
 import { useRenderVxeColumn } from '../general/components/useRenderVxeColumn'
-import { useGroup } from '../useGroup'
+import { useGroup } from '@/hooks/design/useGroup'
 import { checkPermi } from '@/utils/permission'
 
 defineOptions({ name: 'TableDesign' })
@@ -264,6 +265,7 @@ const {
   groupValue,
   treePermission,
   treeBeforeOpen,
+  treeNodeContextmenu,
   treeNodeClick,
   getTreeData,
   treeUpdate,
