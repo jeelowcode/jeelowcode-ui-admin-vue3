@@ -15,7 +15,7 @@
     >
       <template #item="{ element, index }">
         <el-col :md="element.span" :xs="24" :offset="element.offset" class="flex!">
-          <div class="flex-1">
+          <div class="flex-1 w-100%">
             <div
               class="layout-item hover drag flex"
               :class="[

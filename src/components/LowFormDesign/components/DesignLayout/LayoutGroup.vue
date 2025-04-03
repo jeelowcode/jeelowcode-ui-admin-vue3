@@ -35,7 +35,7 @@
                 marginLeft: `${(element.offset / 24) * 100}%`
               }"
             >
-              <div class="flex-1">
+              <div class="flex-1 w-100%">
                 <LayoutTable
                   v-if="element.type == 'layoutTable'"
                   :ref="(el) => handleSetRef(el, element)"
