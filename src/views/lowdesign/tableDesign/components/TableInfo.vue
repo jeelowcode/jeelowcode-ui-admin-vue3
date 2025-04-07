@@ -307,12 +307,24 @@ const delTableInfoData = () => {
 }
 
 const setTableInfoTree = (tableType) => {
+  let isPid = false
   infoData.value.basics = infoData.value.basics.filter((item) => {
-    if (item.only && item.fieldCode == 'pid') return false
+    if (item.fieldCode == 'pid') {
+      if (item.only || isPid) return false
+      isPid = true
+    }
     return true
   })
-  if (tableType == 2)
-    infoData.value.basics.splice(1, 0, ...tableInfoOption.getDefaultMysqlField('tree'))
+  if (tableType == 2) {
+    if (isPid) {
+      infoData.value.basics = infoData.value.basics.map((item) => {
+        if (item.fieldCode == 'pid') item.only = true
+        return item
+      })
+    } else {
+      infoData.value.basics.splice(1, 0, ...tableInfoOption.getDefaultMysqlField('tree'))
+    }
+  }
 }
 
 const tabsHandleChange = (column) => {

@@ -716,6 +716,7 @@ const tableFormVerify = (type) => {
       let infoData = {}
       let errText = ''
       let fieldCodeArr: any[string] = cloneDeep(tableInfoOption.disabledArr)
+      if (tableType !== 2) fieldCodeArr = fieldCodeArr.filter((field) => field != 'pid')
       const filedData = [...tableInfoRef.value.infoData.basics]
       tableInfoRef.value.tableInfoDefault.forEach((item) => {
         filedData.splice(item.sortNum || 999, 0, item)

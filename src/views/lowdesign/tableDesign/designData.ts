@@ -519,7 +519,12 @@ const formattingInitData = (editInfoData) => {
         if (key == 'dictTableColumn' && !(infoItem[key] instanceof Array)) {
           infoItem[key] = infoItem[key] ? infoItem[key].split(',') : []
         }
-        if (key == 'fieldCode' && disabledArr.includes(infoItem[key])) infoItem.only = true
+        if (key == 'fieldCode' && disabledArr.includes(infoItem[key])) {
+          infoItem.only = true
+          if (infoItem[key] === 'pid' && editInfoData.dbForm.tableType !== 2) {
+            delete infoItem.only
+          }
+        }
       }
     }
     infoData.push(infoItem)
