@@ -778,7 +778,7 @@ const subTableInit = () => {
 
 const verifySubTable = (loading) => {
   return new Promise(async (resolve) => {
-    if (!tableInfo.value.subTable?.length) return resolve(true)
+    if (!tableInfo.value.subTable?.length || popShowObj.value.form) return resolve(true)
     const tabsColumn = tableOption.value.column.lowCustomSubTable?.tabsOption.column
     const promiseArr: any[] = []
     tabsColumn?.forEach((tab) => {
