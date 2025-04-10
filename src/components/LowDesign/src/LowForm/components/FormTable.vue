@@ -61,7 +61,7 @@
                   index
                 )
               "
-              v-if="item.display"
+              v-if="item.display && menuBtnShow(item, scope.row, scope.index)"
             >
               <span v-if="item.icon" v-show="!btnParams.menuBtn[index]?.['loading']" class="mr-3px">
                 <Icon :size="14" :icon="item.icon" />
@@ -330,6 +330,19 @@ const addTable = () => {
   } else {
     avueCrudRef.value.rowAdd()
   }
+}
+
+//按钮显隐处理
+const menuBtnShow = (btnItem, row, index) => {
+  if (index < 0) return true
+  const showStr = props.column.btnShowObj[btnItem.prop]
+  if (!showStr) return true
+  const bool = executeStrFunction(
+    showStr,
+    [row, index],
+    `${btnItem.label} 按钮显示/隐藏判断执行异常，请检查`
+  )
+  return bool
 }
 
 // 按钮事件处理

@@ -382,12 +382,17 @@ const initColumn = (column: object, control, ruleObj, componentData: Object, oth
         delete columnItem.params[key]
       })
       columnItem.btnClickObj = {}
+      columnItem.btnShowObj = {}
       for (const key in columnItem.btnData) {
         columnItem.btnData[key] = columnItem.btnData[key].map((item) => {
           const config = handleStrObj(item.configStr, `【${item.label}】 按钮配置格式异常，请检查`)
           if (config['handleClick']) {
             columnItem.btnClickObj[item.prop] = `${config['handleClick']}`
             delete config['handleClick']
+          }
+          if (config['handleShow']) {
+            columnItem.btnShowObj[item.prop] = `${config['handleShow']}`
+            delete config['handleShow']
           }
           delete item.configStr
           Object.assign(item, config)

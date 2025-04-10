@@ -3,6 +3,7 @@ export interface exampleType {
   formJsEnhanceExample: string
   remoteExample: string
   buttonExample: string
+  formTableMenuButtonExample: string
   tabsEnhanceExample: string
   tableEnhanceExample: string
   tableConfigExample: string
@@ -60,6 +61,22 @@ export const buttonExample = `return {
   }
 }
 `
+//表单开发 表格布局 操作列按钮 其他配置模板
+export const formTableMenuButtonExample = `return {
+  //其他配置请参考element-plus button配置
+  type:'primary',
+  //当前按钮的点击事件
+  handleClick: (obj) => {
+    if (obj.loading) obj.loading() //关闭loading方法
+  },
+  //当前按钮显示/隐藏判断 注：按钮需要先配置可见
+  handleShow:(row)=>{
+    //row 当前行数据
+    return true
+  }
+}
+`
+
 /* 组件配置模板 */
 //选项卡布局 增强配置模板
 export const tabsEnhanceExample = `return {

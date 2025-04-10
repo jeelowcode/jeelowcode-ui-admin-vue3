@@ -122,7 +122,7 @@
                           size="small"
                           v-model="element.configStr"
                           placeholder="按钮配置"
-                          @click="openBtnEditView(element, index)"
+                          @click="openBtnEditView(element, index, tabItem.prop)"
                         ></el-input>
                       </div>
                       <div class="btn-item flex-wrap">
@@ -232,7 +232,8 @@ const handleRemoveBtn = (index, prop) => {
 }
 const exampleObj = {
   tableEnhanceStr: example.tableEnhanceExample,
-  configStr: example.buttonExample
+  configStr: example.buttonExample,
+  configMenuStr: example.formTableMenuButtonExample
 }
 
 const openEditView = (prop, label) => {
@@ -251,7 +252,7 @@ const openEditView = (prop, label) => {
   }
   emit('open-med', { prop, label, params })
 }
-const openBtnEditView = (btnItem, index) => {
+const openBtnEditView = (btnItem, index, tabProp?) => {
   openMEDialog(
     {
       prop: 'configStr',
@@ -263,7 +264,10 @@ const openBtnEditView = (btnItem, index) => {
             name: `复制配置示例`,
             icon: 'solar:copy-outline',
             clickFun: () => {
-              emit('copy-text', exampleObj.configStr || '')
+              emit(
+                'copy-text',
+                tabProp == 'menu' ? exampleObj.configMenuStr : exampleObj.configStr || ''
+              )
             },
             params: {
               size: 'small',
