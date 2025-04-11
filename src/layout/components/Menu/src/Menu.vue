@@ -179,7 +179,6 @@ $prefix-cls: #{$namespace}-menu;
     .#{$elNamespace}-menu-item > span,
     .#{$elNamespace}-sub-menu__title > span {
       flex-basis: calc(100% - 65px);
-      min-width: max-content;
       line-height: 20px;
       word-break: break-all;
       white-space: normal;
@@ -293,6 +292,18 @@ $submenu-prefix-cls: #{$namespace}-submenu-popper;
   &::-webkit-scrollbar-thumb {
     background-color: rgb(144 147 153 / 30%);
     border-radius: 4px;
+  }
+}
+
+//顶部菜单
+.v-layout__top {
+  background-color: #fff;
+  .#{$elNamespace}-menu {
+    // 菜单名称溢出换行显示
+    .#{$elNamespace}-menu-item > span,
+    .#{$elNamespace}-sub-menu__title > span {
+      min-width: max-content;
+    }
   }
 }
 </style>
