@@ -297,7 +297,6 @@ $submenu-prefix-cls: #{$namespace}-submenu-popper;
 
 //顶部菜单
 .v-layout__top {
-  background-color: #fff;
   .#{$elNamespace}-menu {
     // 菜单名称溢出换行显示
     .#{$elNamespace}-menu-item > span,
