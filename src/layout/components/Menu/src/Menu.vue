@@ -176,7 +176,10 @@ $prefix-cls: #{$namespace}-menu;
     }
 
     // 菜单名称溢出换行显示
-    .#{$elNamespace}-menu-item > span {
+    .#{$elNamespace}-menu-item > span,
+    .#{$elNamespace}-sub-menu__title > span {
+      flex-basis: calc(100% - 65px);
+      min-width: max-content;
       line-height: 20px;
       word-break: break-all;
       white-space: normal;

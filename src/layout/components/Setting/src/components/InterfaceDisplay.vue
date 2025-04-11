@@ -176,7 +176,7 @@ watch(
     </div>
 
     <div class="flex items-center justify-between">
-      <span class="text-14px">{{ t('setting.localeIcon') }}</span>
+      <span class="text-14px">{{ t('setting.clearCache') }}</span>
       <ElSwitch v-model="clearCache" @change="clearCacheChange" />
     </div>
 

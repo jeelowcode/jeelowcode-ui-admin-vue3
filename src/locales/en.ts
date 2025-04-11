@@ -78,6 +78,7 @@ export default {
     collapseMenu: 'Collapse menu',
     hamburgerIcon: 'Hamburger icon',
     screenfullIcon: 'Screenfull icon',
+    clearCache: 'Clear cache',
     sizeIcon: 'Size icon',
     localeIcon: 'Locale icon',
     messageIcon: 'Message icon',

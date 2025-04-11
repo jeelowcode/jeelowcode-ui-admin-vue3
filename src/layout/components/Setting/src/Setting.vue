@@ -96,12 +96,16 @@ if (layout.value === 'top' && !appStore.getIsDark) {
 // 监听layout变化，重置一些主题色
 watch(
   () => layout.value,
-  (n) => {
-    if (n === 'top' && !appStore.getIsDark) {
-      headerTheme.value = '#fff'
-      setHeaderTheme('#fff')
+  () => {
+    if (appStore.getIsDark) {
+      headerTheme.value = '#141414'
+      setMenuTheme('#141414')
+      setHeaderTheme('#141414')
     } else {
-      setMenuTheme(unref(menuTheme))
+      const { menu, topHeader } = appStore.getDarkBeforeColor
+      headerTheme.value = topHeader
+      setHeaderTheme(topHeader)
+      setMenuTheme(menu)
     }
   }
 )
@@ -118,6 +122,8 @@ const copyConfig = async () => {
       hamburger: ${appStore.getHamburger},
       // 全屏图标
       screenfull: ${appStore.getScreenfull},
+      // 清除缓存
+      clearCache: ${appStore.getClearCache},
       // 尺寸图标
       size: ${appStore.getSize},
       // 多语言图标
@@ -200,9 +206,16 @@ const clear = () => {
 
 onMounted(() => {
   const leftMenuBgColor = appStore.getTheme.leftMenuBgColor
-  if (appStore.getIsDark && leftMenuBgColor != '#141414') {
-    appStore.setDarkBeforeColor(leftMenuBgColor || '#fff')
-    setMenuTheme('#141414')
+  const topHeaderBgColor = appStore.getTheme.topHeaderBgColor
+  if (appStore.getIsDark) {
+    if (leftMenuBgColor != '#141414' || topHeaderBgColor != '#141414') {
+      appStore.setDarkBeforeColor({
+        menu: leftMenuBgColor || '#fff',
+        topHeader: topHeaderBgColor || '#fff'
+      })
+      setMenuTheme('#141414')
+      setHeaderTheme('#141414')
+    }
   }
 })
 </script>
@@ -224,7 +237,7 @@ onMounted(() => {
     <div class="text-center">
       <!-- 主题 -->
       <ElDivider>{{ t('setting.theme') }}</ElDivider>
-      <ThemeSwitch @set-menu-theme="setMenuTheme" />
+      <ThemeSwitch @set-menu-theme="setMenuTheme" @set-header-theme="setHeaderTheme" />
 
       <!-- 布局 -->
       <ElDivider>{{ t('setting.layout') }}</ElDivider>

@@ -78,6 +78,7 @@ export default {
     collapseMenu: '折叠菜单',
     hamburgerIcon: '折叠图标',
     screenfullIcon: '全屏图标',
+    clearCache: '清除缓存',
     sizeIcon: '尺寸图标',
     localeIcon: '多语言图标',
     messageIcon: '消息图标',

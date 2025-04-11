@@ -14,3 +14,9 @@ export type ThemeTypes = {
   topHeaderHoverColor?: string
   topToolBorderColor?: string
 }
+
+
+export type DarkBeforeColor = {
+  menu: string
+  topHeader: string
+}

@@ -5,7 +5,7 @@ import { useDesign } from '@/hooks/web/useDesign'
 
 defineOptions({ name: 'ThemeSwitch' })
 
-const emit = defineEmits(['set-menu-theme'])
+const emit = defineEmits(['set-menu-theme', 'set-header-theme'])
 
 const { getPrefixCls } = useDesign()
 
@@ -26,10 +26,15 @@ const blackColor = 'var(--el-color-black)'
 const themeChange = (val: boolean) => {
   appStore.setIsDark(val)
   if (val) {
-    appStore.setDarkBeforeColor(appStore.getTheme.leftMenuBgColor || '#fff')
+    appStore.setDarkBeforeColor({
+      menu: appStore.getTheme.leftMenuBgColor || '#fff',
+      topHeader: appStore.getTheme.topHeaderBgColor || '#fff'
+    })
     emit('set-menu-theme', '#141414')
+    emit('set-header-theme', '#141414')
   } else {
-    emit('set-menu-theme', appStore.getDarkBeforeColor || '#fff')
+    emit('set-menu-theme', appStore.getDarkBeforeColor.menu || '#fff')
+    emit('set-header-theme', appStore.getDarkBeforeColor.topHeader || '#fff')
   }
 }
 </script>
