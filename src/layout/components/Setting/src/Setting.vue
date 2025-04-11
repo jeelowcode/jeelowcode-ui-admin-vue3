@@ -197,6 +197,14 @@ const clear = () => {
   wsCache.delete(CACHE_KEY.IS_DARK)
   window.location.reload()
 }
+
+onMounted(() => {
+  const leftMenuBgColor = appStore.getTheme.leftMenuBgColor
+  if (appStore.getIsDark && leftMenuBgColor != '#141414') {
+    appStore.setDarkBeforeColor(leftMenuBgColor || '#fff')
+    setMenuTheme('#141414')
+  }
+})
 </script>
 
 <template>
@@ -216,7 +224,7 @@ const clear = () => {
     <div class="text-center">
       <!-- 主题 -->
       <ElDivider>{{ t('setting.theme') }}</ElDivider>
-      <ThemeSwitch />
+      <ThemeSwitch @set-menu-theme="setMenuTheme" />
 
       <!-- 布局 -->
       <ElDivider>{{ t('setting.layout') }}</ElDivider>

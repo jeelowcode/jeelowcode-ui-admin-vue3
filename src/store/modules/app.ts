@@ -32,6 +32,7 @@ interface AppState {
   title: string
   userInfo: string
   isDark: boolean
+  darkBeforeColor: string
   currentSize: ElementPlusSize
   sizeMap: ElementPlusSize[]
   mobile: boolean
@@ -71,6 +72,7 @@ export const useAppStore = defineStore('app', {
 
       layout: wsCache.get(CACHE_KEY.LAYOUT) || 'classic', // layout布局
       isDark: wsCache.get(CACHE_KEY.IS_DARK) || false, // 是否是暗黑模式
+      darkBeforeColor: wsCache.get(CACHE_KEY.DARK_BEFORE_COLOR) || '', //切换深色之前的颜色
       currentSize: wsCache.get('default') || 'default', // 组件尺寸
       theme: wsCache.get(CACHE_KEY.THEME) || {
         // 主题色
@@ -171,6 +173,9 @@ export const useAppStore = defineStore('app', {
     getIsDark(): boolean {
       return this.isDark
     },
+    getDarkBeforeColor(): string {
+      return this.darkBeforeColor
+    },
     getCurrentSize(): ElementPlusSize {
       return this.currentSize
     },
@@ -264,6 +269,10 @@ export const useAppStore = defineStore('app', {
         document.documentElement.classList.remove('dark')
       }
       wsCache.set(CACHE_KEY.IS_DARK, this.isDark)
+    },
+    setDarkBeforeColor(darkBeforeColor: string) {
+      this.darkBeforeColor = darkBeforeColor
+      wsCache.set(CACHE_KEY.DARK_BEFORE_COLOR, this.darkBeforeColor)
     },
     setCurrentSize(currentSize: ElementPlusSize) {
       this.currentSize = currentSize
