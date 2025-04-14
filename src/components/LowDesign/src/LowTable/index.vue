@@ -951,7 +951,7 @@ const menuHandle = ({ type, row, index }) => {
   } else if (type == 'delBtn') rowDel(row)
   else if (type == 'addChild') {
     tableForm.value['pid'] = row.id
-    if (tableInfo.value.formId) openCustomForm('add')
+    if (tableInfo.value.formId) openCustomForm('add', { pid: row.id })
     else crudRef.value.rowAdd()
   } else executeCustomBtnEnhance(type, row)
 }
