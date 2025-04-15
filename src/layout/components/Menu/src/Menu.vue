@@ -182,14 +182,19 @@ $prefix-cls: #{$namespace}-menu;
       word-break: break-all;
       white-space: normal;
     }
-    .#{$elNamespace}-menu-item > span {
-      &:not(:only-child) {
+
+    .#{$elNamespace}-sub-menu__title,
+    .#{$elNamespace}-menu-item {
+      & > i:first-child + span:not(:last-child) {
         flex-basis: calc(100% - 65px);
       }
-    }
-    .#{$elNamespace}-sub-menu__title > span {
-      &:not(:only-child) {
+
+      & > span:first-child:not(:last-child) {
         flex-basis: calc(100% - 35px);
+      }
+
+      & > span:only-child {
+        flex-basis: calc(100% - 10px);
       }
     }
   }
