@@ -59,7 +59,7 @@
 
 //优化el-tree内容显示不全问题
 .el-tree-node__content {
-  height: auto;
+  height: auto !important;
   min-height: var(--el-tree-node-content-height);
 }
 .el-tree-node__label {
