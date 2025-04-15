@@ -1048,7 +1048,7 @@ const showApiUrl = async (row) => {
     }
   ]
   if (isOpen) {
-    apiList.push({
+    apiList.splice(1,0,{
       label: '未登录时获取表数据[post]',
       value: `/jeelowcode/open/list/${row.id}`
     })
