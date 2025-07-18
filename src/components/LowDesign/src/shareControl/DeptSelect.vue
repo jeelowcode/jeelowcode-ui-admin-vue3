@@ -231,7 +231,7 @@ const selectId = computed(() => {
   if (!model.value) return []
   if (typeof model.value != 'string') {
     try {
-      return (model.value as Number).toString()
+      return [(model.value as Number).toString()]
     } catch (error) {
       return []
     }
@@ -248,6 +248,7 @@ const placeholderText = computed(() => {
 })
 
 const getCurrText = (id) => {
+  if (id) id = `${id}`
   const text = lowStore.dicObj[dicKey]?.[id] || ''
   const formatter = props.column.textFormatter
   if (formatter) {

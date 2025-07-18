@@ -196,6 +196,7 @@ const initColumn = (data, componentData, columnParams) => {
         const text = encryptAES(JSON.stringify({ dbformId: dictTable, fieldCodeList: [...new Set(fieldCodeList)] }))
         column[fieldCode] = {
           ...column[fieldCode],
+          dataType: 'string',
           dictCode, dictTable, dictText: dictText || dictCode,
           dictType: 'defaultTable',
           dicUrl: `/jeelowcode/dbform-data/list/${dictTable}`,

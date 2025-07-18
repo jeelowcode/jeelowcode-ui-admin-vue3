@@ -25,4 +25,9 @@ const config: {
   default_headers: 'application/json'
 }
 
-export { config }
+//对特定接口延迟超时时间
+const specificApiTimeoutObj = {
+  '/infra/file/jeelowcode/upload': 120000,//上传文件接口
+}
+
+export { config, specificApiTimeoutObj }

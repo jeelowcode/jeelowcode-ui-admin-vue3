@@ -8,7 +8,7 @@ import axios, {
 
 import { ElMessage, ElMessageBox, ElNotification, ElButton } from 'element-plus'
 import qs from 'qs'
-import { config } from '@/config/axios/config'
+import { config, specificApiTimeoutObj } from '@/config/axios/config'
 import { getAccessToken, getRefreshToken, getTenantId, removeToken, setToken } from '@/utils/auth'
 import errorCode from './errorCode'
 
@@ -57,6 +57,10 @@ service.interceptors.request.use(
     if (tenantEnable && tenantEnable === 'true') {
       const tenantId = getTenantId()
       if (tenantId) (config as Recordable).headers['tenant-id'] = tenantId
+    }
+    //设置特定接口超时时间
+    if (config.url && specificApiTimeoutObj[config.url]) {
+      config.timeout = specificApiTimeoutObj[config.url]
     }
     const params = config.params || {}
     const data = config.data || false

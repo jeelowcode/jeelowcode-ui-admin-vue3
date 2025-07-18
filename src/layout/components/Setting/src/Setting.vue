@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ElMessage } from 'element-plus'
 import { useClipboard, useCssVar } from '@vueuse/core'
+import tinycolor from 'tinycolor2'
 
 import { CACHE_KEY, useCache } from '@/hooks/web/useCache'
 import { useDesign } from '@/hooks/web/useDesign'
@@ -25,9 +26,31 @@ const drawer = ref(false)
 
 // 主题色相关
 const systemTheme = ref(appStore.getTheme.elColorPrimary)
+const themeObj = {
+  '--el-color-primary-dark-2': { color: '#000000', num: 20 },
+  '--el-color-primary-light-3': { color: '#ffffff', num: 30 },
+  '--el-color-primary-light-5': { color: '#ffffff', num: 50 },
+  '--el-color-primary-light-7': { color: '#ffffff', num: 70 },
+  '--el-color-primary-light-8': { color: '#ffffff', num: 80 },
+  '--el-color-primary-light-9': { color: '#ffffff', num: 90 }
+}
 
+const mixColors = (color1, color2, percent) => {
+  const c1 = tinycolor(color1).toRgb()
+  const c2 = tinycolor(color2).toRgb()
+
+  const r = Math.round(c1.r + (c2.r - c1.r) * (percent / 100))
+  const g = Math.round(c1.g + (c2.g - c1.g) * (percent / 100))
+  const b = Math.round(c1.b + (c2.b - c1.b) * (percent / 100))
+
+  return tinycolor({ r, g, b }).toHexString()
+}
 const setSystemTheme = (color: string) => {
   setCssVar('--el-color-primary', color)
+  for (const key in themeObj) {
+    const currColor = mixColors(color, themeObj[key].color, themeObj[key].num)
+    setCssVar(key, currColor)
+  }
   appStore.setTheme({ elColorPrimary: color })
   const leftMenuBgColor = useCssVar('--left-menu-bg-color', document.documentElement)
   setMenuTheme(trim(unref(leftMenuBgColor)))

@@ -134,7 +134,7 @@
               v-model="radioValue"
               :label="row[tableOption.rowKey || 'id']"
               :disabled="!tableOption.selectable(row, index)"
-              @click="radioClick(row, index)"
+              @click.stop="radioClick(row, index)"
             />
           </template>
           <!-- 自定义表头 -->
@@ -426,7 +426,7 @@ const menuLeftShow = ref(true)
 const erpTableRef = ref({})
 
 const innerTabsOption = ref<any>({})
-const innerSubSearch = ref<any>({})
+const innerTabsValue = ref<any>({})
 const innerSubSearch = ref<any>({})
 const innerTableRef = ref({})
 
@@ -969,18 +969,21 @@ const executeSelectionChange = () => {
 const radioClick = (row, index) => {
   const bool = tableOption.value.selectable(row, index)
   if (!bool) return
-  if (row[tableOption.value.rowKey || 'id'] == radioValue.value) {
+  const key = row[tableOption.value.rowKey || 'id']
+  if (key == radioValue.value) {
     setTimeout(() => {
       radioValue.value = ''
       tableSelect.value = []
     }, 30)
   } else {
+    radioValue.value = key
     tableSelect.value = [row]
   }
 
   //主附表ERP
   const { subTable, subTemplate } = tableInfo.value
   if (subTemplate == 'erp' && subTable?.length) {
+    if (timerObj.value.erpSearch) clearInterval(timerObj.value.erpSearch)
     timerObj.value.erpSearch = setInterval(() => {
       if (erpTabsOption.value.column?.length) {
         clearInterval(timerObj.value.erpSearch)

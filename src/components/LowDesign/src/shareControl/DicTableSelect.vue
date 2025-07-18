@@ -222,7 +222,7 @@ const selectId = computed(() => {
   if (!model.value) return []
   if (typeof model.value != 'string') {
     try {
-      return (model.value as Number).toString()
+      return [(model.value as Number).toString()]
     } catch (error) {
       return []
     }
