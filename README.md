@@ -1,11 +1,3 @@
-<a href="https://doc.jeelowcode.com/app/1" target="_blank">
-    <p align="center">
-        <img alt="logo"  src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/xct.jpg">
-    </p>
-</a>
-
-[💦官方自研低代码流程：https://doc.jeelowcode.com/app/1](https://doc.jeelowcode.com/app/1)
-
 <p align="center">
 	<img alt="logo" width=200" src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/logo.png">
 </p>
@@ -24,8 +16,8 @@
 <div align="center">
   <p>
     💻 <strong>低代码演示：</strong><a href="http://demo.jeelowcode.com">demo.jeelowcode.com</a> |
-    ☕️ <strong>技术社区：</strong><a href="http://doc.jeelowcode.com">doc.jeelowcode.com</a> |
-    💦 <strong>自研流程：</strong><a href="http://flow.jeelowcode.com">flow.jeelowcode.com</a>
+     💦️ <strong>自研工作流：</strong><a href="http://flow.jeelowcode.com">flow.jeelowcode.com</a> |
+    ☕️ <strong>技术社区：</strong><a href="http://doc.jeelowcode.com">doc.jeelowcode.com</a>
   </p>
 </div>
 
@@ -289,7 +281,7 @@ com.jeelowcode
 
 ## 📥 启动步骤
 **温馨提示：** JDK、Maven、Node等可以从网盘下载<br>
-[百度网盘地址：https://pan.baidu.com/s/1ICmHRlrRYzBkx87zoRuqvQ?pwd=1234](https://pan.baidu.com/s/1ICmHRlrRYzBkx87zoRuqvQ?pwd=1234)
+[百度网盘地址：https://pan.baidu.com/s/158EwoXY7nvBvm_P1JKnvZQ?pwd=1234](https://pan.baidu.com/s/158EwoXY7nvBvm_P1JKnvZQ?pwd=1234)
 <br>
 [阿里云盘地址：https://www.alipan.com/s/X4kF7Hshuc2](https://www.alipan.com/s/X4kF7Hshuc2)
 <br>
@@ -435,6 +427,19 @@ pnpm run dev-server
   </tr>
 </table>
 
+## 📋 提交规范
+
+```
+[init] 初始化  
+[feat] 增加新功能  
+[fix] 修复问题/BUG  
+[perf] 优化/性能提升  
+[refactor] 重构  
+[revert] 撤销修改  
+[style] 代码风格相关无影响运行结果的  
+[update] 其他修改  
+[upgrade] 升级版本
+```
 
 ## 🔗 文章收录
 
