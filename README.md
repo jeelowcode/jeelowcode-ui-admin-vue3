@@ -111,15 +111,7 @@ com.jeelowcode
     </tr>
 </table>
 
-### 3. 动态效果图：
-<table>
-    <tr>
-        <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/gif1.gif"/></td>
-    </tr>
-    <tr>
-       <td ><img src="https://oss.mj.ink/chatgpt/jeelowcode/gitee/gif2.gif"/></td>
-    </tr>
-</table>
+
 
 ## 🌟 框架核心亮点
 
@@ -427,24 +419,18 @@ pnpm run dev-server
   </tr>
 </table>
 
-## 📋 提交规范
 
-```
-[init] 初始化  
-[feat] 增加新功能  
-[fix] 修复问题/BUG  
-[perf] 优化/性能提升  
-[refactor] 重构  
-[revert] 撤销修改  
-[style] 代码风格相关无影响运行结果的  
-[update] 其他修改  
-[upgrade] 升级版本
-```
 
 ## 🔗 文章收录
-
-- [企业级低代码平台，轻松应对99.99%编程挑战](https://mp.weixin.qq.com/s/M4h9wiZ1U7Fd3E4Ze4Yq_A)
-- [[开源]精心二次封装的企业级低代码开发框架，全开源低代码开发平台，在线轻松驾驭99.99%编程挑战](https://mp.weixin.qq.com/s/TZ094u7jm4wq3tacjPEExQ)
-- [无需编码，JeeLowCode 助你轻松构建强大应用！-JeeLowCode](https://mp.weixin.qq.com/s/h4jVs8DBAzaeSWKpDVo0xw)
-- [体验JeeLowCode，感受低代码开发的魅力与高效！](https://mp.weixin.qq.com/s/JNwFWHRPFwcEIE5JV5xT3A)
+- [【天若源码教程实战】开源|频繁的需求变更？不想写代码了？试试这款二开的低代码平台，业务拖拉拽快速上线。](https://mp.weixin.qq.com/s/xwcxredXlucXc-1soFHoCQ)
+- [【码农闲谈AI】8.5K Star！拖拽组件即可搭建应用！接单神器！](https://mp.weixin.qq.com/s/f31mYUkprhXFrVva_zC1_g)
+- [【刘哥聊技术】开源|写代码太累？这款低代码平台，拖拖拽拽就能上线业务系统](https://mp.weixin.qq.com/s/YW5HI0sucGqLzEIUrpr1Kw)
+- [【龙归故里】Java低代码快速开发框架JeeLowCode，助你快速实现业务系统开发](https://mp.weixin.qq.com/s/vtubg0xSnxXO8vjLiY3r4w)
+- [【开源智慧工坊】免费商用 + 全功能覆盖！JeeLowCode：企业数字化的性价比之选](https://mp.weixin.qq.com/s/XaqEaH_U_ep1c3HoOE0_uQ)
+- [【写代码的老梁】一款开源低代码王炸！企业级功能全免费，小白也能快速上手!](https://mp.weixin.qq.com/s/BE5FB40uFWtItFxJ7R6Nfw)
+- [【开源深码】零代码基础也能快速上手，JeeLowCode助力企业数字化转型](https://mp.weixin.qq.com/s/soUA7qK6xt0p6SXD9yy8Zg)
+- [【程序员开源栈】企业级低代码平台，轻松应对99.99%编程挑战](https://mp.weixin.qq.com/s/M4h9wiZ1U7Fd3E4Ze4Yq_A)
+- [【一飞开源】[开源]精心二次封装的企业级低代码开发框架，全开源低代码开发平台，在线轻松驾驭99.99%编程挑战](https://mp.weixin.qq.com/s/TZ094u7jm4wq3tacjPEExQ)
+- [【予墨致远】无需编码，JeeLowCode 助你轻松构建强大应用！-JeeLowCode](https://mp.weixin.qq.com/s/h4jVs8DBAzaeSWKpDVo0xw)
+- [【低代码世界】体验JeeLowCode，感受低代码开发的魅力与高效！](https://mp.weixin.qq.com/s/JNwFWHRPFwcEIE5JV5xT3A)
 
